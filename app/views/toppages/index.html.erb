@@ -1,0 +1,81 @@
+<% content_for :cover do %>
+  <div class="cover">
+    <div class="cover-inner">
+      <div class="cover-contents">
+        <h1>地図アプリ　コルク</h1>
+<!-- Google Map Embed への検索窓 -->
+<p>ここに検索窓</p>
+
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<p>テスト</p>
+
+<!-- Yahoo地図 -->
+<div id="map" style="width:600px; height:400px"></div>	
+	
+<script type="text/javascript" charset="utf-8" src="https://map.yahooapis.jp/js/V1/jsapi?appid=<%= ENV['YAHOO_API_KEY'] %>"></script>	
+<script type="text/javascript">	
+window.onload = function(){	
+    var ymap = new Y.Map("map");
+    ymap.drawMap(new Y.LatLng(35.692417500000,139.689575277778), 16, Y.LayerSetId.NORMAL);	
+    //ymap.drawMap(new Y.LatLng(<%= @c_ido %>,<%= @c_keido %>), 16, Y.LayerSetId.NORMAL);	
+
+/*
+  //複数のマーカーをつける
+	var marker1 = new Y.Marker(new Y.LatLng(<%= @ido1 %>, <%= @keido1 %>));
+	var marker2 = new Y.Marker(new Y.LatLng(<%= @ido2 %>, <%= @keido2 %>));
+	var markers = [];
+	markers.push(marker1);
+	markers.push(marker2);
+	ymap.addFeatures(markers);
+	
+	//吹き出しをつける
+  var label1 = new Y.Label(new Y.LatLng(<%= @ido1 %>, <%= @keido1 %>), "<%= @shop1name %>");
+  var label2 = new Y.Label(new Y.LatLng(<%= @ido2 %>, <%= @keido2 %>), "<%= @shop2name %>");
+  var labels = [];
+  labels.push(label1);
+  labels.push(label2);
+  ymap.addFeatures(labels);
+	
+	//縮尺ボタン
+	var control = new Y.ZoomControl(); 
+  ymap.addControl(control);
+*/
+}	
+</script>	
+
+<!-- Yahoo地図 
+<div id="map" style="width:400px; height:300px"></div>
+
+<script type="text/javascript" charset="utf-8" src="https://map.yahooapis.jp/js/V1/jsapi?appid=dj00aiZpPTFnbENwdVBUekhtSiZzPWNvbnN1bWVyc2VjcmV0Jng9ZTk-"></script>
+<script type="text/javascript">
+window.onload = function(){
+    var ymap = new Y.Map("map");
+    ymap.drawMap(new Y.LatLng(35.66572, 139.73100), 17, Y.LayerSetId.NORMAL);
+}
+
+</script>
+-->
+
+<!-- Google Map Embed API
+<iframe
+  width="600"
+  height="450"
+  frameborder="0" style="border:0"
+  src="https://www.google.com/maps/embed/v1/search?key=AIzaSyAiSHbH8XzEEkkT9MZI9qIEEYTIaswebMk
+    &q=デニーズ+新宿" allowfullscreen>
+</iframe>
+
+
+<iframe
+  width="600"
+  height="450"
+  frameborder="0" style="border:0"
+  src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAiSHbH8XzEEkkT9MZI9qIEEYTIaswebMk
+    &q=デニーズ+柏" allowfullscreen>
+</iframe>
+
+-->

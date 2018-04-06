@@ -1,3 +1,12 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+    root to: 'toppages#index'
+
+    #メンタリングで聞く
+    resources :shops, only: [:index, :new, :show, :create]  do 
+        member do 
+            get :kuchikomi
+            post :kuchikomi
+        end
+    end
+
 end

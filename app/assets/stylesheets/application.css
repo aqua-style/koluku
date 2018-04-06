@@ -1,15 +1,534 @@
-/*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
- * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
- *= require_tree .
- *= require_self
- */
+@charset "utf-8";
+
+/* body */
+body {
+  background: #f2f2f2;
+}
+footer {
+  margin-top: 40px;
+}
+
+/* navbar */
+.navbar {
+  background-color: #fff;
+}
+.navbar-header img {
+  margin-top: 5px;
+  height: 40px;
+}
+
+/* cover */
+.cover {
+  margin-top: -20px;
+  margin-bottom: 20px;
+  width: 100%;
+  height: 300px;
+  background: url("/images/cover-bg3b.jpg") center center no-repeat;
+  background-size: cover;
+}
+.cover .cover-inner {
+  height: 100%;
+  margin: auto;
+  display: table;
+}
+.cover .cover-inner .cover-contents {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  position: relative;
+}
+.cover .cover-inner .cover-contents h1 {
+  margin: 0 0 20px 0;
+  color: #fff;
+  font-weight: bold;
+  letter-spacing: 0.15em;
+}
+
+
+/*********************************自分用CSS*******************************/
+
+.midasi2 {
+	margin-top:70px!important;
+	padding:1em!important;
+	border:solid 1px #333;
+	font-weight:bold;
+}
+.midasi3 {
+	margin-top:50px!important;
+    border-left:6px solid #666;
+	padding:0 0 0 15px;
+	font-weight:bold;
+}
+.midasi4 {
+	border-left:none!important;
+	padding:0px!important;
+	font-weight:bold;
+}
+
+
+
+/*回り込み
+※モバイル時にも解除されない*/
+.fl-l{
+	float: left;
+	margin: 0 1em 1em 0;
+}
+
+.fl-r{
+	float: right;
+	margin: 0 0 1em 1em;
+}
+
+.fl-c{ clear: both; }
+
+/*回り込み
+※モバイル時には回り込み解除*/
+.left{
+	float: left;
+	margin: 0 1em 1em 0;
+}
+
+.right{
+	float: right;
+	margin: 0 0 1em 1em;
+}
+
+@media
+only screen and (max-width : 480px){
+	.left,
+	.right{
+		float: none;
+		margin-right: 0;
+		margin-left: 0;
+		text-align: center;
+	}
+}
+
+
+/*文字の横位置*/
+.al-l{ text-align: left; }
+.al-r{ text-align: right; }
+.al-c{ text-align: center; }
+
+/*文字の縦位置*/
+.vl-t{ vertical-align: top!important; }/*上寄せ*/
+.vl-m{ vertical-align: middle!important; }/*中央寄せ*/
+.vl-b{ vertical-align: bottom!important; }/*下寄せ*/
+
+/*周りのブロックからの距離（margin）*/
+.m0{ margin: 0!important; }/*周りからのmarginを0に*/
+.m0-t{ margin-top: 0!important; }/*上からのmarginを0に*/
+.m0-r{ margin-right: 0!important; }/*右からのmarginを0に*/
+.m0-b{ margin-bottom: 0!important; }/*下からのmarginを0に*/
+.m0-l{ margin-left: 0!important; }/*左からのmarginを0に*/
+
+.m5{ margin: 5px!important; }
+.m5-t{ margin-top: 5px!important; }
+.m5-r{ margin-right: 5px!important; }
+.m5-b{ margin-bottom: 5px!important; }
+.m5-l{ margin-left: 5px!important; }
+
+.m10{ margin: 10px!important; }
+.m10-t{ margin-top: 10px!important; }
+.m10-r{ margin-right: 10px!important; }
+.m10-b{ margin-bottom: 10px!important; }
+.m10-l{ margin-left: 10px!important; }
+
+.m15{ margin: 15px!important; }
+.m15-t{ margin-top: 15px!important; }
+.m15-r{ margin-right: 15px!important; }
+.m15-b{ margin-bottom: 15px!important; }
+.m15-l{ margin-left: 15px!important; }
+
+.m20{ margin: 20px!important; }
+.m20-t{ margin-top: 20px!important; }
+.m20-r{ margin-right: 20px!important; }
+.m20-b{ margin-bottom: 20px!important; }
+.m20-l{ margin-left: 20px!important; }
+
+.m25{ margin: 25px!important; }
+.m25-t{ margin-top: 25px!important; }
+.m25-r{ margin-right: 25px!important; }
+.m25-b{ margin-bottom: 25px!important; }
+.m25-l{ margin-left: 25px!important; }
+
+.m30{ margin: 30px!important; }
+.m30-t{ margin-top: 30px!important; }
+.m30-r{ margin-right: 30px!important; }
+.m30-b{ margin-bottom: 30px!important; }
+.m30-l{ margin-left: 30px!important; }
+
+.m40{ margin: 40px!important; }
+.m40-t{ margin-top: 40px!important; }
+.m40-r{ margin-right: 40px!important; }
+.m40-b{ margin-bottom: 40px!important; }
+.m40-l{ margin-left: 40px!important; }
+
+.m50{ margin: 50px!important; }
+.m50-t{ margin-top: 50px!important; }
+.m50-r{ margin-right: 50px!important; }
+.m50-b{ margin-bottom: 50px!important; }
+.m50-l{ margin-left: 50px!important; }
+
+.m60{ margin: 60px!important; }
+.m60-t{ margin-top: 60px!important; }
+.m60-r{ margin-right: 60px!important; }
+.m60-b{ margin-bottom: 60px!important; }
+.m60-l{ margin-left: 60px!important; }
+
+.m70{ margin: 70px!important; }
+.m70-t{ margin-top: 70px!important; }
+.m70-r{ margin-right: 70px!important; }
+.m70-b{ margin-bottom: 70px!important; }
+.m70-l{ margin-left: 70px!important; }
+
+.m80{ margin: 80px!important; }
+.m80-t{ margin-top: 80px!important; }
+.m80-r{ margin-right: 80px!important; }
+.m80-b{ margin-bottom: 80px!important; }
+.m80-l{ margin-left: 80px!important; }
+
+.m90{ margin: 90px!important; }
+.m90-t{ margin-top: 90px!important; }
+.m90-r{ margin-right: 90px!important; }
+.m90-b{ margin-bottom: 90px!important; }
+.m90-l{ margin-left: 90px!important; }
+
+.m100{ margin: 100px!important; }
+.m100-t{ margin-top: 100px!important; }
+.m100-r{ margin-right: 100px!important; }
+.m100-b{ margin-bottom: 100px!important; }
+.m100-l{ margin-left: 100px!important; }
+
+.m120{ margin: 120px!important; }
+.m120-t{ margin-top: 120px!important; }
+.m120-r{ margin-right: 120px!important; }
+.m120-b{ margin-bottom: 120px!important; }
+.m120-l{ margin-left: 120px!important; }
+
+.m150{ margin: 150px!important; }
+.m150-t{ margin-top: 150px!important; }
+.m150-r{ margin-right: 150px!important; }
+.m150-b{ margin-bottom: 150px!important; }
+.m150-l{ margin-left: 150px!important; }
+
+.m200{ margin: 200px!important; }
+.m200-t{ margin-top: 200px!important; }
+.m200-r{ margin-right: 200px!important; }
+.m200-b{ margin-bottom: 200px!important; }
+.m200-l{ margin-left: 200px!important; }
+
+.m300{ margin: 300px!important; }
+.m300-t{ margin-top: 300px!important; }
+.m300-r{ margin-right: 300px!important; }
+.m300-b{ margin-bottom: 300px!important; }
+.m300-l{ margin-left: 300px!important; }
+
+
+/*周りのブロックからの距離（padding）*/
+.p0{ padding: 0!important; }
+.p0-t{ padding-top: 0!important; }
+.p0-r{ padding-right: 0!important; }
+.p0-b{ padding-bottom: 0!important; }
+.p0-l{ padding-left: 0!important; }
+
+.p5{ padding: 5px!important; }
+.p5-t{ padding-top: 5px!important; }
+.p5-r{ padding-right: 5px!important; }
+.p5-b{ padding-bottom: 5px!important; }
+.p5-l{ padding-left: 5px!important; }
+
+.p10{ padding: 10px!important; }
+.p10-t{ padding-top: 10px!important; }
+.p10-r{ padding-right: 10px!important; }
+.p10-b{ padding-bottom: 10px!important; }
+.p10-l{ padding-left: 10px!important; }
+
+.p15{ padding: 15px!important; }
+.p15-t{ padding-top: 15px!important; }
+.p15-r{ padding-right: 15px!important; }
+.p15-b{ padding-bottom: 15px!important; }
+.p15-l{ padding-left: 15px!important; }
+
+.p20{ padding: 20px!important; }
+.p20-t{ padding-top: 20px!important; }
+.p20-r{ padding-right: 20px!important; }
+.p20-b{ padding-bottom: 20px!important; }
+.p20-l{ padding-left: 20px!important; }
+
+.p25{ padding: 25px!important; }
+.p25-t{ padding-top: 25px!important; }
+.p25-r{ padding-right: 25px!important; }
+.p25-b{ padding-bottom: 25px!important; }
+.p25-l{ padding-left: 25px!important; }
+
+.p30{ padding: 30px!important; }
+.p30-t{ padding-top: 30px!important; }
+.p30-r{ padding-right: 30px!important; }
+.p30-b{ padding-bottom: 30px!important; }
+.p30-l{ padding-left: 30px!important; }
+
+.p40{ padding: 40px!important; }
+.p40-t{ padding-top: 40px!important; }
+.p40-r{ padding-right: 40px!important; }
+.p40-b{ padding-bottom: 40px!important; }
+.p40-l{ padding-left: 40px!important; }
+
+.p50{ padding: 50px!important; }
+.p50-t{ padding-top: 50px!important; }
+.p50-r{ padding-right: 50px!important; }
+.p50-b{ padding-bottom: 50px!important; }
+.p50-l{ padding-left: 50px!important; }
+
+.p60{ padding: 60px!important; }
+.p60-t{ padding-top: 60px!important; }
+.p60-r{ padding-right: 60px!important; }
+.p60-b{ padding-bottom: 60px!important; }
+.p60-l{ padding-left: 60px!important; }
+
+.p70{ padding: 70px!important; }
+.p70-t{ padding-top: 70px!important; }
+.p70-r{ padding-right: 70px!important; }
+.p70-b{ padding-bottom: 70px!important; }
+.p70-l{ padding-left: 70px!important; }
+
+.p80{ padding: 80px!important; }
+.p80-t{ padding-top: 80px!important; }
+.p80-r{ padding-right: 80px!important; }
+.p80-b{ padding-bottom: 80px!important; }
+.p80-l{ padding-left: 80px!important; }
+
+.p90{ padding: 90px!important; }
+.p90-t{ padding-top: 90px!important; }
+.p90-r{ padding-right: 90px!important; }
+.p90-b{ padding-bottom: 90px!important; }
+.p90-l{ padding-left: 90px!important; }
+
+.p100{ padding: 100px!important; }
+.p100-t{ padding-top: 100px!important; }
+.p100-r{ padding-right: 100px!important; }
+.p100-b{ padding-bottom: 100px!important; }
+.p100-l{ padding-left: 100px!important; }
+
+/*フォントの装飾*/
+.b{ font-weight: bold!important; }/*太字*/
+
+.f08em{ font-size: 0.8em; }
+.f09em{ font-size: 0.9em; }
+.f10em{ font-size: 1.0em; }
+.f11em{ font-size: 1.1em; }
+.f12em{ font-size: 1.2em; }
+.f13em{ font-size: 1.3em; }
+.f14em{ font-size: 1.4em; }
+.f15em{ font-size: 1.5em; }
+.f16em{ font-size: 1.6em; }
+.f17em{ font-size: 1.7em; }
+.f18em{ font-size: 1.8em; }
+.f19em{ font-size: 1.9em; }
+.f20em{ font-size: 2.0em; }
+.f21em{ font-size: 2.1em; }
+.f22em{ font-size: 2.2em; }
+.f23em{ font-size: 2.3em; }
+.f24em{ font-size: 2.4em; }
+.f25em{ font-size: 2.5em; }
+.f26em{ font-size: 2.6em; }
+.f27em{ font-size: 2.7em; }
+.f28em{ font-size: 2.8em; }
+.f29em{ font-size: 2.9em; }
+.f30em{ font-size: 3.0em; }
+
+/*フォントの色設定*/
+.red{ color: #ff0066!important; }/*赤*/
+.blue{ color: #0000dd!important; }/*青*/
+.green{ color: #4caf50!important; }/*緑*/
+.yellow{ color: #ffff00!important; }/*黄*/
+.navy{ color: #3f51b5!important; }/*紺*/
+.orange{ color: #ff9800!important; }/*橙*/
+.pink{ color: #ec407a!important; }/*ピンク*/
+.purple{ color: #9c27b0!important; }/*紫*/
+.olive{ color: #808000!important; }/*オリーブ*/
+.lime{ color: #00ff00!important; }/*黄緑*/
+.aqua{ color: #00bcd4!important; }/*水色*/
+.black{ color: #000!important; }/*黒*/
+.gray{ color: #ccc!important; }/*灰*/
+.white{ color: #fff!important; }/*白*/
+.brown{ color: #6d4c33!important; }/*茶*/
+
+/*マーカー表示（背景に着色）*/
+.box-yellow,
+.box-orange,
+.box-pink,
+.box-lime,
+.box-gray{ padding: 2px; }
+
+.box-yellow{ background-color: #ff6; }/*黄*/
+.box-orange{ background-color: #f90; }/*橙*/
+.box-pink{ background-color: #ffccff; }/*ピンク*/
+.box-lime{ background-color: #9f9; }/*黄緑*/
+.box-gray{ background-color: #ccc; }/*灰*/
+.box-lightgray{ background-color:#F7F7F7;}
+.box-lightyellow { background-color: #FFFFCC; }
+.box-term{ background-color:#EAF0F7!important;}
+
+/*横幅を指定*/
+.w05{ width: 5%; }
+.w10{ width: 10%; }
+.w15{ width: 15%; }
+.w20{ width: 20%; }
+.w25{ width: 25%; }
+.w30{ width: 30%; }
+.w35{ width: 35%; }
+.w40{ width: 40%; }
+.w45{ width: 45%; }
+.w50{ width: 50%; }
+.w55{ width: 55%; }
+.w60{ width: 60%; }
+.w65{ width: 65%; }
+.w70{ width: 70%; }
+.w75{ width: 75%; }
+.w80{ width: 80%; }
+.w85{ width: 85%; }
+.w90{ width: 90%; }
+.w95{ width: 95%; }
+.w100{ width: 100%; }
+.mw100{ max-width:100%;}
+
+/*下線や取消線の設定*/
+.underline{ text-decoration: underline!important; }
+.del{ text-decoration: line-through; }
+
+
+.hutoline {border-bottom:3px solid #ccf;}
+
+
+
+/*ドットボックス*/
+.mybox1 {
+  overflow: auto;
+  padding: 1.5em;
+  margin-bottom: 1.5em;
+  border: 1px dotted #777;
+}
+
+/*細線ボックス*/
+.mybox2 {
+  overflow: auto;
+  padding: 1.5em;
+  margin-bottom: 1.5em;
+  border: 1px solid #777;
+}
+
+.termbox {
+  overflow: auto;
+  padding: 1em;
+  margin-bottom: 1.5em;
+  border: 1px dotted #E5E9ED;
+  background-color:#EAF0F7;
+	
+}
+
+/*ラウンド*/
+.rad10 {
+	border-radius:10px;
+}
+
+.rad20 {
+	border-radius:20px;
+}
+
+/*文の先頭にアイコン*/
+.icon-point {
+    background: rgba(0, 0, 0, 0) url("./images/myicon/icon-point.png") no-repeat scroll left center;
+    margin-bottom: 1em !important;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 2em;
+    padding: 15px 0 15px 50px !important;
+}
+
+.icon-wakaba {
+    background: rgba(0, 0, 0, 0) url("./images/myicon/icon-wakaba.png") no-repeat scroll left center;
+    margin-bottom: 1em !important;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 2em;
+    padding: 15px 0 15px 50px !important;
+}
+
+.icon-caution {
+    background: rgba(0, 0, 0, 0) url("./images/myicon/icon-caution.png") no-repeat scroll left center;
+    margin-bottom: 1em !important;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 2em;
+    padding: 15px 0 15px 50px !important;
+}
+
+
+
+
+/*店舗一覧*/
+
+.shoplist-item{
+	padding:15px 15px;
+	background: #fff;
+	margin-bottom:1em;
+}
+
+.shoplist .shoplist-thumb{
+//	float: left;
+	margin:0 15px 0;
+}
+
+.shoplist-title{
+	margin: 0 0 12px ;
+	padding: 0;
+	border: none;
+	background: none;
+	font-weight: normal;
+	font-size: 1.1em;
+	line-height:1.5em;
+}
+
+.shoplist .shoplist-cont{
+	line-height:1.4em;
+	margin:0 0 0.5em;
+}
+
+.shoplist-item:after{
+	content: '';
+	display: block;
+	clear: both;
+	height: 0;
+}
+
+
+/**テーブル**/
+table{
+	width: 100%;
+	margin: 1em 0;
+	padding: 0;
+	border-top: 1px solid #cfcfcf;
+	border-left: 1px solid #cfcfcf;
+}
+
+th,
+td{
+	color: #4b3a24;
+	padding: 1.25em 1em;
+	border-right: 1px solid #cfcfcf;
+	border-bottom: 1px solid #cfcfcf;
+}
+
+th{
+	background-color: #ECFBFF;
+	font-weight: bold;
+	text-align: left;
+}
+
+thead th{
+	background-color: #91d7be;
+	color: #fff;
+	text-align: center;
+}
+

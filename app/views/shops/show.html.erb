@@ -1,0 +1,13 @@
+<% content_for :cover do %>
+  <div class="cover">
+    <div class="cover-inner">
+      <div class="cover-contents">
+        <h1><%= @shop.name %>の子連れ入店情報</h1>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<p><%= @shop.name %></p>
+<p><%= @shop.y_address %><br><%= @shop.y_moyorieki %></p>
+<p>緯度：<%= @shop.y_ido %>　経度：<%= @shop.y_keido %></p>
