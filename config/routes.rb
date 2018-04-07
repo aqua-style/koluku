@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     resources :shops, only: [:index, :new, :show, :create]  do 
         member do 
             get :kuchikomi
-            post :kuchikomi
+            post :kuchikomi_post
         end
     end
 
