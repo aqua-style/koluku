@@ -18,11 +18,15 @@
   
     <article class="shoplist-item">
   
-      <div class="raw">
+      <div class="row">
 
         <div class="col-xs-4"> 
           <div class="shoplist-thumb">
-            <img class="mw100" src="<%= root_url %>images/icon/icon-no-image.png">
+            <% unless shop.y_leadimage.present? %>
+              <img class="mw100" src="<%= root_url %>images/icon/icon-no-image.png">
+            <% else %>
+              <img class="mw100" src="<%= shop.y_leadimage %>">
+            <% end %>
           </div>
         </div>
     
@@ -33,12 +37,21 @@
             <p><%= shop.y_address %><br><%= shop.y_moyorieki %></p>
             <p>緯度：<%= shop.y_ido %>　経度：<%= shop.y_keido %></p>
 
+<!-- ここに口コミの概要を表示する　-->
 
-<p>あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ</p>
-<p>いいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいい</p>
-<p>ううううううううううううううううううううううううううううううううううううううううううううううううううううううううううううううううううううううううううううううう</p>
-
-
+        <% unless shop.id.present? %>
+        <!--新規店の場合-->
+          <div class="row">
+            <div class="center"><%= link_to '店情報の投稿に協力する', new_shop_path(shop, name: shop.name, y_id: shop.y_id, y_gid: shop.y_gid, y_uid: shop.y_uid,
+            y_ido: shop.y_ido, y_keido: shop.y_keido, y_address: shop.y_address, y_moyorieki: shop.y_moyorieki, y_leadimage: shop.y_leadimage), class: "btn btn-danger" %></div>
+          </div>
+        <% else %>
+        <!--既存店の場合-->
+          <div class="row"> 
+            <div class="col-xs-6"><%= link_to '店情報の投稿に協力する', kuchikomi_shop_path(shop), class: "btn btn-danger" %></div><!--shop.idもって shops#kuchikomiにいけ -->
+            <div class="col-xs-6"><%= link_to '店内写真や口コミを見る', shop_path(shop), class: "btn btn-warning" %></div><!-- shop.idもってshops#showにいけ -->
+          </div>
+        <% end %>
 
           </div>
         </div>

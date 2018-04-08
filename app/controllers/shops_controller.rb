@@ -10,11 +10,11 @@ class ShopsController < ApplicationController
 
     @keyword = params[:keyword] #検索KWを取る
     
-    puts '◆キーワードは' + @keyword
+    puts @keyword
     
     if @keyword.present?
-      #output = json / sort=matchソート順 / gc=01（グルメ）/ results=10（取得件数）
-      yquery = 'https://map.yahooapis.jp/search/local/V1/localSearch?output=json&appid=' + ENV['YAHOO_API_KEY'] +  '&sort=match&gc=01&results=10&query=' + @keyword
+      #output = json / sort=matchマッチ順 hybrid組み合わせ / gc=01（グルメ）/ results=10（取得件数）
+      yquery = 'https://map.yahooapis.jp/search/local/V1/localSearch?output=json&appid=' + ENV['YAHOO_API_KEY'] +  '&sort=hybrid&gc=01&results=10&query=' + @keyword
       
       puts '◆クエリは' + yquery
 
@@ -24,19 +24,58 @@ class ShopsController < ApplicationController
       @results = JSON.parse(json)         #配列形式に変換
       @features = @results['Feature']     #Feature配下の配列のみとりだす
       
-      @features.each_with_index do |feature,i| #@features配列から1個1個とりだしてshopのインスタンスを生成していく
-        @shops[i] = Shop.new(
-          name: feature['Name'],
-          y_id: feature['Id'], 
-          y_gid: feature['Gid'], 
-          y_uid: feature['Property']['Uid'], 
-          y_ido: feature['Geometry']['Coordinates'].split(",")[1], 
-          y_keido: feature['Geometry']['Coordinates'].split(",")[0], 
-          y_address: feature['Property']['Address'], 
-          y_moyorieki: feature['Property']['Station'][0]['Railway'] + "　" + feature['Property']['Station'][0]['Name']+"駅 徒歩" + feature['Property']['Station'][0]['Time'] + "分",  #一番近い駅=0
-          y_leadimage: feature['Property']['LeadImage']
-        )
-      end
+      puts '◆JSONは'
+      puts @results
+      
+      
+      if @features.present? #結果がカラ（0件）じゃなければ。これをやらないとエラーでる。
+      
+        @features.each_with_index do |feature,i| #@features配列から1個1個とりだしてshopのインスタンスを生成していく
+        
+          unless feature['Property'].present?  #propertyがカラなら
+            uid = nil
+            address = nil
+            image_url = nil
+          else                                  #propertyがあるなら
+            uid = feature['Property']['Uid']
+            address = feature['Property']['Address']
+            image_url = feature['Property']['LeadImage']
+            
+            #なかのstationがあるかチェック        
+            unless feature['Property']['Station'][0].present? #nil.['Railway']とやるとエラーでるからチェックしないといけない #stationがカラなら
+            	eki = nil
+            else  #stationがあるなら
+            	eki = feature['Property']['Station'][0]['Railway'] + "　" + feature['Property']['Station'][0]['Name']+"駅 徒歩" + feature['Property']['Station'][0]['Time'] + "分"
+            end
+          end
+          
+          unless feature['Geometry'].present? #Geometryがカラなら
+            ido = nil
+            keido = nil
+          else                                #Geometryがあるなら
+            unless feature['Geometry']['Coordinates'].present? #Coordinatesがカラなら
+              ido = nil
+              keido = nil
+            else
+              ido = feature['Geometry']['Coordinates'].split(",")[1]
+              keido = feature['Geometry']['Coordinates'].split(",")[0]
+            end
+          end
+    
+          @shops[i] = Shop.new(
+            name: feature['Name'],
+            y_id: feature['Id'], 
+            y_gid: feature['Gid'], 
+            y_uid: uid,                                              #feature['Property']['Uid'], 
+            y_ido: ido,                                              #feature['Geometry']['Coordinates'].split(",")[1], 
+            y_keido: keido,                                          #feature['Geometry']['Coordinates'].split(",")[0], 
+            y_address: address,                                      #feature['Property']['Address'], 
+            y_moyorieki: eki,                                        #feature['Property']['Station'][0]['Railway'] + "　" + feature['Property']['Station'][0]['Name']+"駅 徒歩" + feature['Property']['Station'][0]['Time'] + "分"
+            y_leadimage: image_url                                   #feature['Property']['LeadImage']
+          )
+        end #ループ
+      end   #@feature.present?
+      
       puts '◆@shops'
       puts @shops
 
@@ -48,13 +87,30 @@ class ShopsController < ApplicationController
 
 
   #ショップの一覧画面から初めて口コミ投稿されるときにこのアクションにくる→new.html.erbで投稿画面のformを出す→kuchikomi#createへ
-  def new 
+  def new
+    puts '■newきた'    
+    
+    #index.html.erbからURLクエリで送られてきた店舗情報を展開してハッシュに入れる、これを次のnew画面にもっていく
+    @hash = {}
+    request.query_parameters.each do |key, value|
+    @hash[key] = value.to_s
+    puts @hash[key]
+  end
+  
+  puts @hash
+
+
+  @kuchikomi = Kuchikomi.new
+  @shop = Shop.new
+
   end
 
   #ショップのnew.html.erb画面からformで投稿されたらここにくる。ここで店保存、最初の口コミ保存を行う。
   def create
     
     #このなかでaccepts_nested_attributes_for をつかう
+    
+    puts '◆createきた'
     
   end
 
