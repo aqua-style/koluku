@@ -1,0 +1,83 @@
+<div class="text-center">
+  <h1>プロフィール編集画面</h1>
+</div>
+
+
+<div class="row">
+  
+  <aside class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= @user.nickname %></h3>
+      </div>
+      <div class="panel-body">
+        <img class="media-object img-rounded img-responsive" src="<%= @user.image %>" alt="">
+      </div>
+    </div>
+  </aside>
+
+  <div class="col-md-8">
+    <%= form_for(@user) do |f| %>
+
+      <%= render 'layouts/error_messages', model: f.object %>
+  
+      <div class="form-group">
+        <%= f.label :nickname, 'ニックネーム' %>
+        <%= f.text_field :nickname, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :email, 'メールアドレス' %>
+        <%= f.email_field :email, class: 'form-control' %>
+      </div>
+
+      <div class="row">
+      <div class="col-xs-6 form-group">
+      	<%= f.label :age, '年齢', class:'control-label' %>
+      	<%= f.select :age, [["",""], ["10代","10"], ["20代","20"], ["30代","30"], ["40代","40"], ["50代","50"], ["60代","60"], ["70代以上","70"] ], {},   class: 'form-control' %>
+    	</div>
+   	
+      <div class="col-xs-6 form-group">
+      	<%= f.label :sex, '性別', class:'control-label' %>
+      	<%= f.select :sex, [["",""], ["女性","女性"], ["男性","男性"]], {},   class: 'form-control' %>
+    	</div>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :live, '地域（県や市など）' %>
+        <%= f.text_field :live, class: 'form-control' %>
+      </div>
+
+
+      <div class="form-group">
+        <%= f.label :intro, '自己紹介（255文字未満）' %>
+        <%= f.text_area :intro, :maxlength => "255", :size => "80x5",  class: 'form-control'  %>
+      </div>
+
+
+      <div class="accbox">
+          <label for="label1">パスワードを変更するかたはこちら</label>
+          <input type="checkbox" id="label1" class="cssacc" />
+          <div class="accshow">
+            <div class="form-group">
+              <!--<%= f.label :password, '新しいパスワード' %>-->
+              新しいパスワード<br>
+              <%= f.password_field :password, class: 'form-control' %>
+            </div>
+      
+            <div class="form-group">
+              <!--<%= f.label :password_confirmation, '新しいパスワードを再入力' %>-->
+              新しいパスワードを再入力<br>
+              <%= f.password_field :password_confirmation, class: 'form-control' %>
+            </div>
+          </div>
+      </div>
+
+
+
+
+      <%= f.submit '変更する', class: 'btn btn-primary btn-block' %>
+    <% end %>
+  </div>
+
+</div>

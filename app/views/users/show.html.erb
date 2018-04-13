@@ -1,0 +1,20 @@
+<div class="row">
+  <aside class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= @user.nickname %></h3>
+      </div>
+      <div class="panel-body">
+        <img class="media-object img-rounded img-responsive" src="<%= @user.image %>" alt="">
+      </div>
+    </div>
+  </aside>
+  <div class="col-md-8">
+  <p><span class="orange b"><%= @user.nickname %></span>
+  &nbsp;<%= @user.live %>
+  <% if @user.age.present? %> &nbsp;<%= @user.age %>代 <% end %>
+  &nbsp;<%= @user.sex %></p>
+  <p class="orange b">自己紹介</p>
+  <p><%= @user.intro %></p>
+  </div>
+</div>

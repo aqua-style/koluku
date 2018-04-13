@@ -6,10 +6,13 @@ class ShopsController < ApplicationController
   def index #ショップの一覧表示
     #@shops = Shop.all
 
-    @shops = []
 
-    @keyword = params[:keyword] #検索KWを取る
-    
+
+#    @keyword = params[:keyword] #検索KWを取る
+    @area = params[:area]
+    @tenpo_genre = params[:tenpo_genre]
+
+    @keyword = @area + ' ' + @tenpo_genre
     puts @keyword
     
     if @keyword.present?
@@ -30,49 +33,61 @@ class ShopsController < ApplicationController
       
       if @features.present? #結果がカラ（0件）じゃなければ。これをやらないとエラーでる。
       
+        chofuku_gid = []
+        @shops = []
+
         @features.each_with_index do |feature,i| #@features配列から1個1個とりだしてshopのインスタンスを生成していく
-        
-          unless feature['Property'].present?  #propertyがカラなら
-            uid = nil
-            address = nil
-            image_url = nil
-          else                                  #propertyがあるなら
-            uid = feature['Property']['Uid']
-            address = feature['Property']['Address']
-            image_url = feature['Property']['LeadImage']
-            
-            #なかのstationがあるかチェック        
-            unless feature['Property']['Station'][0].present? #nil.['Railway']とやるとエラーでるからチェックしないといけない #stationがカラなら
-            	eki = nil
-            else  #stationがあるなら
-            	eki = feature['Property']['Station'][0]['Railway'] + "　" + feature['Property']['Station'][0]['Name']+"駅 徒歩" + feature['Property']['Station'][0]['Time'] + "分"
+
+          if chofuku_gid.include?(feature['Gid']) #すでにGidがあるなら重複なのでインスタンスを生成しない
+            puts '重複あり: ' + feature['Gid']
+          else
+            chofuku_gid.push(feature['Gid'])
+
+            ####ここからデータチェック####
+            unless feature['Property'].present?  #propertyがカラなら
+              uid = nil
+              address = nil
+              image_url = nil
+            else                                  #propertyがあるなら
+              uid = feature['Property']['Uid']
+              address = feature['Property']['Address']
+              image_url = feature['Property']['LeadImage']
+              
+              #なかのstationがあるかチェック
+              unless feature['Property']['Station'].present? #nil.['Railway']とやるとエラーでるからチェックしないといけない #stationがカラなら
+              	eki = nil
+              else  #stationがあるなら
+              	eki = feature['Property']['Station'][0]['Railway'] + "　" + feature['Property']['Station'][0]['Name']+"駅 徒歩" + feature['Property']['Station'][0]['Time'] + "分"
+              end
             end
-          end
-          
-          unless feature['Geometry'].present? #Geometryがカラなら
-            ido = nil
-            keido = nil
-          else                                #Geometryがあるなら
-            unless feature['Geometry']['Coordinates'].present? #Coordinatesがカラなら
+            
+            unless feature['Geometry'].present? #Geometryがカラなら
               ido = nil
               keido = nil
-            else
-              ido = feature['Geometry']['Coordinates'].split(",")[1]
-              keido = feature['Geometry']['Coordinates'].split(",")[0]
+            else                                #Geometryがあるなら
+              unless feature['Geometry']['Coordinates'].present? #Coordinatesがカラなら
+                ido = nil
+                keido = nil
+              else
+                ido = feature['Geometry']['Coordinates'].split(",")[1]
+                keido = feature['Geometry']['Coordinates'].split(",")[0]
+              end
             end
-          end
-    
-          @shops[i] = Shop.new(
-            name: feature['Name'],
-            y_id: feature['Id'], 
-            y_gid: feature['Gid'], 
-            y_uid: uid,                                              #feature['Property']['Uid'], 
-            y_ido: ido,                                              #feature['Geometry']['Coordinates'].split(",")[1], 
-            y_keido: keido,                                          #feature['Geometry']['Coordinates'].split(",")[0], 
-            y_address: address,                                      #feature['Property']['Address'], 
-            y_moyorieki: eki,                                        #feature['Property']['Station'][0]['Railway'] + "　" + feature['Property']['Station'][0]['Name']+"駅 徒歩" + feature['Property']['Station'][0]['Time'] + "分"
-            y_leadimage: image_url                                   #feature['Property']['LeadImage']
-          )
+            
+            @shops.push(
+              Shop.new(
+              name: feature['Name'],
+              y_id: feature['Id'], 
+              y_gid: feature['Gid'], 
+              y_uid: uid,                                              #feature['Property']['Uid'], 
+              y_ido: ido,                                              #feature['Geometry']['Coordinates'].split(",")[1], 
+              y_keido: keido,                                          #feature['Geometry']['Coordinates'].split(",")[0], 
+              y_address: address,                                      #feature['Property']['Address'], 
+              y_moyorieki: eki,                                        #feature['Property']['Station'][0]['Railway'] + "　" + feature['Property']['Station'][0]['Name']+"駅 徒歩" + feature['Property']['Station'][0]['Time'] + "分"
+              y_leadimage: image_url                                   #feature['Property']['LeadImage']
+              )
+            )
+          end #if chofuku_gid.include?(feature['Gid'])
         end #ループ
       end   #@feature.present?
       
@@ -82,7 +97,10 @@ class ShopsController < ApplicationController
       
     end
 
+    #DB内をLIKE検索
     #ここでDB内のshopsとマージ　後で実装
+
+
   end
 
 
@@ -90,34 +108,68 @@ class ShopsController < ApplicationController
   def new
     puts '■newきた'    
     
+=begin これいらなくね
     #index.html.erbからURLクエリで送られてきた店舗情報を展開してハッシュに入れる、これを次のnew画面にもっていく
     @hash = {}
     request.query_parameters.each do |key, value|
-    @hash[key] = value.to_s
-    puts @hash[key]
-  end
-  
-  puts @hash
+      @hash[key] = value.to_s
+    end
+    puts request.query_parameters
+    puts @hash
+    @hash.symbolize_keys! #文字列のKEYをシンボル化
+=end
 
+=begin
+    #ハッシュに入れてnew.html.erbに渡してたけど、@shopを作って持っていけばいいことに気づいた
+    @hash = request.query_parameters
+    puts @hash
+=end
 
-  @kuchikomi = Kuchikomi.new
-  @shop = Shop.new
-
+    @kuchikomi = Kuchikomi.new
+    @shop = Shop.new(request.query_parameters)
+    puts @shop.attributes
+    
   end
 
   #ショップのnew.html.erb画面からformで投稿されたらここにくる。ここで店保存、最初の口コミ保存を行う。
   def create
-    
-    #このなかでaccepts_nested_attributes_for をつかう
-    
     puts '◆createきた'
+  
+    #このなかでaccepts_nested_attributes_for をつかう
+    #使い方がわからんから諦めよう
     
+    @shop = Shop.new(shop_params)
+    #@kuchikomi = @shop.kuchikomis.build(kuchikomi_params) buildはshopがDBにあってIDを渡すからDBにない段階でやっちゃダメ
+    @kuchikomi = Kuchikomi.new(kuchikomi_params)
+
+    puts 'shop生成されてる？'
+    puts @shop.inspect
+
+    if @shop.save
+      @kuchikomi = @shop.kuchikomis.build(kuchikomi_params)  #shopのDB保存が成功してるので改めてkuchikomiを生成
+      puts '【新規shopをDBへ保存】shop_idは'
+      puts @kuchikomi.shop_id #ここでショップIDが入ってるか確認しよう
+
+      if @kuchikomi.save
+        flash[:success] = '口コミを投稿しました。ご協力に感謝します。'
+        redirect_to @shop
+      else
+        flash.now[:danger] = '何らかの理由によりこの店舗への口コミができません　shop-create-error1'
+        render :kuchikomi #店舗はDBに保存してあるのでこっちを表示
+      end
+    else
+      flash.now[:danger] = '何らかの理由によりこの店舗への口コミができません　shop-create-error2'
+      render :new  #店舗DB保存に失敗してるので、newに飛ばしたい
+    end
+
+
   end
 
 
   #ショップ一覧画面からショップの口コミ詳細をクリックしたらここに来て→show.html.erbを表示
   def show 
     @shop = Shop.find(params[:id])
+
     
     #ここでカウント
     @kozure_ok_1 = Kuchikomi.where(shop_id: @shop.id).where(kozure_ok: 1).count
@@ -177,19 +229,46 @@ class ShopsController < ApplicationController
     @eisei_2 = Kuchikomi.where(shop_id: @shop.id).where(eisei: 2).count
     @user_ids_comments = Kuchikomi.where(shop_id: @shop.id).select('user_id', 'comment')
 
-
+    #口コミ投稿したユーザーのuser_idとnicknameとcommentとimageとupdated_atとをとりたい
+    #こんなようなことをやりたい↓
+    #SELECT users.id, users.nickname,kuchikomis.comment FROM kuchikomis JOIN users ON kuchikomis.user_id = users.id WHERE kuchikomis.shop_id = 2; 
+    #これでできる？↓
+    @user_comment_infos = {}
+    kuchikomis = Shop.find(@shop.id).kuchikomis.order('created_at DESC')
+    
+    @user_comment_infos = Array.new(kuchikomis.count){{}} #取得したレコード数で配列とハッシュを初期化
+    
+    kuchikomis.each_with_index do |kuchikomi,index|
+      user_id = nil
+      nickname = nil
+      image = nil
+      if kuchikomi.user.present?              #userがいるなら
+        user_id = kuchikomi.user.id
+        nickname = kuchikomi.user.nickname
+        image = kuchikomi.user.image
+      end
+  	  @user_comment_infos[index] = {           #ただの2次元ハッシュ　これをviewで表示させたい
+  	      :user_id => user_id,
+  	    	:nickname => nickname,
+  	    	:image => image,
+  	    	:comment => kuchikomi.comment,
+  	    	:updated_at => kuchikomi.updated_at,
+       }
+    end
+    
   end
 
 
   #ショップ一覧画面から口コミするをクリックでここに来る（2回目以降の口コミ投稿の場合）→ kuchikomi.html.erbへ
   def kuchikomi
+    puts 'ショップIDは' + params[:id].to_s
     @shop = Shop.find(params[:id])              #URLパラメータにshopのidが入ってるので、それで@shopを生成
     @kuchikomi = Kuchikomi.new                  #kuchikomiのインスタンスを生成
     @kuchikomi.shop_id = @shop.id               #ここでショップIDを入れておこう
     puts '◆kuchikomi  shop_id'
     puts @kuchikomi.shop_id
   end
-  
+
   #ここで口コミ投稿させる
   def kuchikomi_post
     @kuchikomi = Kuchikomi.new(kuchikomi_params) #POSTデータをストロングパラメータに渡してインスタンス生成
@@ -201,6 +280,7 @@ class ShopsController < ApplicationController
     @kuchikomi.shop_id = @shop.id
 =end
 
+    #@kuchikomi.shop_id = '' #エラーテスト
     if @kuchikomi.save
       flash[:success] = '口コミ が正常に投稿されました'
       redirect_to @shop
@@ -219,5 +299,10 @@ class ShopsController < ApplicationController
                                       :low_allergy_food, :motikomi, :zasiki, :kositu, :junyusitu, :omutu_space, :kids_space, :babycar, 
                                       :hirosa, :seki_hiroi, :suiteru, :chusyajo, :ekitika, :access, :kangei, :kositu_zasiki_yoyaku, :ehon_omocha, :epuron, :eisei, :comment)
   end
-
+  
+  # /shops/new.html.erbでPOSTされたショップのデータ群
+  def shop_params
+    params.require(:shop).permit(:name, :y_address, :y_gid, :y_id, :y_ido, :y_keido, :y_leadimage, :y_moyorieki, :y_uid)
+  end
+  
 end

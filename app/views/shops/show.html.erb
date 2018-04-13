@@ -310,13 +310,17 @@
 
 </div>
 
+<p>テスト</p>
+
 <div class="shop-comment">
   <p>コメント一覧</p>
   
-  <% @user_ids_comments.each do |user_id_comment| %>
+  <% @user_comment_infos.each do |info| %>
   <p>
-    ユーザーID：<%= user_id_comment.user_id %>｜  ニックネーム：あとで実装<br>
-    コメント：<%= user_id_comment.comment %>
+    ユーザー画像：<%= info[:image] %> <br>
+    ユーザーID：<%= info[:user_id] %>｜  ニックネーム：<%= info[:nickname] %><br>
+    更新日：<%= info[:updated_at] %> <br>
+    コメント：<%= info[:comment] %>
   </p>
   <% end %>
 

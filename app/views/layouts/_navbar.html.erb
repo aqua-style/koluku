@@ -11,11 +11,24 @@
       <a class="navbar-left" href="/"><img src="/images/logo.png" alt="KoLuKu"></a>
       </div>
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">新規登録</a></li>
-        <li><a href="#">ログイン</a></li>
-      </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <% if logged_in? %>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <%= current_user.nickname %> <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><%= link_to 'プロフィール', edit_user_path(current_user) %></li>
+                <li role="separator" class="divider"></li>
+                <li><%= link_to 'ログアウト', logout_path, method: :delete %></li>
+              </ul>
+            </li>
+          <% else %>
+            <li><%= link_to 'ユーザー登録', signup_path %></li>
+            <li><%= link_to 'ログイン', login_path %></li>
+          <% end %>
+        </ul>
       </div>
     </div>
   </nav>
 </header>
+

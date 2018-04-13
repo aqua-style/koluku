@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
     root to: 'toppages#index'
 
-    #メンタリングで聞く
+
     resources :shops, only: [:index, :new, :show, :create]  do 
         member do 
             get :kuchikomi
@@ -9,4 +9,12 @@ Rails.application.routes.draw do
         end
     end
 
+
+  get 'signup', to: 'users#new'
+  resources :users, only: [:index, :show, :create, :edit, :update]
+
+  get 'login', to: 'sessions#new'
+  post 'login', to: 'sessions#create'
+  delete 'logout', to: 'sessions#destroy'
+  
 end

@@ -15,7 +15,8 @@
     <div class="text-center">
       <%= form_tag(shops_path, method: :get, class: 'form-inline') do %>
         <div class="form-group">
-          <%= text_field_tag :keyword, @keyword, class: 'form-control input-lg', placeholder: "飲店名　地名　ジャンルを入力", size: 40 %>
+          <%= text_field_tag :area, @area, class: 'form-control input-lg', placeholder: "地名", size: 5 %> × 
+          <%= text_field_tag :tenpo_genre, @tenpo_genre, class: 'form-control input-lg', placeholder: "店名またはジャンル", size: 30 %>
         </div>
         <%= submit_tag '検索', class: 'btn btn-success btn-lg' %>
       <% end %>

@@ -2,22 +2,28 @@
   <div class="cover">
     <div class="cover-inner">
       <div class="cover-contents">
-        <h1><%= @hash[:name] %>について投稿します</h1>
+        <h1><%= @shop.name %>について投稿します</h1>
       </div>
     </div>
   </div>
 <% end %>
 
-<p><%= @hash[:name] %></p>
-<p><%= @hash[:y_address] %><br><%= @hash[:y_moyorieki] %></p>
-<p>緯度：<%= @hash[:y_ido] %>　経度：<%= @hash[:y_keido] %></p>
+
+<p><%= @shop.name %></p>
+<p><%= @shop.y_address %><br><%= @shop.y_moyorieki %></p>
+<p>緯度：<%= @shop.y_ido %>　経度：<%= @shop.y_keido %></p>
+
+<hr>
 
 <%= form_for @kuchikomi, url: shops_path do |f| %>
 
-<%  @hash.each do |key, value|
-      hidden_field_tag key, value
-    end
-%>
+<!-- バリデーションエラーがあれば表示-->
+<%= render 'layouts/error_messages', model: f.object %>
+
+<% @shop.attributes.each do |key, value| %>
+<%= hidden_field_tag "shop[#{key}]", value %>
+<% end %>
+
 
 <div class="row">
 	<div class="col-md-6">
