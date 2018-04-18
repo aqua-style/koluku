@@ -11,4 +11,7 @@ class User < ApplicationRecord
                     
   has_many :kuchikomis
   has_secure_password
+  
+  #カラムの名前をmount_uploaderに指定
+  mount_uploader :image, ImageUploader
 end

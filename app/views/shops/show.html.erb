@@ -1,20 +1,91 @@
-<% content_for :cover do %>
-  <div class="cover">
-    <div class="cover-inner">
-      <div class="cover-contents">
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<% @page_title = @shop.name + 'って子連れで入りやすい？' %> 
+<title><%= @page_title %></title>
+
+    <%= csrf_meta_tags %>
+
+    <!-- app/assets/javascripts-->
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    
+    <!-- app/assets/stylesheets -->
+    <%= stylesheet_link_tag  'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+    <!-- Bootstrap JavaScript-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+    <!-- slick -->
+    <link rel="stylesheet" type="text/css" href="/slick/slick.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/slick/slick-theme.css" media="screen" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/slick/slick.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        $('.center-item').slick({
+              infinite: true,
+              dots:true,
+              slidesToShow: 1,
+              centerMode: true, 
+              centerPadding:'100px',
+              autoplay:false,
+              responsive: [{
+                   breakpoint: 480,
+                        settings: {
+                             centerMode: false,
+                   }
+              }]
+         });
+    });
+    </script>
+    
+</head>
+
+<body>
+<%= render 'layouts/navbar' %>
+    
+<div class="cover2">
+    <div class="cover2-inner">
+      <div class="cover2-contents">
         <h1><%= @shop.name %>の子連れ入店情報</h1>
       </div>
     </div>
+</div>
+
+
+<div class="container">
+  <%= render 'layouts/flash_messages' %>
+
+<div class="row">
+  <div class="col-md-9 left-contents">
+
+<div class="shop-info">
+  <h2 class="m20-t f12em b gray"><%= @shop.name %></h2>
+  <p class="f09em m10-l"><%= @shop.y_address %><br><%= @shop.y_moyorieki %></p>
+  <!--<p>緯度：<%= @shop.y_ido %>　経度：<%= @shop.y_keido %></p>-->
+</div>
+
+<% if @shop_photos.present? %>
+  <div class="photo-slide">
+    <ul class="center-item">
+      <% @shop_photos.each do |photo| %>
+        <li><%= image_tag photo.image %></li>
+      <% end %>
+    </ul>
   </div>
 <% end %>
 
-<div class="shop-info">
-  <p><%= @shop.name %></p>
-  <p><%= @shop.y_address %><br><%= @shop.y_moyorieki %></p>
-  <p>緯度：<%= @shop.y_ido %>　経度：<%= @shop.y_keido %></p>
-</div>
-
-<div class="shop-kuchikomi">
+<div class="shop-kuchikomi m50-t">
+  <h2 class="m20-t m40-b fukidasi-midasi">子供や赤ちゃん連れて行けるかな？</h2>
+  
   <div class="row">
   	<div class="col-md-6">
   		<div class="row">
@@ -310,18 +381,53 @@
 
 </div>
 
-<p>テスト</p>
+
 
 <div class="shop-comment">
-  <p>コメント一覧</p>
+  <h2 class="m20-t m40-b fukidasi-midasi">コメント一覧</h2>
   
   <% @user_comment_infos.each do |info| %>
-  <p>
-    ユーザー画像：<%= info[:image] %> <br>
-    ユーザーID：<%= info[:user_id] %>｜  ニックネーム：<%= info[:nickname] %><br>
-    更新日：<%= info[:updated_at] %> <br>
-    コメント：<%= info[:comment] %>
-  </p>
+    <% if info[:comment].present? %>
+      <div class="chat-l">
+      	<div class="talker">
+      	  <% if info[:image].present? %>
+      	    <img src="<%= info[:image] %>">
+      	  <% else %>
+      	    <img src="/images/icon/icon-mama-0<%= rand(1..9) %>-160px.png">
+      	  <% end %>
+        	<% if info[:nickname].present? %>
+        	  <%= info[:nickname] %><br>
+        	<% else %>
+        	  匿名さん<br>
+        	<% end %>
+      	<span class="f07em lgray"><%= info[:updated_at].strftime("%Y年%m月%d日") %></span></div>
+      	<div class="bubble-wrap">
+      		<div class="bubble  rad8">
+      		<div class="bubble-in">
+      		<p><%= info[:comment] %></p>
+      		</div>
+      		</div>
+      	</div>
+      </div>
+    <% end %>
   <% end %>
 
 </div>
+
+</div><!-- 左コンテンツ -->
+
+  <div class="col-md-3"><!-- 右サイドメニュー -->
+    <%= render 'layouts/side_menu' %>
+  </div>
+
+</div>
+
+</div>
+
+  <%= render 'layouts/footer' %>
+  
+
+
+
+</body>
+</html>    

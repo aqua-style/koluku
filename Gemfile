@@ -60,3 +60,9 @@ gem 'pry-byebug', group: :development
 
 #環境変数を扱う
 gem 'dotenv-rails'
+
+#画像アップロード
+gem 'carrierwave'
+
+#画像の加工とか
+gem 'rmagick'

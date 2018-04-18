@@ -1,3 +1,12 @@
+<% @page_title ='' %>
+<% if @area.present? %>
+  <% @page_title = @area + '周辺の' %>
+<% end %>
+<% if @tenpo_genre.present? %>
+  <% @page_title.concat(@tenpo_genre + 'に関する') %>
+<% end %>
+<% @page_title.concat('子連れOKな飲食店口コミ情報') %> 
+
 <% content_for :cover do %>
   <div class="cover">
     <div class="cover-inner">
@@ -8,7 +17,14 @@
   </div>
 <% end %>
 
-<p><%= @shops.length %>件ヒットしました。</p>
+<div class="row">
+  <div class="col-md-9 left-contents">
+
+<% if @kensu.present? %>
+  <p><%= @kensu %>件ヒットしました。</p>
+<% else %>
+  <p>ヒットしませんでした。検索ワードを変えてみてください。</p>
+<% end %>
 
 <p class="hutoline"></p>
 
@@ -22,10 +38,12 @@
 
         <div class="col-xs-4"> 
           <div class="shoplist-thumb">
-            <% unless shop.y_leadimage.present? %>
-              <img class="mw100" src="<%= root_url %>images/icon/icon-no-image.png">
-            <% else %>
+            <% if shop.shop_photos.present? && shop.shop_photos.last.present? && shop.shop_photos.last.image.present? && shop.shop_photos.last.image.url.present? %>
+              <img class="mw100" src="<%= shop.shop_photos.last.image.url %>">
+            <% elsif shop.y_leadimage.present? %>
               <img class="mw100" src="<%= shop.y_leadimage %>">
+            <% else %>
+              <img class="mw100" src="/images/icon/icon-no-image.png">
             <% end %>
           </div>
         </div>
@@ -35,20 +53,21 @@
 
             <p class="shoplist-title orange b"><%= shop.name %></p>
             <p><%= shop.y_address %><br><%= shop.y_moyorieki %></p>
-            <p>緯度：<%= shop.y_ido %>　経度：<%= shop.y_keido %></p>
+            <!--<p>緯度：<%= shop.y_ido %>　経度：<%= shop.y_keido %></p>-->
 
 <!-- ここに口コミの概要を表示する　-->
 
         <% unless shop.id.present? %>
         <!--新規店の場合-->
           <div class="row">
-            <div class="center"><%= link_to '店情報の投稿に協力する', new_shop_path(shop, name: shop.name, y_id: shop.y_id, y_gid: shop.y_gid, y_uid: shop.y_uid,
-            y_ido: shop.y_ido, y_keido: shop.y_keido, y_address: shop.y_address, y_moyorieki: shop.y_moyorieki, y_leadimage: shop.y_leadimage), class: "btn btn-danger" %></div>
+            <div class="col-xs-6"><%= link_to '子連れ情報をシェアする', new_shop_path(shop, name: shop.name, y_id: shop.y_id, y_gid: shop.y_gid, y_uid: shop.y_uid,
+            y_ido: shop.y_ido, y_keido: shop.y_keido, y_address: shop.y_address, y_moyorieki: shop.y_moyorieki, y_leadimage: shop.y_leadimage, y_gyosyu: shop.y_gyosyu), class: "btn btn-danger" %></div>
+            <div class="col-xs-6">まだ子連れ情報の口コミはありません</div>
           </div>
         <% else %>
         <!--既存店の場合-->
           <div class="row"> 
-            <div class="col-xs-6"><%= link_to '店情報の投稿に協力する', kuchikomi_shop_path(shop), class: "btn btn-danger" %></div><!--shop.idもって shops#kuchikomiにいけ -->
+            <div class="col-xs-6"><%= link_to '子連れ情報をシェアする', kuchikomi_shop_path(shop), class: "btn btn-danger" %></div><!--shop.idもって shops#kuchikomiにいけ -->
             <div class="col-xs-6"><%= link_to '店内写真や口コミを見る', shop_path(shop), class: "btn btn-warning" %></div><!-- shop.idもってshops#showにいけ -->
           </div>
         <% end %>
@@ -60,4 +79,13 @@
     </article>
   <% end %>
 
+<%= paginate @shops %>
+
+</div>
+
+
+</div><!-- 左コンテンツ -->
+
+<div class="col-md-3"><!-- 右サイドメニュー -->
+<%= render 'layouts/side_menu' %>
 </div>

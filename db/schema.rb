@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180413072615) do
+ActiveRecord::Schema.define(version: 20180415132140) do
 
   create_table "kuchikomis", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "user_id"
@@ -48,6 +48,15 @@ ActiveRecord::Schema.define(version: 20180413072615) do
     t.index ["shop_id"], name: "index_kuchikomis_on_shop_id", using: :btree
   end
 
+  create_table "shop_photos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "shop_id"
+    t.integer  "user_id"
+    t.string   "image"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["shop_id"], name: "index_shop_photos_on_shop_id", using: :btree
+  end
+
   create_table "shops", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.string   "y_id"
@@ -62,6 +71,7 @@ ActiveRecord::Schema.define(version: 20180413072615) do
     t.datetime "updated_at",                  null: false
     t.boolean  "osusume",     default: false, null: false
     t.string   "y_moyorieki"
+    t.string   "y_gyosyu"
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -78,4 +88,5 @@ ActiveRecord::Schema.define(version: 20180413072615) do
   end
 
   add_foreign_key "kuchikomis", "shops"
+  add_foreign_key "shop_photos", "shops"
 end

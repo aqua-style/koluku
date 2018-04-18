@@ -4,6 +4,7 @@
 body {
   /*background: #f2f2f2;*/
   background: #fff;
+  font-size: 13px;
 }
 footer {
   margin-top: 40px;
@@ -18,6 +19,13 @@ footer {
   height: 40px;
 }
 
+.toph1 {
+  font-size:14px;
+  display:inline;
+}
+
+
+/******TOPページ用ヘッダ部分*******/
 /* cover */
 .cover {
   margin-top: -20px;
@@ -27,6 +35,7 @@ footer {
   background: url("/images/cover-bg3b.jpg") center center no-repeat;
   background-size: cover;
 }
+
 .cover .cover-inner {
   height: 100%;
   margin: auto;
@@ -44,6 +53,51 @@ footer {
   font-weight: bold;
   letter-spacing: 0.15em;
 }
+
+
+
+/*******下層ページ用ヘッダ部分********/
+
+.cover2 {
+  margin-top: -20px;
+  margin-bottom: 20px;
+  width: 100%;
+  height: 100px;
+  background-size: cover;
+}
+
+.cover2 .cover2-inner {
+  height: 100%;
+  margin: auto;
+  display: table;
+}
+.cover2 .cover2-inner .cover2-contents {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  position: relative;
+}
+.cover2 .cover2-inner .cover2-contents h1 {
+  margin: 0 0 20px 0;
+  color: #666;
+  font-weight: bold;
+  letter-spacing: 0.15em;
+}
+
+
+/**********画像のスライド**********/
+
+.photo-slide {
+  margin:10px;
+  max-width : 700px;
+}
+
+.photo-slide img {
+  max-width : 640px;
+  max-height : 300px;
+}
+
+
 
 
 /*********************************自分用CSS*******************************/
@@ -314,6 +368,8 @@ only screen and (max-width : 480px){
 /*フォントの装飾*/
 .b{ font-weight: bold!important; }/*太字*/
 
+.f06em{ font-size: 0.6em; }
+.f07em{ font-size: 0.7em; }
 .f08em{ font-size: 0.8em; }
 .f09em{ font-size: 0.9em; }
 .f10em{ font-size: 1.0em; }
@@ -351,7 +407,8 @@ only screen and (max-width : 480px){
 .lime{ color: #00ff00!important; }/*黄緑*/
 .aqua{ color: #00bcd4!important; }/*水色*/
 .black{ color: #000!important; }/*黒*/
-.gray{ color: #ccc!important; }/*灰*/
+.lgray{ color: #ccc!important; }/*灰*/
+.gray { color: #666!important; }
 .white{ color: #fff!important; }/*白*/
 .brown{ color: #6d4c33!important; }/*茶*/
 
@@ -393,6 +450,7 @@ only screen and (max-width : 480px){
 .w95{ width: 95%; }
 .w100{ width: 100%; }
 .mw100{ max-width:100%;}
+.mw50{ max-width:50%;}
 
 /*下線や取消線の設定*/
 .underline{ text-decoration: underline!important; }
@@ -401,6 +459,8 @@ only screen and (max-width : 480px){
 
 .hutoline {border-bottom:3px solid #ccf;}
 
+.bd-top {border-top:1px solid #ccc;}
+.bd-btm {border-bottom:1px solid #ccc;}
 
 
 /*ドットボックス*/
@@ -429,6 +489,10 @@ only screen and (max-width : 480px){
 }
 
 /*ラウンド*/
+.rad8 {
+	border-radius:8px;
+}
+
 .rad10 {
 	border-radius:10px;
 }
@@ -663,3 +727,159 @@ thead th{
   margin-bottom: 20px;
 }
 
+
+/********サイドメニュー************/
+
+
+.side-menu li{ list-style: none; }
+
+.side-menu h3{
+  font-size:15px;
+	padding: 0.7em;
+/*	border: 1px solid #a6a6a6;
+	border-bottom: 4px solid #a6a6a6;*/
+	background-color:  #ffaaaf; 
+	color: #fff;
+	font-weight: bold;
+	border-radius: 4px;
+}
+
+.left-contents {
+  padding:1em 2em;
+	border: 1px solid #a6a6a6;
+	border-radius: 4px;
+}
+
+
+/**********hタグの装飾用*******************/
+
+.fukidasi-midasi {
+position: relative;
+padding: 0.5em 0;
+/*background: -webkit-repeating-linear-gradient(-45deg, #fff5df, #fff5df 4px,#ffe4b1 3px, #ffe4b1 8px);
+background: repeating-linear-gradient(-45deg, #fff5df, #fff5df 4px,#ffe4b1 3px, #ffe4b1 8px);
+border-radius: 7px;*/
+font-size:16px;
+font-weight: bold;
+color: #666;
+}
+
+.fukidasi-midasi:after {
+position: absolute;
+content: '';
+top: 100%;
+left: 30px;
+border: 15px solid transparent;
+border-top: 15px solid #ffebbe;
+width: 0;
+height: 0;
+}
+
+
+/************話者とふきだし*****************/
+.chat-l,
+.chat-r{
+	position: relative;
+	overflow: hidden;
+	margin: 0 0 2em;
+}
+
+
+.talker{
+	display: block;
+	width: 15%;
+	height: auto;
+	text-align: center;
+}
+
+.talker b{
+	font-weight: normal;
+}
+
+.talker img{
+	display: block;
+	/*width: 100px;*/
+	max-height:50px;
+	max-width: 100%;
+	max-width: none\9;/*IE8への対応*/
+	margin: auto;
+}
+
+html:not(:target) .talker img{
+    max-width: 100%; /*IE9以上への対応*/
+}
+
+.chat-l .talker{
+	float: left;
+	margin-right: 2%;
+}
+
+.bubble{
+	display: block;
+	position: relative;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 80%;
+	min-height: 60px;
+	margin-bottom: 2em;
+	padding: 1em;
+	border: 1px solid #ccc;
+	background: #fff;
+}
+
+.bubble .bubble-in{
+	border-color: #fff;
+}
+.chat-l .bubble{
+	float: right;
+}
+
+.bubble .bubble-in:after,
+.bubble .bubble-in:before{
+	position: absolute;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: solid transparent;
+	content: "";
+}
+
+/*吹き出しの微調整*/
+.bubble .b-arw20:after,
+.bubble .b-arw20:before{ top: 20%; }
+.bubble .b-arw30:after,
+.bubble .b-arw30:before{ top: 30%; }
+.bubble .b-arw40:after,
+.bubble .b-arw40:before{ top: 40%; }
+.bubble .b-arw60:after,
+.bubble .b-arw60:before{ top: 60%; }
+.bubble .b-arw70:after,
+.bubble .b-arw70:before{ top: 70%; }
+.bubble .b-arw80:after,
+.bubble .b-arw80:before{ top: 80%; }
+
+.chat-l .bubble .bubble-in:after,
+.chat-l .bubble .bubble-in:before{
+	right: 100%;
+}
+.chat-l .bubble .bubble-in:after{
+	margin-top: -8px;
+	border-width: 8px 20px;
+	border-color: transparent;
+	border-right-color: inherit;
+}
+
+.chat-l .bubble .bubble-in:before{
+	margin-top: -9px;
+	border-width: 9px 21px;
+	border-color: transparent;
+	border-right-color: #ccc;
+}
+
+.bubble p:first-child{
+	margin-top: 0;
+}
+
+.bubble-in p:last-child{
+	margin-bottom: 0;
+}

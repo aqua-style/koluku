@@ -4,8 +4,12 @@
       <div class="panel-heading">
         <h3 class="panel-title"><%= @user.nickname %></h3>
       </div>
-      <div class="panel-body">
-        <img class="media-object img-rounded img-responsive" src="<%= @user.image %>" alt="">
+      <div class="panel-body al-c">
+          <% if @user.image? %>
+            <%= image_tag @user.image.url, :class => "mw50" %>
+          <% else %>
+            <%= image_tag("/images/icon/icon-mama-02-160px.png") %>
+          <% end %>
       </div>
     </div>
   </aside>

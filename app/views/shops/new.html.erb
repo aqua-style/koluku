@@ -1,21 +1,40 @@
+<% content_for :header do %>
+<meta name="robots" content="noindex,follow">
+<% end %>
+
 <% content_for :cover do %>
   <div class="cover">
     <div class="cover-inner">
       <div class="cover-contents">
-        <h1><%= @shop.name %>について投稿します</h1>
+        <h1><%= @shop.name %>について<br>子連れで入りやすかシェアしてください</h1>
       </div>
     </div>
   </div>
 <% end %>
 
 
-<p><%= @shop.name %></p>
+<div class="row">
+  <div class="col-md-9 left-contents">
+  	
+
+<p class="m20-t f12em b gray"><%= @shop.name %></p>
 <p><%= @shop.y_address %><br><%= @shop.y_moyorieki %></p>
-<p>緯度：<%= @shop.y_ido %>　経度：<%= @shop.y_keido %></p>
+<!--<p>緯度：<%= @shop.y_ido %>　経度：<%= @shop.y_keido %></p>-->
 
 <hr>
 
+
+
+<h2 class="m20-t m40-b fukidasi-midasi">子供や赤ちゃん連れて行けるかな？</h2>
+
+<p class="m50-b">全てに答えなくて構わないので、わかった点、気づいた点だけでも投稿してシェアしてください。</p>
+
+
 <%= form_for @kuchikomi, url: shops_path do |f| %>
+
+<% if logged_in? %>
+<%= f.hidden_field :user_id, :value => current_user.id %>
+<% end %>
 
 <!-- バリデーションエラーがあれば表示-->
 <%= render 'layouts/error_messages', model: f.object %>
@@ -381,9 +400,8 @@
 
 <div class="row">
 	<div class="col-md-12">
-    <label>コメント<br>
-    <%= f.text_area :comment, :maxlength => "255", :size => "80x5"  %>
-    </label>
+    <%= f.label :comment, 'コメント' %>
+    <%= f.text_area :comment, :maxlength => "255", :size => "80x5",  class: 'form-control'  %>
   </div>
 </div>
 
@@ -394,3 +412,8 @@
 </div>
 <% end %>
 
+</div><!-- 左コンテンツ -->
+
+<div class="col-md-3"><!-- 右サイドメニュー -->
+<%= render 'layouts/side_menu' %>
+</div>

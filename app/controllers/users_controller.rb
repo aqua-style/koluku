@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   
-  before_action :require_user_logged_in
+  before_action :require_user_logged_in, only: [:index, :show, :create, :update, :edit]
   
   #ユーザー一覧を表示する不要かも
   def index

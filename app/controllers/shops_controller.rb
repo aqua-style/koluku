@@ -6,100 +6,154 @@ class ShopsController < ApplicationController
   def index #ショップの一覧表示
     #@shops = Shop.all
 
-
-
 #    @keyword = params[:keyword] #検索KWを取る
     @area = params[:area]
     @tenpo_genre = params[:tenpo_genre]
+    @option = params[:option] #option:0ならDBのみ検索 option:1ならDB&Yahoo検索
 
     @keyword = @area + ' ' + @tenpo_genre
     puts @keyword
+    puts '検索オプション' + @option.to_s
     
     if @keyword.present?
-      #output = json / sort=matchマッチ順 hybrid組み合わせ / gc=01（グルメ）/ results=10（取得件数）
-      yquery = 'https://map.yahooapis.jp/search/local/V1/localSearch?output=json&appid=' + ENV['YAHOO_API_KEY'] +  '&sort=hybrid&gc=01&results=10&query=' + @keyword
       
-      puts '◆クエリは' + yquery
+      #キーワードからDB内を探す
+      @shops_db = []
+      
+      if @area.present? && !@tenpo_genre.present? then #areaしか入ってないなら
+        @shops_db = Shop.where("(y_address like ?) OR (y_moyorieki like ?)", "\%#{@area}\%", "\%#{@area}\%")#住所か駅カラムに含まれるか
+      elsif @area.present? && @tenpo_genre.present? then #areaとtenpo_genreが入っているなら
+        @shops_db = Shop.where("((y_address like ?) OR (y_moyorieki like ?)) AND ((name like ?) OR (y_gyosyu like ?))", "\%#{@area}\%", "\%#{@area}\%", "\%#{@tenpo_genre}\%", "\%#{@tenpo_genre}\%")
+      elsif !@area.present? && @tenpo_genre.present? then #tenpo_genreしか入ってないなら
+        @shops_db = Shop.where("(name like ?) OR (y_gyosyu like ?)", "\%#{@tenpo_genre}\%", "\%#{@tenpo_genre}\%")
+      end
+      
+      #kuchikomisの多い順から並び替えしておく
+      @shops_db_ranking = @shops_db.sort{|a, b| b.kuchikomis.size <=> a.kuchikomis.size} if @shops_db.present?
 
-      yquery_enc = URI.encode yquery      #日本語を%のUTF-8の形にエンコード
-      uri = URI.parse(yquery_enc)
-      json = Net::HTTP.get(uri)
-      @results = JSON.parse(json)         #配列形式に変換
-      @features = @results['Feature']     #Feature配下の配列のみとりだす
-      
-      puts '◆JSONは'
-      puts @results
-      
-      
-      if @features.present? #結果がカラ（0件）じゃなければ。これをやらないとエラーでる。
-      
-        chofuku_gid = []
-        @shops = []
 
-        @features.each_with_index do |feature,i| #@features配列から1個1個とりだしてshopのインスタンスを生成していく
+      if @option == '1'
 
-          if chofuku_gid.include?(feature['Gid']) #すでにGidがあるなら重複なのでインスタンスを生成しない
-            puts '重複あり: ' + feature['Gid']
-          else
-            chofuku_gid.push(feature['Gid'])
+        #Yahoo APIを使って探す
+        #output = json / sort=matchマッチ順 hybrid組み合わせ / gc=01（グルメ）/ results=10（取得件数）
+        yquery = 'https://map.yahooapis.jp/search/local/V1/localSearch?output=json&appid=' + ENV['YAHOO_API_KEY'] +  '&sort=hybrid&gc=01&results=10&query=' + @keyword
+        
+        puts '◆クエリは' + yquery
+  
+        yquery_enc = URI.encode yquery      #日本語を%のUTF-8の形にエンコード
+        uri = URI.parse(yquery_enc)
+        json = Net::HTTP.get(uri)
+        @results = JSON.parse(json)         #配列形式に変換
+        @features = @results['Feature']     #Feature配下の配列のみとりだす
+        
+        puts '◆JSONは'
+        puts @results
 
-            ####ここからデータチェック####
-            unless feature['Property'].present?  #propertyがカラなら
-              uid = nil
-              address = nil
-              image_url = nil
-            else                                  #propertyがあるなら
-              uid = feature['Property']['Uid']
-              address = feature['Property']['Address']
-              image_url = feature['Property']['LeadImage']
-              
-              #なかのstationがあるかチェック
-              unless feature['Property']['Station'].present? #nil.['Railway']とやるとエラーでるからチェックしないといけない #stationがカラなら
-              	eki = nil
-              else  #stationがあるなら
-              	eki = feature['Property']['Station'][0]['Railway'] + "　" + feature['Property']['Station'][0]['Name']+"駅 徒歩" + feature['Property']['Station'][0]['Time'] + "分"
-              end
+        if @features.present? #結果がカラ（0件）じゃなければ。これをやらないとエラーでる。
+        
+          chofuku_gid = []
+          if @shops_db_ranking.present?
+            @shops_db_ranking.each do |shop_db_ranking|
+              chofuku_gid.push(shop_db_ranking.y_gid)
             end
-            
-            unless feature['Geometry'].present? #Geometryがカラなら
-              ido = nil
-              keido = nil
-            else                                #Geometryがあるなら
-              unless feature['Geometry']['Coordinates'].present? #Coordinatesがカラなら
+          end
+          
+          @y_shops = []
+  
+          @features.each_with_index do |feature,i| #@features配列から1個1個とりだしてshopのインスタンスを生成していく
+  
+            if chofuku_gid.include?(feature['Gid']) #すでにGidがあるなら重複なのでインスタンスを生成しない
+              puts '重複あり: ' + feature['Gid']
+            else
+              chofuku_gid.push(feature['Gid'])
+  
+              ####ここからデータチェック####
+              unless feature['Property'].present?  #propertyがカラなら
+                uid = nil
+                address = nil
+                image_url = nil
+              else                                  #propertyがあるなら
+                uid = feature['Property']['Uid']
+                address = feature['Property']['Address']
+                image_url = feature['Property']['LeadImage']
+                
+                #なかのstationがあるかチェック
+                unless feature['Property']['Station'].present? #nil.['Railway']とやるとエラーでるからチェックしないといけない #stationがカラなら
+                	eki = nil
+                else  #stationがあるなら
+                	eki = feature['Property']['Station'][0]['Railway'] + "　" + feature['Property']['Station'][0]['Name']+"駅 徒歩" + feature['Property']['Station'][0]['Time'] + "分"
+                end
+                
+                #なかの業種があるかチェック
+                if feature['Property']['Genre'] && feature['Property']['Genre'][0]
+                  gyosyu = get_gyosyumei(feature['Property']['Genre'][0]['Code'])
+                  puts '該当する業種がありませんでした:' + feature['Property']['Genre'][0]['Code'] unless gyosyu
+                else
+                  gyosyu = nil
+                end
+                
+              end
+              
+              unless feature['Geometry'].present? #Geometryがカラなら
                 ido = nil
                 keido = nil
-              else
-                ido = feature['Geometry']['Coordinates'].split(",")[1]
-                keido = feature['Geometry']['Coordinates'].split(",")[0]
+              else                                #Geometryがあるなら
+                unless feature['Geometry']['Coordinates'].present? #Coordinatesがカラなら
+                  ido = nil
+                  keido = nil
+                else
+                  ido = feature['Geometry']['Coordinates'].split(",")[1]
+                  keido = feature['Geometry']['Coordinates'].split(",")[0]
+                end
               end
-            end
-            
-            @shops.push(
-              Shop.new(
-              name: feature['Name'],
-              y_id: feature['Id'], 
-              y_gid: feature['Gid'], 
-              y_uid: uid,                                              #feature['Property']['Uid'], 
-              y_ido: ido,                                              #feature['Geometry']['Coordinates'].split(",")[1], 
-              y_keido: keido,                                          #feature['Geometry']['Coordinates'].split(",")[0], 
-              y_address: address,                                      #feature['Property']['Address'], 
-              y_moyorieki: eki,                                        #feature['Property']['Station'][0]['Railway'] + "　" + feature['Property']['Station'][0]['Name']+"駅 徒歩" + feature['Property']['Station'][0]['Time'] + "分"
-              y_leadimage: image_url                                   #feature['Property']['LeadImage']
+              
+              @y_shops.push(
+                Shop.new(
+                name: feature['Name'],
+                y_id: feature['Id'], 
+                y_gid: feature['Gid'], 
+                y_uid: uid,                            #feature['Property']['Uid'], 
+                y_ido: ido,                            #feature['Geometry']['Coordinates'].split(",")[1], 
+                y_keido: keido,                        #feature['Geometry']['Coordinates'].split(",")[0], 
+                y_address: address,                    #feature['Property']['Address'], 
+                y_moyorieki: eki,                      #feature['Property']['Station'][0]['Railway'] + "　" + feature['Property']['Station'][0]['Name']+"駅 徒歩" + feature['Property']['Station'][0]['Time'] + "分"
+                y_leadimage: image_url,                #feature['Property']['LeadImage']
+                y_gyosyu: gyosyu,
+                )
               )
-            )
-          end #if chofuku_gid.include?(feature['Gid'])
-        end #ループ
-      end   #@feature.present?
+            end #if chofuku_gid.include?(feature['Gid'])
+          end #ループ
+        end   #@feature.present?
+      end   #if @option == 1
+
+
+      hoge = []
+      if @shops_db_ranking.present? 
+        hoge.concat(@shops_db_ranking)
+      end
+      if @y_shops.present?
+        hoge.concat(@y_shops)
+      end
       
-      puts '◆@shops'
-      puts @shops
+      
+      @kensu = hoge.length
+      @shops = Kaminari.paginate_array(hoge).page(params[:page]).per(20)
+      
+
 
       
+=begin
+      if @shops_db_ranking && @y_shops then     #どっちもあるなら
+        @shops = @shops_db_ranking + @y_shops   #DBから取得した店舗の後ろに、Yahooから取得した店舗を追加
+      elsif @shops_db_ranking || @y_shops then  #どっちかしかないなら
+        @shops = (@shops_db_ranking || @y_shops)
+      else  #どっちもないなら
+        @shops = nil
+      end
+=end
+      puts @shops.inspect if @shops.present?
+
     end
-
-    #DB内をLIKE検索
-    #ここでDB内のshopsとマージ　後で実装
-
 
   end
 
@@ -128,7 +182,7 @@ class ShopsController < ApplicationController
     @kuchikomi = Kuchikomi.new
     @shop = Shop.new(request.query_parameters)
     puts @shop.attributes
-    
+
   end
 
   #ショップのnew.html.erb画面からformで投稿されたらここにくる。ここで店保存、最初の口コミ保存を行う。
@@ -170,6 +224,8 @@ class ShopsController < ApplicationController
   def show 
     @shop = Shop.find(params[:id])
 
+    @shop_photos = @shop.shop_photos
+    puts @shop_photos.inspect
     
     #ここでカウント
     @kozure_ok_1 = Kuchikomi.where(shop_id: @shop.id).where(kozure_ok: 1).count
@@ -245,9 +301,9 @@ class ShopsController < ApplicationController
       if kuchikomi.user.present?              #userがいるなら
         user_id = kuchikomi.user.id
         nickname = kuchikomi.user.nickname
-        image = kuchikomi.user.image
+        image = kuchikomi.user.image.thumb30.url
       end
-  	  @user_comment_infos[index] = {           #ただの2次元ハッシュ　これをviewで表示させたい
+  	  @user_comment_infos[index] = {           #ただの2次元ハッシュ　これをviewで表示させたい ここarray.pushでやったほうがよくない？
   	      :user_id => user_id,
   	    	:nickname => nickname,
   	    	:image => image,
@@ -256,6 +312,8 @@ class ShopsController < ApplicationController
        }
     end
     
+    
+    render layout: false #application.html.erbを適用したくない
   end
 
 
@@ -267,12 +325,16 @@ class ShopsController < ApplicationController
     @kuchikomi.shop_id = @shop.id               #ここでショップIDを入れておこう
     puts '◆kuchikomi  shop_id'
     puts @kuchikomi.shop_id
+    @shop_photo_view = @shop.shop_photos
+    @shop_photo = ShopPhoto.new
+    
+    render layout: false #application.html.erbを適用したくない
   end
 
   #ここで口コミ投稿させる
   def kuchikomi_post
     @kuchikomi = Kuchikomi.new(kuchikomi_params) #POSTデータをストロングパラメータに渡してインスタンス生成
-
+   
     @shop = Shop.find(@kuchikomi.shop_id)        #ジャンプ先指定のためにショップのインスタンスも生成。　ルーティングによりparams[:id]でもshop idがとれる。どっちでもいい。
   
 =begin
@@ -295,14 +357,233 @@ class ShopsController < ApplicationController
 
   # ストロングパラメーター　POSTされたデータのチェック
   def kuchikomi_params
-    params.require(:kuchikomi).permit(:shop_id, :kozure_ok, :familymuke, :nyuji_ok, :nigiyaka, :smoking, :kids_chair, :kids_menu, :kids_syokki,
+    params.require(:kuchikomi).permit(:shop_id, :user_id, :kozure_ok, :familymuke, :nyuji_ok, :nigiyaka, :smoking, :kids_chair, :kids_menu, :kids_syokki,
                                       :low_allergy_food, :motikomi, :zasiki, :kositu, :junyusitu, :omutu_space, :kids_space, :babycar, 
                                       :hirosa, :seki_hiroi, :suiteru, :chusyajo, :ekitika, :access, :kangei, :kositu_zasiki_yoyaku, :ehon_omocha, :epuron, :eisei, :comment)
   end
   
   # /shops/new.html.erbでPOSTされたショップのデータ群
   def shop_params
-    params.require(:shop).permit(:name, :y_address, :y_gid, :y_id, :y_ido, :y_keido, :y_leadimage, :y_moyorieki, :y_uid)
+    params.require(:shop).permit(:name, :y_address, :y_gid, :y_id, :y_ido, :y_keido, :y_leadimage, :y_moyorieki, :y_uid, :y_gyosyu)
   end
+
+
+
+  @@gyosyu_masta = {
+      '0101' => '和食',
+      '0102' => '洋食',
+      '0103' => 'バイキング',
+      '0104' => '中華',
+      '0105' => 'アジア料理、エスニック',
+      '0106' => 'ラーメン',
+      '0107' => 'カレー',
+      '0108' => '焼肉、ホルモン、ジンギスカン',
+      '0109' => '鍋',
+      '0110' => '居酒屋、ビアホール',
+      '0111' => '定食、食堂',
+      '0112' => '創作料理、無国籍料理',
+      '0113' => '自然食、薬膳、オーガニック',
+      '0114' => '持ち帰り、宅配',
+      '0115' => 'カフェ、喫茶店',
+      '0116' => 'コーヒー、茶葉専門店',
+      '0117' => 'パン、サンドイッチ',
+      '0118' => 'スイーツ',
+      '0119' => 'バー',
+      '0120' => 'パブ、スナック',
+      '0121' => 'ディスコ、クラブハウス',
+      '0122' => 'ビアガーデン',
+      '0123' => 'ファミレス、ファストフード',
+      '0124' => 'パーティー、カラオケ',
+      '0125' => '屋形船、クルージング',
+      '0126' => 'テーマパークレストラン',
+      '0127' => 'オーベルジュ',
+      '0128' => 'その他',
+      '0101001' => '和食、懐石料理',
+      '0101002' => '和食、会席料理',
+      '0101003' => '和食、割ぽう',
+      '0101004' => '和食、料亭',
+      '0101005' => '和食、小料理',
+      '0101006' => '和食、精進料理',
+      '0101007' => '和食、京料理',
+      '0101008' => '和食、豆腐料理',
+      '0101009' => '和食、ゆば料理',
+      '0101010' => '和食、おばんざい',
+      '0101011' => '和食、日本料理',
+      '0101012' => '和食、握り寿司',
+      '0101013' => '和食、回転寿司',
+      '0101014' => '和食、天ぷら、揚げ物',
+      '0101015' => '和食、とんかつ',
+      '0101016' => '和食、フライ',
+      '0101017' => '和食、そば',
+      '0101018' => '和食、うどん',
+      '0101019' => '和食、味噌煮込みうどん',
+      '0101020' => '和食、沖縄そば',
+      '0101021' => '和食、すき焼き',
+      '0101022' => '和食、しゃぶしゃぶ',
+      '0101023' => '和食、うなぎ',
+      '0101024' => '和食、どじょう',
+      '0101025' => '和食、焼き鳥',
+      '0101026' => '和食、串焼き',
+      '0101027' => '和食、鳥料理',
+      '0101028' => '和食、おでん',
+      '0101029' => '和食、お好み焼き、たこ焼き',
+      '0101030' => '和食、もんじゃ焼き',
+      '0101031' => '和食、丼もの、牛丼、親子丼',
+      '0101032' => '和食、沖縄料理',
+      '0101033' => '和食、郷土料理',
+      '0101034' => '和食、海鮮料理',
+      '0101035' => '和食、ふぐ料理',
+      '0101036' => '和食、かに料理',
+      '0101037' => '和食、すっぽん料理',
+      '0101038' => '和食、あんこう料理',
+      '0101039' => '和食、川魚料理',
+      '0101040' => '和食、牡蠣料理',
+      '0101041' => '和食、豚肉料理',
+      '0101042' => '和食、牛肉料理',
+      '0101043' => '和食、馬肉料理',
+      '0101044' => '和食、炭火焼き',
+      '0101045' => '和食、鉄板焼き',
+      '0101046' => '和食、牛タン料理',
+      '0101047' => '和食、もつ料理',
+      '0101048' => '和食、釜飯',
+      '0101049' => '和食、くじら料理',
+      '0101050' => '和食、炉端焼き',
+      '0101051' => '和食、野菜料理',
+      '0101052' => '和食、にんにく料理',
+      '0101053' => '和食、和食（その他）',
+      '0102001' => '洋食、ステーキ、ハンバーグ',
+      '0102002' => '洋食、パスタ、ピザ',
+      '0102003' => '洋食、ハンバーガー',
+      '0102004' => '洋食、洋食（その他）',
+      '0102005' => '洋食、フランス料理（フレンチ）',
+      '0102006' => '洋食、イタリア料理（イタリアン）',
+      '0102007' => '洋食、スペイン料理',
+      '0102008' => '洋食、ポルトガル料理',
+      '0102009' => '洋食、地中海料理',
+      '0102010' => '洋食、ドイツ料理',
+      '0102011' => '洋食、ロシア料理',
+      '0102012' => '洋食、スイス料理',
+      '0102013' => '洋食、ベルギー料理',
+      '0102014' => '洋食、アメリカ料理',
+      '0102015' => '洋食、カリフォルニア料理',
+      '0102016' => '洋食、ケイジャン料理',
+      '0102017' => '洋食、オセアニア料理',
+      '0102018' => '洋食、パシフィックリム料理',
+      '0102019' => '洋食、ハワイ料理',
+      '0102020' => '洋食、西洋各国料理',
+      '0102021' => '洋食、シーフード、オイスターバー',
+      '0102022' => '洋食、バーベキュー',
+      '0103001' => 'バイキング、バイキング',
+      '0104001' => '中華、中華料理',
+      '0104002' => '中華、北京料理',
+      '0104003' => '中華、上海料理',
+      '0104004' => '中華、広東料理',
+      '0104005' => '中華、四川料理',
+      '0104006' => '中華、台湾料理',
+      '0104007' => '中華、香港料理',
+      '0104008' => '中華、餃子',
+      '0104009' => '中華、飲茶、点心',
+      '0105001' => 'アジア料理、エスニック、韓国料理、朝鮮料理',
+      '0105002' => 'アジア料理、エスニック、アフリカ料理',
+      '0105003' => 'アジア料理、エスニック、タイ料理',
+      '0105004' => 'アジア料理、エスニック、ベトナム料理',
+      '0105005' => 'アジア料理、エスニック、インドネシア料理',
+      '0105006' => 'アジア料理、エスニック、インド料理',
+      '0105007' => 'アジア料理、エスニック、ネパール料理',
+      '0105008' => 'アジア料理、エスニック、パキスタン料理',
+      '0105009' => 'アジア料理、エスニック、スリランカ料理',
+      '0105010' => 'アジア料理、エスニック、トルコ料理',
+      '0105011' => 'アジア料理、エスニック、中近東料理、アラビア料理',
+      '0105012' => 'アジア料理、エスニック、メキシコ料理',
+      '0105013' => 'アジア料理、エスニック、ブラジル料理',
+      '0105014' => 'アジア料理、エスニック、アジア料理、エスニック（その他）',
+      '0106001' => 'ラーメン、ラーメン',
+      '0106002' => 'ラーメン、つけ麺',
+      '0107001' => 'カレー、カレー',
+      '0107002' => 'カレー、スープカレー',
+      '0107003' => 'カレー、欧風カレー',
+      '0107004' => 'カレー、インドカレー',
+      '0107005' => 'カレー、タイカレー',
+      '0108001' => '焼肉、ホルモン、ジンギスカン、焼肉',
+      '0108002' => '焼肉、ホルモン、ジンギスカン、ジンギスカン',
+      '0108003' => '焼肉、ホルモン、ジンギスカン、ホルモン',
+      '0109001' => '鍋、鍋料理',
+      '0110001' => '居酒屋、ビアホール、和風居酒屋',
+      '0110002' => '居酒屋、ビアホール、洋風居酒屋',
+      '0110003' => '居酒屋、ビアホール、アジア居酒屋、無国籍居酒屋',
+      '0110004' => '居酒屋、ビアホール、立ち飲み居酒屋',
+      '0110005' => '居酒屋、ビアホール、ビアホール',
+      '0110006' => '居酒屋、ビアホール、ビアレストラン',
+      '0111001' => '定食、食堂、定食、食堂',
+      '0112001' => '創作料理、無国籍料理、創作料理',
+      '0112002' => '創作料理、無国籍料理、無国籍料理',
+      '0113001' => '自然食、薬膳、オーガニック、自然食',
+      '0113002' => '自然食、薬膳、オーガニック、薬膳',
+      '0113003' => '自然食、薬膳、オーガニック、オーガニック',
+      '0114001' => '持ち帰り、宅配、持ち帰り専門、弁当',
+      '0114002' => '持ち帰り、宅配、配達専門、宅配ピザ',
+      '0114003' => '持ち帰り、宅配、仕出し料理',
+      '0115001' => 'カフェ、喫茶店、カフェ',
+      '0115002' => 'カフェ、喫茶店、喫茶店',
+      '0115003' => 'カフェ、喫茶店、カフェバー',
+      '0115004' => 'カフェ、喫茶店、インターネットカフェ',
+      '0115005' => 'カフェ、喫茶店、シアトルカフェ',
+      '0115006' => 'カフェ、喫茶店、複合カフェ',
+      '0115007' => 'カフェ、喫茶店、ドッグカフェ',
+      '0115008' => 'カフェ、喫茶店、猫カフェ',
+      '0115009' => 'カフェ、喫茶店、ギャラリーカフェ',
+      '0115010' => 'カフェ、喫茶店、ブックカフェ',
+      '0115011' => 'カフェ、喫茶店、マンガ喫茶',
+      '0115012' => 'カフェ、喫茶店、軽食',
+      '0115013' => 'カフェ、喫茶店、和風喫茶',
+      '0115014' => 'カフェ、喫茶店、カラオケ喫茶',
+      '0116001' => 'コーヒー、茶葉専門店、コーヒー専門店',
+      '0116002' => 'コーヒー、茶葉専門店、紅茶専門店',
+      '0116003' => 'コーヒー、茶葉専門店、中国茶専門店',
+      '0116004' => 'コーヒー、茶葉専門店、日本茶専門店',
+      '0117001' => 'パン、サンドイッチ、ベーカリー',
+      '0117002' => 'パン、サンドイッチ、サンドイッチ',
+      '0117003' => 'パン、サンドイッチ、ベーグル',
+      '0117004' => 'パン、サンドイッチ、ホットドッグ',
+      '0117005' => 'パン、サンドイッチ、パン、サンドイッチ（その他）',
+      '0118001' => 'スイーツ、洋菓子、ケーキ',
+      '0118002' => 'スイーツ、和菓子、甘味処、たい焼き',
+      '0118003' => 'スイーツ、中華菓子',
+      '0118004' => 'スイーツ、アイスクリーム、クレープ、パフェ',
+      '0119001' => 'バー、バー',
+      '0119002' => 'バー、ショットバー',
+      '0119003' => 'バー、アイリッシュパブ',
+      '0119004' => 'バー、ダイニングバー',
+      '0119005' => 'バー、バル、バール',
+      '0119006' => 'バー、ビアバー',
+      '0119007' => 'バー、ワインバー',
+      '0119008' => 'バー、焼酎バー',
+      '0119009' => 'バー、レストランバー',
+      '0119010' => 'バー、ダーツバー',
+      '0119011' => 'バー、ゴルフバー',
+      '0120001' => 'パブ、スナック、パブ',
+      '0120002' => 'パブ、スナック、スナック',
+      '0120003' => 'パブ、スナック、クラブ',
+      '0120004' => 'パブ、スナック、ラウンジ',
+      '0121001' => 'ディスコ、クラブハウス、ディスコ',
+      '0121002' => 'ディスコ、クラブハウス、クラブハウス',
+      '0122001' => 'ビアガーデン、ビアガーデン',
+      '0123001' => 'ファミレス、ファストフード、ファミレス',
+      '0123002' => 'ファミレス、ファストフード、ファストフード',
+      '0123003' => 'ファミレス、ファストフード、ファストカジュアル',
+      '0124001' => 'パーティー、カラオケ、パーティースペース、宴会場',
+      '0124002' => 'パーティー、カラオケ、カラオケボックス',
+      '0125001' => '屋形船、クルージング、屋形船',
+      '0125002' => '屋形船、クルージング、クルージング',
+      '0126001' => 'テーマパークレストラン、テーマパークレストラン',
+      '0126002' => 'テーマパークレストラン、アミューズメントレストラン',
+      '0127001' => 'オーベルジュ、オーベルジュ',
+      '0128001' => 'その他、その他',
+      }
+
+  def get_gyosyumei(code)
+    @@gyosyu_masta[code]
+  end
+
   
 end

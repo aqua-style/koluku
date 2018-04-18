@@ -5,4 +5,6 @@ class Kuchikomi < ApplicationRecord
   validates :shop_id, presence: true #カラは駄目
   validates :comment, length: { maximum: 255 }
 
+  has_many :kuchikomi_photos
+  
 end
