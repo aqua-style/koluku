@@ -3,6 +3,8 @@ require 'uri'
 require 'json'
 class ShopsController < ApplicationController
 
+
+  ###########################################################################################
   def index #ショップの一覧表示
     #@shops = Shop.all
 
@@ -157,7 +159,7 @@ class ShopsController < ApplicationController
 
   end
 
-
+  ###########################################################################################
   #ショップの一覧画面から初めて口コミ投稿されるときにこのアクションにくる→new.html.erbで投稿画面のformを出す→kuchikomi#createへ
   def new
     puts '■newきた'    
@@ -185,6 +187,7 @@ class ShopsController < ApplicationController
 
   end
 
+  ###########################################################################################
   #ショップのnew.html.erb画面からformで投稿されたらここにくる。ここで店保存、最初の口コミ保存を行う。
   def create
     puts '◆createきた'
@@ -205,6 +208,11 @@ class ShopsController < ApplicationController
       puts @kuchikomi.shop_id #ここでショップIDが入ってるか確認しよう
 
       if @kuchikomi.save
+        
+        #口コミが入ったので集計してshopに持たせて再save
+        @shop = set_shop_data(@shop.id)
+        @shop.save
+              
         flash[:success] = '口コミを投稿しました。ご協力に感謝します。'
         redirect_to @shop
       else
@@ -219,7 +227,7 @@ class ShopsController < ApplicationController
 
   end
 
-
+  ###########################################################################################
   #ショップ一覧画面からショップの口コミ詳細をクリックしたらここに来て→show.html.erbを表示
   def show 
     @shop = Shop.find(params[:id])
@@ -316,7 +324,7 @@ class ShopsController < ApplicationController
     render layout: false #application.html.erbを適用したくない
   end
 
-
+  ###########################################################################################
   #ショップ一覧画面から口コミするをクリックでここに来る（2回目以降の口コミ投稿の場合）→ kuchikomi.html.erbへ
   def kuchikomi
     puts 'ショップIDは' + params[:id].to_s
@@ -331,6 +339,8 @@ class ShopsController < ApplicationController
     render layout: false #application.html.erbを適用したくない
   end
 
+
+  ###########################################################################################
   #ここで口コミ投稿させる
   def kuchikomi_post
     @kuchikomi = Kuchikomi.new(kuchikomi_params) #POSTデータをストロングパラメータに渡してインスタンス生成
@@ -345,6 +355,11 @@ class ShopsController < ApplicationController
     #@kuchikomi.shop_id = '' #エラーテスト
     if @kuchikomi.save
       flash[:success] = '口コミ が正常に投稿されました'
+
+      #ここでshopテーブルに入れるデータの集計とUpdate
+      @shop = set_shop_data(@shop.id)
+      @shop.save
+
       redirect_to @shop
     else
       flash.now[:danger] = '口コミ が投稿されませんでした'
@@ -352,8 +367,101 @@ class ShopsController < ApplicationController
     end
 
   end
+  
 
   private
+
+  #口コミを集計してshopテーブルに入れるメソッド
+  def set_shop_data(shopid)
+    shop = Shop.find(shopid)
+    kozure_ok_1 = Kuchikomi.where(shop_id: shop.id).where(kozure_ok: 1).count
+    kozure_ok_2 = Kuchikomi.where(shop_id: shop.id).where(kozure_ok: 2).count
+    nyuji_ok_1 = Kuchikomi.where(shop_id: shop.id).where(nyuji_ok: 1).count
+    nyuji_ok_2 = Kuchikomi.where(shop_id: shop.id).where(nyuji_ok: 2).count
+    smoking_1 = Kuchikomi.where(shop_id: shop.id).where(smoking: 1).count
+    smoking_2 = Kuchikomi.where(shop_id: shop.id).where(smoking: 2).count
+    smoking_3 = Kuchikomi.where(shop_id: shop.id).where(smoking: 3).count
+    familymuke_1 = Kuchikomi.where(shop_id: shop.id).where(familymuke: 1).count
+    familymuke_2 = Kuchikomi.where(shop_id: shop.id).where(familymuke: 2).count
+    nigiyaka_1 = Kuchikomi.where(shop_id: shop.id).where(nigiyaka: 1).count
+    nigiyaka_2 = Kuchikomi.where(shop_id: shop.id).where(nigiyaka: 2).count
+    kids_chair_1 = Kuchikomi.where(shop_id: shop.id).where(kids_chair: 1).count
+    kids_chair_2 = Kuchikomi.where(shop_id: shop.id).where(kids_chair: 2).count
+    kids_menu_1 = Kuchikomi.where(shop_id: shop.id).where(kids_menu: 1).count
+    kids_menu_2 = Kuchikomi.where(shop_id: shop.id).where(kids_menu: 2).count
+    kids_syokki_1 = Kuchikomi.where(shop_id: shop.id).where(kids_syokki: 1).count
+    kids_syokki_2 = Kuchikomi.where(shop_id: shop.id).where(kids_syokki: 2).count
+    low_allergy_food_1 = Kuchikomi.where(shop_id: shop.id).where(low_allergy_food: 1).count
+    low_allergy_food_2 = Kuchikomi.where(shop_id: shop.id).where(low_allergy_food: 2).count
+    motikomi_1 = Kuchikomi.where(shop_id: shop.id).where(motikomi: 1).count
+    motikomi_2 = Kuchikomi.where(shop_id: shop.id).where(motikomi: 2).count
+    zasiki_1 = Kuchikomi.where(shop_id: shop.id).where(zasiki: 1).count
+    zasiki_2 = Kuchikomi.where(shop_id: shop.id).where(zasiki: 2).count
+    kositu_1 = Kuchikomi.where(shop_id: shop.id).where(kositu: 1).count
+    kositu_2 = Kuchikomi.where(shop_id: shop.id).where(kositu: 2).count
+    junyusitu_1 = Kuchikomi.where(shop_id: shop.id).where(junyusitu: 1).count
+    junyusitu_2 = Kuchikomi.where(shop_id: shop.id).where(junyusitu: 2).count
+    omutu_space_1 = Kuchikomi.where(shop_id: shop.id).where(omutu_space: 1).count
+    omutu_space_2 = Kuchikomi.where(shop_id: shop.id).where(omutu_space: 2).count
+    kids_space_1 = Kuchikomi.where(shop_id: shop.id).where(kids_space: 1).count
+    kids_space_2 = Kuchikomi.where(shop_id: shop.id).where(kids_space: 2).count
+    babycar_1 = Kuchikomi.where(shop_id: shop.id).where(babycar: 1).count
+    babycar_2 = Kuchikomi.where(shop_id: shop.id).where(babycar: 2).count
+    hirosa_1 = Kuchikomi.where(shop_id: shop.id).where(hirosa: 1).count
+    hirosa_2 = Kuchikomi.where(shop_id: shop.id).where(hirosa: 2).count
+    seki_hiroi_1 = Kuchikomi.where(shop_id: shop.id).where(seki_hiroi: 1).count
+    seki_hiroi_2 = Kuchikomi.where(shop_id: shop.id).where(seki_hiroi: 2).count
+    suiteru_1 = Kuchikomi.where(shop_id: shop.id).where(suiteru: 1).count
+    suiteru_2 = Kuchikomi.where(shop_id: shop.id).where(suiteru: 2).count
+    chusyajo_1 = Kuchikomi.where(shop_id: shop.id).where(chusyajo: 1).count
+    chusyajo_2 = Kuchikomi.where(shop_id: shop.id).where(chusyajo: 2).count
+    ekitika_1 = Kuchikomi.where(shop_id: shop.id).where(ekitika: 1).count
+    ekitika_2 = Kuchikomi.where(shop_id: shop.id).where(ekitika: 2).count
+    access_1 = Kuchikomi.where(shop_id: shop.id).where(access: 1).count
+    access_2 = Kuchikomi.where(shop_id: shop.id).where(access: 2).count
+    kangei_1 = Kuchikomi.where(shop_id: shop.id).where(kangei: 1).count
+    kangei_2 = Kuchikomi.where(shop_id: shop.id).where(kangei: 2).count
+    kositu_zasiki_yoyaku_1 = Kuchikomi.where(shop_id: shop.id).where(kositu_zasiki_yoyaku: 1).count
+    kositu_zasiki_yoyaku_2 = Kuchikomi.where(shop_id: shop.id).where(kositu_zasiki_yoyaku: 2).count
+    ehon_omocha_1 = Kuchikomi.where(shop_id: shop.id).where(ehon_omocha: 1).count
+    ehon_omocha_2 = Kuchikomi.where(shop_id: shop.id).where(ehon_omocha: 2).count
+    epuron_1 = Kuchikomi.where(shop_id: shop.id).where(epuron: 1).count
+    epuron_2 = Kuchikomi.where(shop_id: shop.id).where(epuron: 2).count
+    eisei_1 = Kuchikomi.where(shop_id: shop.id).where(eisei: 1).count
+    eisei_2 = Kuchikomi.where(shop_id: shop.id).where(eisei: 2).count
+
+    shop.kozure_ok = kozure_ok_1 - kozure_ok_2
+    shop.nyuji_ok = nyuji_ok_1 - nyuji_ok_2
+    shop.smoking = (smoking_1 + smoking_2) - smoking_3
+    shop.familymuke = familymuke_1 - familymuke_2
+    shop.nigiyaka = nigiyaka_1 - nigiyaka_2
+    shop.kids_chair = kids_chair_1 - kids_chair_2
+    shop.kids_menu = kids_menu_1 - kids_menu_2
+    shop.kids_syokki = kids_syokki_1 - kids_syokki_2
+    shop.low_allergy_food = low_allergy_food_1 - low_allergy_food_2
+    shop.motikomi = motikomi_1 - motikomi_2
+    shop.zasiki = zasiki_1 - zasiki_2
+    shop.kositu = kositu_1 - kositu_2
+    shop.junyusitu = junyusitu_1 - junyusitu_2
+    shop.omutu_space = omutu_space_1 - omutu_space_2
+    shop.kids_space = kids_space_1 - kids_space_2
+    shop.babycar = babycar_1 - babycar_2
+    shop.hirosa = hirosa_1 - hirosa_2
+    shop.seki_hiroi = seki_hiroi_1 - seki_hiroi_2
+    shop.suiteru = suiteru_1 - suiteru_2
+    shop.chusyajo = chusyajo_1 - chusyajo_2
+    shop.ekitika = ekitika_1 - ekitika_2
+    shop.access = access_1 - access_2
+    shop.kangei = kangei_1 - kangei_2
+    shop.kositu_zasiki_yoyaku = kositu_zasiki_yoyaku_1 - kositu_zasiki_yoyaku_2
+    shop.ehon_omocha = ehon_omocha_1 - ehon_omocha_2
+    shop.epuron = epuron_1 - epuron_2
+    shop.eisei = eisei_1 - eisei_2
+    shop
+
+  end
+
+
 
   # ストロングパラメーター　POSTされたデータのチェック
   def kuchikomi_params
@@ -364,7 +472,7 @@ class ShopsController < ApplicationController
   
   # /shops/new.html.erbでPOSTされたショップのデータ群
   def shop_params
-    params.require(:shop).permit(:name, :y_address, :y_gid, :y_id, :y_ido, :y_keido, :y_leadimage, :y_moyorieki, :y_uid, :y_gyosyu)
+    params.require(:shop).permit(:name, :y_address, :y_gid, :y_id, :y_ido, :y_keido, :y_leadimage, :y_moyorieki, :y_uid, :y_gyosyu, :kozure_ok, :nyuji_ok, :smoking, :familymuke, :nigiyaka, :kids_chair, :kids_menu, :kids_syokki, :low_allergy_food, :motikomi, :zasiki, :kositu, :junyusitu, :omutu_space, :kids_space, :babycar, :hirosa, :seki_hiroi, :suiteru, :chusyajo, :ekitika, :access, :kangei, :kositu_zasiki_yoyaku, :ehon_omocha, :epuron, :eisei, :syoukai, )
   end
 
 

@@ -16,6 +16,7 @@
 
     <!-- app/assets/javascripts-->
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
     <!-- Bootstrap JavaScript-->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     
@@ -29,12 +30,14 @@
 
     <%= yield :cover %>
 
-    <div class="container">
-      <%= render 'layouts/flash_messages' %>
 
-      <%= yield %>
+    <div class="container">
+          <%= render 'layouts/flash_messages' %>
+          <%= yield %>
     </div>
+    
 
     <%= render 'layouts/footer' %>
+    
   </body>
 </html>

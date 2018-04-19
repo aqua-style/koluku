@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180415132140) do
+ActiveRecord::Schema.define(version: 20180418073308) do
 
   create_table "kuchikomis", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "user_id"
@@ -66,12 +66,40 @@ ActiveRecord::Schema.define(version: 20180415132140) do
     t.string   "y_keido"
     t.string   "y_address"
     t.string   "y_leadimage"
-    t.boolean  "close_flg",   default: false, null: false
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.boolean  "osusume",     default: false, null: false
+    t.boolean  "close_flg",                          default: false, null: false
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
+    t.boolean  "osusume",                            default: false, null: false
     t.string   "y_moyorieki"
     t.string   "y_gyosyu"
+    t.integer  "kozure_ok",                          default: 0
+    t.integer  "nyuji_ok",                           default: 0
+    t.integer  "smoking",                            default: 0
+    t.integer  "familymuke",                         default: 0
+    t.integer  "nigiyaka",                           default: 0
+    t.integer  "kids_chair",                         default: 0
+    t.integer  "kids_menu",                          default: 0
+    t.integer  "kids_syokki",                        default: 0
+    t.integer  "low_allergy_food",                   default: 0
+    t.integer  "motikomi",                           default: 0
+    t.integer  "zasiki",                             default: 0
+    t.integer  "kositu",                             default: 0
+    t.integer  "junyusitu",                          default: 0
+    t.integer  "omutu_space",                        default: 0
+    t.integer  "kids_space",                         default: 0
+    t.integer  "babycar",                            default: 0
+    t.integer  "hirosa",                             default: 0
+    t.integer  "seki_hiroi",                         default: 0
+    t.integer  "suiteru",                            default: 0
+    t.integer  "chusyajo",                           default: 0
+    t.integer  "ekitika",                            default: 0
+    t.integer  "access",                             default: 0
+    t.integer  "kangei",                             default: 0
+    t.integer  "kositu_zasiki_yoyaku",               default: 0
+    t.integer  "ehon_omocha",                        default: 0
+    t.integer  "epuron",                             default: 0
+    t.integer  "eisei",                              default: 0
+    t.text     "syoukai",              limit: 65535
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

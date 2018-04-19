@@ -735,13 +735,14 @@ thead th{
 
 .side-menu h3{
   font-size:15px;
-	padding: 0.7em;
+	padding: 0.5em;
 /*	border: 1px solid #a6a6a6;
 	border-bottom: 4px solid #a6a6a6;*/
-	background-color:  #ffaaaf; 
-	color: #fff;
+/*	background-color:  #ffaaaf; */
+	color: #666;
 	font-weight: bold;
-	border-radius: 4px;
+/*	border-radius: 4px;*/
+  border-bottom:1px solid #c8c8c8;
 }
 
 .left-contents {
@@ -883,3 +884,13 @@ html:not(:target) .talker img{
 .bubble-in p:last-child{
 	margin-bottom: 0;
 }
+
+
+/************地図***************/
+
+.mapcont {
+  margin:0 15px;
+}
+
+
+

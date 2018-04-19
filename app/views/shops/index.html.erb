@@ -17,16 +17,63 @@
   </div>
 <% end %>
 
-<div class="row">
-  <div class="col-md-9 left-contents">
+      <div class="row">
+        <!-- 左コンテンツ -->
+        <div class="col-md-9 left-contents">
+
+<% if @shops.present? %>
+<div class="mapcont">
+<div id="map" style="width:100%; height:300px"></div>
+<script type="text/javascript" charset="utf-8" src="https://map.yahooapis.jp/js/V1/jsapi?appid=<%=ENV['YAHOO_API_KEY'] %>"></script>
+<script type="text/javascript">	
+
+window.onload = function(){	
+    var ymap = new Y.Map("map");	
+    ymap.drawMap(new Y.LatLng(<%= @shops[0].y_ido %>, <%= @shops[0].y_keido %>), 17, Y.LayerSetId.NORMAL);	
+    
+    /*　未使用 ふきだし
+    var labels = [];
+    <% @shops.each do |shop| %>
+      var tmp = new Y.Label(new Y.LatLng(<%= shop.y_ido %>, <%= shop.y_keido %>), "<%= shop.name %>");
+      labels.push(tmp);
+      ymap.addFeatures(labels);
+    <% end %>
+    */
+    
+    /*クリックされたらふきだし表示*/
+    var markerClicked = function(){
+      var ll = this.getLatLng();
+      var lbl = new Y.Label(new Y.LatLng(ll.lat(), ll.lng()), this.__label__);
+      ymap.addFeature(lbl);
+    }
+
+    /*マーカー表示*/
+  	var marker = null;
+    <% @shops.each do |shop| %>
+  	  marker = new Y.Marker(new Y.LatLng(<%= shop.y_ido %>,<%= shop.y_keido %>));
+  	  marker.__label__ = '<%= shop.name %>';
+  	  marker.bind('click', markerClicked);
+  	  ymap.addFeature(marker);
+  	<% end %>
+
+    /*拡大縮小[+][-]表示*/
+  	var control = new Y.ZoomControl();
+    ymap.addControl(control);
+    
+
+}	
+
+</script>	
+</div>
+<% end %>
 
 <% if @kensu.present? %>
-  <p><%= @kensu %>件ヒットしました。</p>
+  <p class="m20-t"><%= @kensu %>件ヒットしました。</p>
 <% else %>
   <p>ヒットしませんでした。検索ワードを変えてみてください。</p>
 <% end %>
 
-<p class="hutoline"></p>
+<hr>
 
 <div class="shoplist">
 
@@ -56,19 +103,34 @@
             <!--<p>緯度：<%= shop.y_ido %>　経度：<%= shop.y_keido %></p>-->
 
 <!-- ここに口コミの概要を表示する　-->
+        <div class="m5-t m10-b">
+          <% if shop.kozure_ok > 0 %>  <img src="/images/icon/icon-baby-06-gray-32.png"> <% end %>
+          <% if shop.smoking > 0 %>  <img src="/images/icon/icon-nosmoking-gray-32.png"> <% end %>
+          <% if shop.nigiyaka > 0 %>  <img src="/images/icon/icon-gaya-gray-32.png"> <% end %>
+          <% if shop.kids_chair > 0 %>  <img src="/images/icon/icon-isu-01-gray-32.png"> <% end %>
+          <% if shop.kids_menu > 0 %>  <img src="/images/icon/icon-food-01-gray-32.png"> <% end %>
+          <% if shop.kids_syokki > 0 %>  <img src="/images/icon/icon-syokki-gray-32.png"> <% end %>
+          <% if shop.junyusitu > 0 %>  <img src="/images/icon/icon-milk-gray-32.png"> <% end %>
+          <% if shop.omutu_space > 0 %>  <img src="/images/icon/icon-omutu-gray-32.png"> <% end %>
+          <% if shop.babycar > 0 %>  <img src="/images/icon/icon-babycar-gray-32.png"> <% end %>
+          <% if shop.hirosa > 0 %>  <img src="/images/icon/icon-hirosa-gray-32.png"> <% end %>
+          <% if shop.chusyajo > 0 %>  <img src="/images/icon/icon-car-01-gray-32.png"> <% end %>
+          <% if shop.ekitika > 0 %>  <img src="/images/icon/icon-ekitika-gray-32.png"> <% end %>
+          <% if shop.ehon_omocha > 0 %>  <img src="/images/icon/icon-omocha-gray-32.png"> <% end %>
+        </div>
 
         <% unless shop.id.present? %>
         <!--新規店の場合-->
           <div class="row">
             <div class="col-xs-6"><%= link_to '子連れ情報をシェアする', new_shop_path(shop, name: shop.name, y_id: shop.y_id, y_gid: shop.y_gid, y_uid: shop.y_uid,
-            y_ido: shop.y_ido, y_keido: shop.y_keido, y_address: shop.y_address, y_moyorieki: shop.y_moyorieki, y_leadimage: shop.y_leadimage, y_gyosyu: shop.y_gyosyu), class: "btn btn-danger" %></div>
+            y_ido: shop.y_ido, y_keido: shop.y_keido, y_address: shop.y_address, y_moyorieki: shop.y_moyorieki, y_leadimage: shop.y_leadimage, y_gyosyu: shop.y_gyosyu), class: "btn btn-default" %></div>
             <div class="col-xs-6">まだ子連れ情報の口コミはありません</div>
           </div>
         <% else %>
         <!--既存店の場合-->
           <div class="row"> 
-            <div class="col-xs-6"><%= link_to '子連れ情報をシェアする', kuchikomi_shop_path(shop), class: "btn btn-danger" %></div><!--shop.idもって shops#kuchikomiにいけ -->
-            <div class="col-xs-6"><%= link_to '店内写真や口コミを見る', shop_path(shop), class: "btn btn-warning" %></div><!-- shop.idもってshops#showにいけ -->
+            <div class="col-xs-6"><%= link_to '子連れ情報をシェアする', kuchikomi_shop_path(shop), class: "btn btn-default" %></div><!--shop.idもって shops#kuchikomiにいけ -->
+            <div class="col-xs-6"><%= link_to '店内写真や口コミを見る', shop_path(shop), class: "btn btn-default" %></div><!-- shop.idもってshops#showにいけ -->
           </div>
         <% end %>
 
@@ -83,9 +145,11 @@
 
 </div>
 
+        </div>
+      
+        <!-- 右サイドメニュー -->
+        <div class="col-md-3">
+          <%= render 'layouts/side_menu' %>
+        </div>
 
-</div><!-- 左コンテンツ -->
-
-<div class="col-md-3"><!-- 右サイドメニュー -->
-<%= render 'layouts/side_menu' %>
-</div>
+      </div>
