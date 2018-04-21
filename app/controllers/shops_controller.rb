@@ -22,6 +22,7 @@ class ShopsController < ApplicationController
       #キーワードからDB内を探す
       @shops_db = []
       
+=begin
       if @area.present? && !@tenpo_genre.present? then #areaしか入ってないなら
         @shops_db = Shop.where("(y_address like ?) OR (y_moyorieki like ?)", "\%#{@area}\%", "\%#{@area}\%")#住所か駅カラムに含まれるか
       elsif @area.present? && @tenpo_genre.present? then #areaとtenpo_genreが入っているなら
@@ -29,11 +30,32 @@ class ShopsController < ApplicationController
       elsif !@area.present? && @tenpo_genre.present? then #tenpo_genreしか入ってないなら
         @shops_db = Shop.where("(name like ?) OR (y_gyosyu like ?)", "\%#{@tenpo_genre}\%", "\%#{@tenpo_genre}\%")
       end
+=end
+
+      if @area.present? && !@tenpo_genre.present? then #areaしか入ってないなら
+        if @area.include?("駅") #駅がはいってるなら駅検索
+          @shops_db = Shop.where("(y_moyorieki like ?)", "\%#{@area}\%")
+        else  #そうでなければ住所検索
+          @shops_db = Shop.where("(y_address like ?)", "\%#{@area}\%")
+        end
+      elsif @area.present? && @tenpo_genre.present? then #areaとtenpo_genreが入っているなら
+        if @area.include?("駅")
+          @shops_db = Shop.where("(y_moyorieki like ?) AND ((name like ?) OR (y_gyosyu like ?))", "\%#{@area}\%", "\%#{@tenpo_genre}\%", "\%#{@tenpo_genre}\%")
+        else
+          @shops_db = Shop.where("(y_address like ?) AND ((name like ?) OR (y_gyosyu like ?))", "\%#{@area}\%", "\%#{@tenpo_genre}\%", "\%#{@tenpo_genre}\%")
+        end
+      elsif !@area.present? && @tenpo_genre.present? then #tenpo_genreしか入ってないなら
+        @shops_db = Shop.where("(name like ?) OR (y_gyosyu like ?)", "\%#{@tenpo_genre}\%", "\%#{@tenpo_genre}\%")
+      end
+
       
-      #kuchikomisの多い順から並び替えしておく
-      @shops_db_ranking = @shops_db.sort{|a, b| b.kuchikomis.size <=> a.kuchikomis.size} if @shops_db.present?
+      #kuchikomisの多い順から並び替えして配列に変換おく
+      #@shops_db_ranking = @shops_db.sort{|a, b| b.kuchikomis.size <=> a.kuchikomis.size} if @shops_db.present?
+      #puts '◆DBから取った口コミ順の店舗リスト'
+      #puts @shops_db_ranking.inspect
 
 
+      #######ここからYahoo検索
       if @option == '1'
 
         #Yahoo APIを使って探す
@@ -54,9 +76,12 @@ class ShopsController < ApplicationController
         if @features.present? #結果がカラ（0件）じゃなければ。これをやらないとエラーでる。
         
           chofuku_gid = []
-          if @shops_db_ranking.present?
-            @shops_db_ranking.each do |shop_db_ranking|
-              chofuku_gid.push(shop_db_ranking.y_gid)
+          #if @shops_db_ranking.present?
+          #  @shops_db_ranking.each do |shop_db_ranking|
+          if @shops_db.present?
+            @shops_db.each do |shop_db|
+              chofuku_gid.push(shop_db.y_gid)
+              puts '-DB店舗とGID→' + shop_db.name + ':' + shop_db.y_gid
             end
           end
           
@@ -65,9 +90,17 @@ class ShopsController < ApplicationController
           @features.each_with_index do |feature,i| #@features配列から1個1個とりだしてshopのインスタンスを生成していく
   
             if chofuku_gid.include?(feature['Gid']) #すでにGidがあるなら重複なのでインスタンスを生成しない
-              puts '重複あり: ' + feature['Gid']
+              puts '重複あり: ' + feature['Name'] + ':' + feature['Gid']
             else
               chofuku_gid.push(feature['Gid'])
+              
+              #このタイミングでGidでshopsテーブルに問いかけ、ある？あるならインスタンス生成みたいな
+              tmp_shop = Shop.find_by(y_gid: feature['Gid'])
+              if tmp_shop.present?
+                #@shops_db_ranking.push(tmp_shop)
+                @shops_db += [tmp_shop]
+                next #このifを抜けて次のループへ行きたい
+              end
   
               ####ここからデータチェック####
               unless feature['Property'].present?  #propertyがカラなら
@@ -125,10 +158,24 @@ class ShopsController < ApplicationController
               )
             end #if chofuku_gid.include?(feature['Gid'])
           end #ループ
+          
+          puts '◆あらためてDBから生成した店舗リスト'
+          puts  @shops_db.inspect
+
+          puts '◆検索から生成した店舗リスト'
+          puts @y_shops.inspect
+
         end   #@feature.present?
       end   #if @option == 1
 
 
+
+      #kuchikomisの多い順からもう１度並び替えしておく(ヽ´ω`)
+      @shops_db_ranking = @shops_db.sort{|a, b| b.kuchikomis.size <=> a.kuchikomis.size} if @shops_db.present?
+      puts '◆DBから取った口コミ順の店舗リスト'
+      puts @shops_db_ranking.inspect
+      
+      
       hoge = []
       if @shops_db_ranking.present? 
         hoge.concat(@shops_db_ranking)

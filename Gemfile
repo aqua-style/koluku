@@ -66,3 +66,8 @@ gem 'carrierwave'
 
 #画像の加工とか
 gem 'rmagick'
+
+#heroku用のPostgreSQL用
+group :production do
+  gem 'pg', '0.21.0'
+end

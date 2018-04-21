@@ -31,12 +31,23 @@
     <%= yield :cover %>
 
 
-    <div class="container">
-          <%= render 'layouts/flash_messages' %>
-          <%= yield %>
-    </div>
-    
 
+    <div class="container">
+      <%= render 'layouts/flash_messages' %>
+
+      <div class="row">
+        <!-- 左コンテンツ -->
+        <div class="col-md-9 left-contents">
+                  <%= yield %>
+        </div>
+      
+        <!-- 右サイドメニュー -->
+        <div class="col-md-3">
+            <%= render 'layouts/side_menu' %>
+        </div>
+      </div>
+    </div>
+      
     <%= render 'layouts/footer' %>
     
   </body>

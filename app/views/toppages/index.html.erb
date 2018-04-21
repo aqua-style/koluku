@@ -1,27 +1,70 @@
-<% content_for :cover do %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- 子連れランチ口コミサイト - コルク（KoLuKu） -->
+    <title><%= page_title %></title>
+    <%= csrf_meta_tags %>
+
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- app/assets/stylesheets -->
+    <%= stylesheet_link_tag  'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+    <!-- app/assets/javascripts-->
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <!-- Bootstrap JavaScript-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <!-- slick photo slideshow -->
+    <%= yield :header %>
+    
+  </head>
+
+
+  <body>
+    <%= render 'layouts/navbar' %>
+
   <div class="cover">
     <div class="cover-inner">
       <div class="cover-contents">
       </div>
     </div>
   </div>
-<% end %>
 
 
-<div class="search">
-  <div class="row">
-    <div class="text-center">
-      <%= form_tag(shops_path, method: :get) do %>
-        <div class="form-group form-inline">
-          <%= text_field_tag :area, @area, class: 'form-control input-lg', placeholder: "地名", size: 5 %> × 
-          <%= text_field_tag :tenpo_genre, @tenpo_genre, class: 'form-control input-lg', placeholder: "店名またはジャンル", size: 30 %>
-          <%= submit_tag '検索', class: 'btn btn-success btn-lg' %>
+  <div class="container">
+    <%= render 'layouts/flash_messages' %>
+    
+    <div class="search">
+      <div class="row">
+        <div class="text-center">
+          <%= form_tag(shops_path, method: :get) do %>
+            <div class="form-group form-inline">
+              <%= text_field_tag :area, @area, class: 'form-control input-lg', placeholder: "地名", size: 5 %> × 
+              <%= text_field_tag :tenpo_genre, @tenpo_genre, class: 'form-control input-lg', placeholder: "店名またはジャンル", size: 30 %>
+              <%= submit_tag '検索', class: 'btn btn-success btn-lg' %>
+            </div>
+            <div class="form-group">
+      				<label><%= radio_button_tag :option, '0' %>口コミがあるお店のみ表示</label>　
+      				<label><%= radio_button_tag :option, '1',:checked %>すべてのお店を表示</label>
+            </div>
+          <% end %>
         </div>
-        <div class="form-group">
-  				<label><%= radio_button_tag :option, '0' %>口コミがあるお店のみ表示</label>　
-  				<label><%= radio_button_tag :option, '1',:checked %>すべてのお店を表示</label>
-        </div>
-      <% end %>
+      </div>
     </div>
+
   </div>
-</div>
+    
+
+    <%= render 'layouts/footer' %>
+    
+  </body>
+</html>
+
+
+
