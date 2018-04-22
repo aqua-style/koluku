@@ -27,7 +27,45 @@
 
 
   <body>
-    <%= render 'layouts/navbar' %>
+
+<header>
+  <nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <div class="navbar-left">
+          <div class="col-xs-4">        <a href="/"><img src="/images/logo2.png" alt="KoLuKu"></a></div>
+          <div class="col-xs-12"        <%= header_message.html_safe %></div>
+        </div>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <% if logged_in? %>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <%= current_user.nickname %> <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><%= link_to 'プロフィール', edit_user_path(current_user) %></li>
+                <li role="separator" class="divider"></li>
+                <li><%= link_to 'ログアウト', logout_path, method: :delete %></li>
+              </ul>
+            </li>
+          <% else %>
+            <li><%= link_to 'ユーザー登録', signup_path %></li>
+            <li><%= link_to 'ログイン', login_path %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
 
   <div class="cover">
     <div class="cover-inner">
@@ -38,25 +76,25 @@
 
 
   <div class="container">
-    <%= render 'layouts/flash_messages' %>
-    
-    <div class="search">
-      <div class="row">
-        <div class="text-center">
-          <%= form_tag(shops_path, method: :get) do %>
-            <div class="form-group form-inline">
-              <%= text_field_tag :area, @area, class: 'form-control input-lg', placeholder: "地名", size: 5 %> × 
-              <%= text_field_tag :tenpo_genre, @tenpo_genre, class: 'form-control input-lg', placeholder: "店名またはジャンル", size: 30 %>
-              <%= submit_tag '検索', class: 'btn btn-success btn-lg' %>
-            </div>
-            <div class="form-group">
-      				<label><%= radio_button_tag :option, '0' %>口コミがあるお店のみ表示</label>　
-      				<label><%= radio_button_tag :option, '1',:checked %>すべてのお店を表示</label>
-            </div>
-          <% end %>
+      <%= render 'layouts/flash_messages' %>
+      
+      <div class="search">
+        <div class="row m5-r m5-l">
+          <div class="text-center">
+            <%= form_tag(shops_path, method: :get) do %>
+              <div class="form-group form-inline">
+                <%= text_field_tag :area, @area, class: 'form-control input-lg', placeholder: "地名", size: 5 %> × 
+                <%= text_field_tag :tenpo_genre, @tenpo_genre, class: 'form-control input-lg', placeholder: "店名またはジャンル", size: 30 %>
+                <%= submit_tag '検索', class: 'btn btn-success btn-lg m5-t' %>
+              </div>
+              <div class="form-group">
+        				<label><%= radio_button_tag :option, '0' %>口コミがあるお店のみ表示</label>　
+        				<label><%= radio_button_tag :option, '1',:checked %>すべてのお店を表示</label>
+              </div>
+            <% end %>
+          </div>
         </div>
       </div>
-    </div>
 
   </div>
     

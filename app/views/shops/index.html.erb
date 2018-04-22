@@ -80,8 +80,8 @@ window.onload = function(){
     <article class="shoplist-item">
   
       <div class="row">
-
-        <div class="col-xs-4"> 
+            <p class="shoplist-title orange b"><%= shop.name %></p>
+        <div class="col-xs-6 col-sm-4"> 
           <div class="shoplist-thumb">
             <% if shop.shop_photos.present? && shop.shop_photos.last.present? && shop.shop_photos.last.image.present? && shop.shop_photos.last.image.url.present? %>
               <img class="mw100" src="<%= shop.shop_photos.last.image.url %>">
@@ -93,10 +93,10 @@ window.onload = function(){
           </div>
         </div>
     
-        <div class="col-xs-8"> 
+        <div class="col-xs-12 col-sm-8"> 
           <div class="shoplist-cont">
 
-            <p class="shoplist-title orange b"><%= shop.name %></p>
+            <!--<p class="shoplist-title orange b"><%= shop.name %></p>-->
             <p><%= shop.y_address %><br><%= shop.y_moyorieki %></p>
             <!--<p>緯度：<%= shop.y_ido %>　経度：<%= shop.y_keido %></p>-->
 

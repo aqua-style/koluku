@@ -9,7 +9,7 @@ module ApplicationHelper
   def header_message
 
     if request.path == '/' #トップページなら
-      hmessage = '<h1 class="toph1 m10-l">子連れランチがしやすい飲食店口コミシェアサイト！ディナーもね♪</h1>'
+      hmessage = '<h1 class="toph1">子連れランチがしやすい飲食店口コミシェアサイト！ディナーもね♪</h1>'
     else
       hmessage = '子連れで入りやすい飲食店口コミシェアサイト'
     end

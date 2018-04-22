@@ -19,4 +19,8 @@ Rails.application.routes.draw do
   
   post 'upload', to: 'shop_photos#upload'
   
+  get 'info/about', to: 'info#about'
+  get 'info/privacy-policy', to: 'info#privacy_policy'
+  get 'info/tokusho', to: 'info#tokusho'
+  
 end
