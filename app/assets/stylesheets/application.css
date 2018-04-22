@@ -28,6 +28,9 @@ footer h3 {
   height: 40px;
 }
 
+.navbar-nav li a:hover{
+  color:#1111cc!important;
+}
 
 .toph1 {
   font-size:14px;
