@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   
-  before_action :require_user_logged_in, only: [:index, :show, :create, :update, :edit]
+  before_action :require_user_logged_in, only: [:index, :show, :update, :edit]
   
   #ユーザー一覧を表示する不要かも
   def index
@@ -12,12 +12,15 @@ class UsersController < ApplicationController
   end
 
   def new
+      puts '◆user#new'
       @user = User.new
   end
 
   def create
+    puts '◆user#create'
     @user = User.new(user_params)
 
+    puts @user
     if @user.save
       flash[:success] = '新しいユーザーを登録しました。'
       redirect_to @user

@@ -71,3 +71,6 @@ gem 'rmagick'
 group :production do
   gem 'pg', '0.21.0'
 end
+
+#AWS S3画像アップ用
+gem 'fog-aws'

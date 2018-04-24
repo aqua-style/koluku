@@ -19,6 +19,7 @@
 
 
 
+
 <% if @shops.present? %>
 <div class="mapcont">
 <div id="map" style="width:100%; height:300px"></div>
@@ -63,13 +64,8 @@ window.onload = function(){
 
 </script>	
 </div>
-<% end %>
 
-<% if @kensu.present? %>
-  <p class="m20-t"><%= @kensu %>件ヒットしました。</p>
-<% else %>
-  <p>ヒットしませんでした。検索ワードを変えてみてください。</p>
-<% end %>
+<p class="m20-t"><%= @kensu %>件ヒットしました。</p>
 
 <hr>
 
@@ -84,9 +80,13 @@ window.onload = function(){
         <div class="col-xs-6 col-sm-4"> 
           <div class="shoplist-thumb">
             <% if shop.shop_photos.present? && shop.shop_photos.last.present? && shop.shop_photos.last.image.present? && shop.shop_photos.last.image.url.present? %>
-              <img class="mw100" src="<%= shop.shop_photos.last.image.url %>">
+              <div class="trim">
+                <img class="mw100" src="<%= shop.shop_photos.last.image.url %>">
+              </div>
             <% elsif shop.y_leadimage.present? %>
+            <div class="trim">
               <img class="mw100" src="<%= shop.y_leadimage %>">
+            </div>
             <% else %>
               <img class="mw100" src="/images/icon/icon-no-image.png">
             <% end %>
@@ -138,8 +138,16 @@ window.onload = function(){
 
     </article>
   <% end %>
+  
 
 <%= paginate @shops %>
 
+
 </div>
+
+
+<% else %>
+  <p>ヒットしませんでした。検索ワードを変えてみてください。</p>
+<% end %>
+
 

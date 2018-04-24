@@ -915,4 +915,41 @@ html:not(:target) .talker img{
 }
 
 
+/*****画像トリミング******/
 
+/*　トリミングする外側の枠　*/
+.trim {
+    overflow: hidden;
+    width: 200px;/* トリミングしたい枠の幅 */
+    height: 200px;/* トリミングしたい枠の高さ */
+    position: relative;
+}
+
+/* 中央に合わせて、リサイズせずに、はみ出た分をトリミング */
+.trim img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+
+/*　トリミングする外側の枠　*/
+.trim2 {
+    overflow: hidden;
+    width: 400px;/* トリミングしたい枠の幅 */
+    height: 300px;/* トリミングしたい枠の高さ */
+    position: relative;
+}
+
+/* 中央に合わせて、リサイズせずに、はみ出た分をトリミング */
+.trim2 img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
