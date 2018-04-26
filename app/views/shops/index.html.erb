@@ -77,16 +77,16 @@ window.onload = function(){
   
       <div class="row">
             <p class="shoplist-title orange b"><%= shop.name %></p>
-        <div class="col-xs-6 col-sm-4"> 
-          <div class="shoplist-thumb">
+        <div class="col-xs-12 col-sm-4"> 
+          <div class="shoplist-thumb al-c">
             <% if shop.shop_photos.present? && shop.shop_photos.last.present? && shop.shop_photos.last.image.present? && shop.shop_photos.last.image.url.present? %>
-              <div class="trim">
+              
                 <img class="mw100" src="<%= shop.shop_photos.last.image.url %>">
-              </div>
+              
             <% elsif shop.y_leadimage.present? %>
-            <div class="trim">
+            
               <img class="mw100" src="<%= shop.y_leadimage %>">
-            </div>
+            
             <% else %>
               <img class="mw100" src="/images/icon/icon-no-image.png">
             <% end %>
@@ -120,15 +120,15 @@ window.onload = function(){
         <% unless shop.id.present? %>
         <!--新規店の場合-->
           <div class="row">
-            <div class="col-xs-6"><%= link_to '子連れ情報をシェアする', new_shop_path(shop, name: shop.name, y_id: shop.y_id, y_gid: shop.y_gid, y_uid: shop.y_uid,
+            <div class="col-xs-12 col-sm-6"><%= link_to '子連れ情報をシェアする', new_shop_path(shop, name: shop.name, y_id: shop.y_id, y_gid: shop.y_gid, y_uid: shop.y_uid,
             y_ido: shop.y_ido, y_keido: shop.y_keido, y_address: shop.y_address, y_moyorieki: shop.y_moyorieki, y_leadimage: shop.y_leadimage, y_gyosyu: shop.y_gyosyu), class: "btn btn-default" %></div>
-            <div class="col-xs-6">まだ子連れ情報の口コミはありません</div>
+            <div class="col-xs-12 col-sm-6">まだ子連れ情報の口コミはありません</div>
           </div>
         <% else %>
         <!--既存店の場合-->
           <div class="row"> 
-            <div class="col-xs-6"><%= link_to '子連れ情報をシェアする', kuchikomi_shop_path(shop), class: "btn btn-default" %></div><!--shop.idもって shops#kuchikomiにいけ -->
-            <div class="col-xs-6"><%= link_to '店内写真や口コミを見る', shop_path(shop), class: "btn btn-default" %></div><!-- shop.idもってshops#showにいけ -->
+            <div class="col-xs-12 col-sm-6"><%= link_to '子連れ情報をシェアする', kuchikomi_shop_path(shop), class: "btn btn-default" %></div><!--shop.idもって shops#kuchikomiにいけ -->
+            <div class="col-xs-12 col-sm-6"><%= link_to '店内写真や口コミを見る', shop_path(shop), class: "btn btn-default" %></div><!-- shop.idもってshops#showにいけ -->
           </div>
         <% end %>
 

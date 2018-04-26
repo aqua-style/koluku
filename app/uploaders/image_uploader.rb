@@ -51,8 +51,11 @@ class ImageUploader < CarrierWave::Uploader::Base
  # リサイズしたり画像形式を変更するのに必要
   include CarrierWave::RMagick
 
+ #リサイズして切り取る
+ process :resize_to_fill => [600, 400, gravity = ::Magick::CenterGravity]
+
  # 画像の上限を700pxにする
-  process :resize_to_limit => [640, 480]
+ # process :resize_to_limit => [640, 480]
 
   # 保存形式をJPGにする
   process :convert => 'jpg'

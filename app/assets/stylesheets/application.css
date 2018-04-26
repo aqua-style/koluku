@@ -65,6 +65,7 @@ footer h3 {
   color: #fff;
   font-weight: bold;
   letter-spacing: 0.15em;
+
 }
 
 
@@ -95,6 +96,8 @@ footer h3 {
   color: #666;
   font-weight: bold;
   letter-spacing: 0.15em;
+  font-size:2em!important;
+  
 }
 
 
@@ -103,12 +106,12 @@ footer h3 {
 .photo-slide {
   margin:10px;
   max-width : 720px;
-  height:300px;
+  height:400px;
 }
 
 .photo-slide img {
-  max-width : 640px;
-  max-height : 300px;
+  max-width : 580px;
+  max-height : 400px;
 }
 
 
@@ -563,7 +566,7 @@ only screen and (max-width : 480px){
 }
 
 .shoplist .shoplist-thumb{
-//	float: left;
+/*	float: left; */
 	margin:0 15px 0;
 }
 

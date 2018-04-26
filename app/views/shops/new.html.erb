@@ -48,8 +48,8 @@
 			<div class="col-xs-6 col-md-5">子連れしやすい？</div>
 			<div class="col-xs-6 col-md-7">
 					<ul class="radios">
-						<li><%= f.radio_button :kozure_ok, '1' %><%= f.label :kozure_ok, 'そうおもう' %></li> <!-- label forがラジオボタンのidとイコールじゃないけど大丈夫？ -->
-						<li><%= f.radio_button :kozure_ok, '2' %><%= f.label :kozure_ok, 'おもわない' %></li>
+						<li><%= f.radio_button :kozure_ok, '1' %><%= f.label :kozure_ok, 'はい' %></li> <!-- label forがラジオボタンのidとイコールじゃないけど大丈夫？ -->
+						<li><%= f.radio_button :kozure_ok, '2' %><%= f.label :kozure_ok, 'いいえ' %></li>
 					</ul>
 			</div>
 		</div>
@@ -59,8 +59,8 @@
 			<div class="col-xs-6 col-md-5">客層はファミリー向け？</div>
 			<div class="col-xs-6 col-md-7">
 				<ul class="radios">
-					<li><%= f.radio_button :familymuke, '1' %><%= f.label :familymuke, 'そうおもう' %></li>
-					<li><%= f.radio_button :familymuke, '2' %><%= f.label :familymuke, 'おもわない' %></li>
+					<li><%= f.radio_button :familymuke, '1' %><%= f.label :familymuke, 'はい' %></li>
+					<li><%= f.radio_button :familymuke, '2' %><%= f.label :familymuke, 'いいえ' %></li>
 				</ul>
 			</div>
 		</div>
@@ -74,8 +74,8 @@
 			<div class="col-xs-6 col-md-5">乳児OK？</div>
 			<div class="col-xs-6 col-md-7">
 				<ul class="radios">
-					<li><%= f.radio_button :nyuji_ok, '1' %><%= f.label :nyuji_ok, 'そうおもう' %></li>
-					<li><%= f.radio_button :nyuji_ok, '2' %><%= f.label :nyuji_ok, 'おもわない' %></li>
+					<li><%= f.radio_button :nyuji_ok, '1' %><%= f.label :nyuji_ok, 'はい' %></li>
+					<li><%= f.radio_button :nyuji_ok, '2' %><%= f.label :nyuji_ok, 'いいえ' %></li>
 				</ul>
 			</div>
 		</div>
@@ -85,8 +85,8 @@
 			<div class="col-xs-6 col-md-5">にぎやか？騒いでもよい？</div>
 			<div class="col-xs-6 col-md-7">
 				<ul class="radios">
-					<li><%= f.radio_button :nigiyaka, '1' %><%= f.label :nigiyaka, 'そうおもう' %></li>
-					<li><%= f.radio_button :nigiyaka, '2' %><%= f.label :nigiyaka, 'おもわない' %></li>
+					<li><%= f.radio_button :nigiyaka, '1' %><%= f.label :nigiyaka, 'はい' %></li>
+					<li><%= f.radio_button :nigiyaka, '2' %><%= f.label :nigiyaka, 'いいえ' %></li>
 				</ul>
 			</div>
 		</div>
@@ -256,8 +256,8 @@
 			<div class="col-xs-6 col-md-5">店内広い？</div>
 			<div class="col-xs-6 col-md-7">
 				<ul class="radios">
-					<li><%= f.radio_button :hirosa, '1' %><%= f.label :hirosa, 'そうおもう' %></li>
-					<li><%= f.radio_button :hirosa, '2' %><%= f.label :hirosa, 'おもわない' %></li>
+					<li><%= f.radio_button :hirosa, '1' %><%= f.label :hirosa, 'はい' %></li>
+					<li><%= f.radio_button :hirosa, '2' %><%= f.label :hirosa, 'いいえ' %></li>
 				</ul>
 			</div>
 		</div>
@@ -281,8 +281,8 @@
 			<div class="col-xs-6 col-md-5">空いてる？</div>
 			<div class="col-xs-6 col-md-7">
 				<ul class="radios">
-					<li><%= f.radio_button :suiteru, '1' %><%= f.label :suiteru, 'そうおもう' %></li>
-					<li><%= f.radio_button :suiteru, '2' %><%= f.label :suiteru, 'おもわない' %></li>
+					<li><%= f.radio_button :suiteru, '1' %><%= f.label :suiteru, 'はい' %></li>
+					<li><%= f.radio_button :suiteru, '2' %><%= f.label :suiteru, 'いいえ' %></li>
 				</ul>
 			</div>
 		</div>
@@ -307,19 +307,19 @@
 			<div class="col-xs-6 col-md-5">駅チカ</div>
 			<div class="col-xs-6 col-md-7">
 				<ul class="radios">
-					<li><%= f.radio_button :ekitika, '1' %><%= f.label :ekitika, 'そうおもう' %></li>
-					<li><%= f.radio_button :ekitika, '2' %><%= f.label :ekitika, 'おもわない' %></li>
+					<li><%= f.radio_button :ekitika, '1' %><%= f.label :ekitika, 'はい' %></li>
+					<li><%= f.radio_button :ekitika, '2' %><%= f.label :ekitika, 'いいえ' %></li>
 				</ul>
 			</div>
 		</div>
 	</div>
 	<div class="col-sm-12 col-md-6">
 		<div class="row">
-			<div class="col-xs-6 col-md-5">アクセスしやすさ</div>
+			<div class="col-xs-6 col-md-5">アクセスしやすい？</div>
 			<div class="col-xs-6 col-md-7">
 				<ul class="radios">
-					<li><%= f.radio_button :access, '1' %><%= f.label :access, 'しやすい' %></li>
-					<li><%= f.radio_button :access, '2' %><%= f.label :access, 'しにくい' %></li>
+					<li><%= f.radio_button :access, '1' %><%= f.label :access, 'はい' %></li>
+					<li><%= f.radio_button :access, '2' %><%= f.label :access, 'いいえ' %></li>
 				</ul>
 			</div>
 		</div>
@@ -330,10 +330,10 @@
 <div class="row">
 	<div class="col-sm-12 col-md-6">
 		<div class="row">
-			<div class="col-xs-6 col-md-5">店の子供歓迎</div>
+			<div class="col-xs-6 col-md-5">店は子供歓迎？</div>
 			<div class="col-xs-6 col-md-7">
 				<ul class="radios">
-					<li><%= f.radio_button :kangei, '1' %><%= f.label :kangei, 'そうおもう' %></li>
+					<li><%= f.radio_button :kangei, '1' %><%= f.label :kangei, 'はい' %></li>
 					<li><%= f.radio_button :kangei, '2' %><%= f.label :kangei, 'ふつう' %></li>
 				</ul>
 			</div>
@@ -385,8 +385,8 @@
 			<div class="col-xs-6 col-md-5">衛生的？</div>
 			<div class="col-xs-6 col-md-7">
 				<ul class="radios">
-					<li><%= f.radio_button :eisei, '1' %><%= f.label :epuron, 'そうおもう' %></li>
-					<li><%= f.radio_button :eisei, '2' %><%= f.label :epuron, 'おもわない' %></li>
+					<li><%= f.radio_button :eisei, '1' %><%= f.label :epuron, 'はい' %></li>
+					<li><%= f.radio_button :eisei, '2' %><%= f.label :epuron, 'いいえ' %></li>
 				</ul>
 			</div>
 		</div>
