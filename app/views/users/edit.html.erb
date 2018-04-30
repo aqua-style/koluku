@@ -1,3 +1,15 @@
+<script type="text/javascript">
+$(document).on('click', '#select_file_button', function() { 
+  $("#file_button").click();
+ })
+</script>
+
+<script type="text/javascript">
+$(document).on('change', '#file_button', function() { 
+  $('#filename').val($(this).val().replace(/^.*\\/, ""));
+ })
+</script>
+
 <div class="text-center">
   <h1>プロフィール編集画面</h1>
 </div>
@@ -18,10 +30,14 @@
 　        <% else %>
 　　        <%= image_tag("/images/icon/icon-mama-02-160px.png") %>
 　        <% end %>
-      <%= f.file_field :image, :class => "m15-b m15-t" %>
+          ファイルを選択
+          <input id="filename" readonly type="text" value="" ><button type="button" id='select_file_button'>選択</button>
+          <%= f.file_field :image, id: 'file_button', :class => "m15-b m15-t" %>
       </div>
     </div>
   </aside>
+
+
 
   <div class="col-md-8">
 

@@ -43,10 +43,10 @@ footer h3 {
 .cover {
   margin-top: -20px;
   margin-bottom: 20px;
-  width: 100%;
-  height: 300px;
-  background: url("/images/cover-bg3b.jpg") center center no-repeat;
-  background-size: cover;
+  max-width: 100%;
+  /*height: 300px;*/
+  /*background: url("/images/cover-bg4-1200x300-02.png") center center no-repeat;*/
+  /*background-size: cover;*/
 }
 
 .cover .cover-inner {
@@ -56,7 +56,7 @@ footer h3 {
 }
 .cover .cover-inner .cover-contents {
   display: table-cell;
-  vertical-align: middle;
+/*  vertical-align: middle;*/
   text-align: center;
   position: relative;
 }
@@ -916,6 +916,17 @@ html:not(:target) .talker img{
 .mapcont {
   margin:0 15px;
 }
+
+/****画像アップロード*****/
+
+#file_button {
+/*  height: 0px;
+  visibility: hidden;
+  position: absolute;*/
+  display: none;
+}
+
+
 
 
 /*****画像トリミング******/

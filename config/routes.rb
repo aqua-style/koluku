@@ -6,6 +6,7 @@ Rails.application.routes.draw do
         member do 
             get :kuchikomi
             post :kuchikomi_post
+          #  patch 'mng-hensyu', to: :mng_hensyu
         end
     end
 
@@ -18,6 +19,13 @@ Rails.application.routes.draw do
   delete 'logout', to: 'sessions#destroy'
   
   post 'upload', to: 'shop_photos#upload'
+  
+  get 'koluku-mng-login', to: 'sessions#mngsessionnew'
+  post 'koluku-mng-login', to: 'sessions#mngcreate'
+  delete 'koluku-mng-logout', to: 'sessions#mngdestroy'
+  resources :managers, only: [:show]
+  get 'shop-hensyu', to: 'managers#shop_hensyu'
+  patch 'mng-shop-hensyu', to: 'shops#mng_shop_hensyu'
   
   get 'info/about', to: 'info#about'
   get 'info/privacy-policy', to: 'info#privacy_policy'

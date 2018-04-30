@@ -119,6 +119,7 @@ class ShopsController < ApplicationController
                 	eki = feature['Property']['Station'][0]['Railway'] + "　" + feature['Property']['Station'][0]['Name']+"駅 徒歩" + feature['Property']['Station'][0]['Time'] + "分"
                 end
                 
+=begin 20180427
                 #なかの業種があるかチェック
                 if feature['Property']['Genre'] && feature['Property']['Genre'][0]
                   gyosyu = get_gyosyumei(feature['Property']['Genre'][0]['Code'])
@@ -126,7 +127,22 @@ class ShopsController < ApplicationController
                 else
                   gyosyu = nil
                 end
-                
+=end
+                #なかの業種があるかチェック
+                if feature['Property']['Genre'].present?
+                  gyosyus = ""
+                  feature['Property']['Genre'].each do |g|
+                    puts '業種コード：' + g['Code']
+                    gyosyu = get_gyosyumei(g['Code'])
+                    puts '該当する業種がありませんでした:' + g['Code'] unless gyosyu
+                    gyosyus += "・" + gyosyu
+                  end
+                else
+                  gyosyus = nil
+                end
+
+
+
               end
               
               unless feature['Geometry'].present? #Geometryがカラなら
@@ -153,7 +169,7 @@ class ShopsController < ApplicationController
                 y_address: address,                    #feature['Property']['Address'], 
                 y_moyorieki: eki,                      #feature['Property']['Station'][0]['Railway'] + "　" + feature['Property']['Station'][0]['Name']+"駅 徒歩" + feature['Property']['Station'][0]['Time'] + "分"
                 y_leadimage: image_url,                #feature['Property']['LeadImage']
-                y_gyosyu: gyosyu,
+                y_gyosyu: gyosyus,
                 )
               )
             end #if chofuku_gid.include?(feature['Gid'])
@@ -413,6 +429,22 @@ class ShopsController < ApplicationController
       render :kuchikomi                          #kuchikomi.html.erbへ飛ばす
     end
 
+  end
+  
+  #############################################################################################
+  #これは管理者がショップを編集するメソッド
+#  def mng_hensyu
+  def mng_shop_hensyu
+
+    @shop = Shop.find(params[:shop_id].to_i)
+
+    if @shop.update(shop_params)
+      flash[:success] = 'お店の紹介文を編集しました。'
+    else
+      flash[:danger] = 'お店の紹介文の編集に失敗しました。'
+    end
+    redirect_back(fallback_location: root_path)
+    
   end
   
 

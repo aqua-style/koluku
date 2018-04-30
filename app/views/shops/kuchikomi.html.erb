@@ -46,7 +46,21 @@
 		     });
 		});
 		</script>
-    
+	
+	<!--ファイルアップボタン-->
+	<script type="text/javascript">
+	$(document).on('click', '#select_file_button', function() { 
+	  $("#file_button").click();
+	 })
+	</script>
+	
+	<script type="text/javascript">
+	$(document).on('change', '#file_button', function() { 
+	  $('#filename').val($(this).val().replace(/^.*\\/, ""));
+	 })
+	</script>
+
+
   </head>
   <body>
     <%= render 'layouts/navbar' %>
@@ -78,7 +92,11 @@
 	
 	横向き写真が見やすく推奨されます。
 	<%= form_for @shop_photo, url: upload_path do |p| %>
-	<%= p.file_field :image %>
+
+	ファイルを選択
+	<input id="filename" readonly type="text" value="" ><button type="button" id='select_file_button'>選択</button>
+	<%= p.file_field :image, id: 'file_button' %>
+
 	<%= p.hidden_field :shop_id, :value => @shop.id  %>
 	<% if logged_in? %>
 	<%= p.hidden_field :user_id, :value => current_user.id %>

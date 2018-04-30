@@ -1,0 +1,11 @@
+<h1><%= @mng.name %>の管理画面</h1>
+<p>権限レベル：<%= @mng.level %></p>
+
+<% if @mng.level == 1 %>
+
+<%= form_for :shop, method: :get , url: shop_hensyu_path  do |f| %>
+   <%= f.collection_select :id, @shops, :id, :name %>
+   <%= f.submit 'お店を編集' %>
+<% end %>
+
+<% end %>  
