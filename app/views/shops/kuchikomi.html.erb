@@ -80,23 +80,29 @@
 	<% end %>
 	
 
+<% if @shop_photo_view.present? %>
+<div class="photo-cont">
+	<% divflg =false %>
+	
+	<% if request.smart_phone? || request.tablet? %>
+		<% @shop_photo_view.each_with_index do |photo, i| %>
+			<% if (i % 3) == 0 %><div class="row"><% divflg = false %><% end %>
+			<div class="col-xs-4 p3"><%= image_tag photo.image.thumb.url, class: "img-responsive" %></div>
+			<% if (i % 3) == 2 %></div><% divflg = true %><% end %>
+		<% end %>
 
-	<% if @shop_photo_view.present? %>
-	<div class="photo-cont">
-	    <% @shop_photo_view.each_with_index do |photo, i| %>
-	      <% if request.smart_phone? || request.tablet? %>
-	        <% if (i % 3) == 0 %><div class="row"><% end %>
-	        <div class="col-xs-4 p3"><%= image_tag photo.image.thumb.url, class: "img-responsive" %></div>
-	        <% if (i % 3) == 2 %></div><% end %>
-	      <% else %>
-	        <% if (i % 4) == 0 %><div class="row"><% end %>
-	        <div class="col-xs-3 p3"><%= image_tag photo.image.thumb.url, class: "img-responsive" %></div>
-	        <% if (i % 4) == 3 %></div><% end %>
-	      <% end %>
-	    <% end %>
-	</div>
+	<% else %>
+		<% @shop_photo_view.each_with_index do |photo, i| %>
+			<% if (i % 4) == 0 %><div class="row"><% divflg = false %><% end %>
+			<div class="col-xs-3 p3"><%= image_tag photo.image.thumb.url, class: "img-responsive" %></div>
+			<% if (i % 4) == 3 %></div><% divflg = true %><% end %>
+		<% end %>
 	<% end %>
-	<%= paginate @shop_photo_view %>
+  <% if divflg == false %></div><% end %>
+  <%= paginate @shop_photo_view %>
+</div>
+<% end %>
+
 
 	<h2 class="m20-t m40-b fukidasi-midasi  bd-top">子供や赤ちゃん連れて行けるかな？</h2>
 	
