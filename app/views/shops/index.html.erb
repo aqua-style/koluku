@@ -7,11 +7,19 @@
 <% end %>
 <% @page_title.concat('子連れOKな飲食店口コミ情報') %> 
 
+<% if @area.present? && @tenpo_genre.present? %>
+  <% h1title = @area + "x" + @tenpo_genre %>
+<% elsif @area.present? %>
+  <% h1title = @area %>
+<% elsif@tenpo_genre.present? %>
+  <% h1title = @tenpo_genre %>
+<% else %>
+<% end %>
 <% content_for :cover do %>
-  <div class="cover">
-    <div class="cover-inner">
-      <div class="cover-contents">
-        <h1>店舗一覧</h1>
+  <div class="cover2">
+    <div class="cover2-inner">
+      <div class="cover2-contents">
+        <h1><%= h1title %><br>検索結果一覧</h1>
       </div>
     </div>
   </div>

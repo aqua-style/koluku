@@ -23,30 +23,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
-    <!-- slick -->
-    <link rel="stylesheet" type="text/css" href="/slick/slick.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/slick/slick-theme.css" media="screen" />
-    
-    <script src="/slick/slick.min.js"></script>
-    <script type="text/javascript">
-    $(function() {
-        $('.center-item').slick({
-              infinite: true,
-              dots:true,
-              slidesToShow: 1,
-              centerMode: true, 
-              centerPadding:'100px',
-              autoplay:false,
-              responsive: [{
-                   breakpoint: 640,
-                        settings: {
-                             centerMode: false,
-                   }
-              }]
-         });
-    });
-    </script>
-    
+    <!--画像をその場で拡大するscript -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js" type="text/javascript"></script>
+
 </head>
 
 <body>
@@ -73,20 +53,27 @@
   <div class="col-md-9 left-contents">
 
 <div class="shop-info">
-  <h2 class="m20-t f12em b gray"><%= @shop.name %></h2>
+  <h2 class="m20-t f12em b orange"><%= @shop.name %></h2>
   <p class="f09em m10-l"><%= @shop.y_address %><br><%= @shop.y_moyorieki %></p>
   <!--<p>緯度：<%= @shop.y_ido %>　経度：<%= @shop.y_keido %></p>-->
 </div>
 
 <% if @shop_photos.present? %>
-  <div class="photo-slide">
-    <ul class="center-item">
-      <% @shop_photos.each do |photo| %>
-        <li><%= image_tag photo.image %></li>
+<div class="photo-cont">
+    <% @shop_photos.each_with_index do |photo, i| %>
+      <% if request.smart_phone? || request.tablet? %>
+        <% if (i % 3) == 0 %><div class="row"><% end %>
+        <div class="col-xs-4 p3"><a href="<%= photo.image.url %>" data-lightbox="abc"><%= image_tag photo.image.thumb.url, class: "img-responsive" %></a></div>
+        <% if (i % 3) == 2 %></div><% end %>
+      <% else %>
+        <% if (i % 4) == 0 %><div class="row"><% end %>
+        <div class="col-xs-3 p3"><a href="<%= photo.image.url %>" data-lightbox="abc"><%= image_tag photo.image.thumb.url, class: "img-responsive" %></a></div>
+        <% if (i % 4) == 3 %></div><% end %>
       <% end %>
-    </ul>
-  </div>
+    <% end %>
+</div>
 <% end %>
+<%= paginate @shop_photos %>
 
 <div class="shop-kuchikomi m50-t">
   <h2 class="m20-t m40-b fukidasi-midasi">子供や赤ちゃん連れて行けるかな？</h2>
@@ -96,8 +83,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">子連れしやすい？</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @kozure_ok_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @kozure_ok_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="子連れしやすい">&nbsp;<span class="red b"><%= @kozure_ok_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="子連れしにくい">&nbsp;<span class="blue b"><%= @kozure_ok_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -105,8 +92,8 @@
   		<div class="row">
   			<div class="col-xs-5">客層はファミリー向け？</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @familymuke_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @familymuke_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="ファミリー向け">&nbsp;<span class="red b"><%= @familymuke_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="ファミリー向けではない">&nbsp;<span class="blue b"><%= @familymuke_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -117,8 +104,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">乳児OK？</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @nyuji_ok_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @nyuji_ok_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="乳児OK">&nbsp;<span class="red b"><%= @nyuji_ok_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="乳児NG">&nbsp;<span class="blue b"><%= @nyuji_ok_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -126,8 +113,8 @@
   		<div class="row">
   			<div class="col-xs-5">にぎやか？騒いでもよい？</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @nigiyaka_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @nigiyaka_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="にぎやか">&nbsp;<span class="red b"><%= @nigiyaka_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="静か">&nbsp;<span class="blue b"><%= @nigiyaka_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -138,7 +125,7 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">禁煙</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @smoking_1 %></span>　<img src="<%= root_path %>images/icon/icon-baby-02.png">&nbsp;<span class="orange b"><%= @smoking_2 %></span>　<img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @smoking_3 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="禁煙">&nbsp;<span class="red b"><%= @smoking_1 %></span>　<img src="<%= root_path %>images/icon/icon-baby-02.png" alt="分煙">&nbsp;<span class="orange b"><%= @smoking_2 %></span>　<img src="<%= root_path %>images/icon/icon-baby-04.png" alt="喫煙">&nbsp;<span class="blue b"><%= @smoking_3 %></span>
   			</div>
   		</div>
   	</div>
@@ -146,8 +133,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">キッズチェア</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @kids_chair_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @kids_chair_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="キッズチェア有り">&nbsp;<span class="red b"><%= @kids_chair_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="キッズチェア無し">&nbsp;<span class="blue b"><%= @kids_chair_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -158,8 +145,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">キッズメニュー</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @kids_menu_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @kids_menu_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="キッズメニュー有り">&nbsp;<span class="red b"><%= @kids_menu_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="キッズメニュー無し">&nbsp;<span class="blue b"><%= @kids_menu_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -167,8 +154,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">子供食器ある？</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @kids_syokki_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @kids_syokki_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="子ども食器あり">&nbsp;<span class="red b"><%= @kids_syokki_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="子ども食器なし">&nbsp;<span class="blue b"><%= @kids_syokki_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -179,8 +166,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">低アレルギー食</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @low_allergy_food_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @low_allergy_food_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="低アレルギー食あり">&nbsp;<span class="red b"><%= @low_allergy_food_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="低アレルギー食なし">&nbsp;<span class="blue b"><%= @low_allergy_food_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -188,8 +175,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">離乳食持ち込み</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @motikomi_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @motikomi_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="離乳食持ち込みOK">&nbsp;<span class="red b"><%= @motikomi_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="離乳食持ち込みNG">&nbsp;<span class="blue b"><%= @motikomi_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -200,8 +187,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">座敷あり</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @zasiki_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @zasiki_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="座敷あり">&nbsp;<span class="red b"><%= @zasiki_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="座敷なし">&nbsp;<span class="blue b"><%= @zasiki_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -209,8 +196,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">個室・半個室あり</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @kositu_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @kositu_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="個室・半個室あり">&nbsp;<span class="red b"><%= @kositu_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="個室・半個室なし">&nbsp;<span class="blue b"><%= @kositu_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -221,8 +208,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">授乳室</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @junyusitu_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @junyusitu_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="授乳室あり">&nbsp;<span class="red b"><%= @junyusitu_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="授乳室なし">&nbsp;<span class="blue b"><%= @junyusitu_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -230,8 +217,8 @@
   		<div class="row">
   			<div class="col-xs-5">おむつ交換スペース</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @omutu_space_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @omutu_space_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="おむつ交換スペース有り">&nbsp;<span class="red b"><%= @omutu_space_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="おむつ交換スペース無し">&nbsp;<span class="blue b"><%= @omutu_space_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -242,8 +229,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">キッズスペース</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @kids_space_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @kids_space_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="キッズスペース有り">&nbsp;<span class="red b"><%= @kids_space_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="キッズスペース無し">&nbsp;<span class="blue b"><%= @kids_space_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -251,8 +238,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">ベビーカー入店</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @babycar_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @babycar_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="ベビーカー入店OK">&nbsp;<span class="red b"><%= @babycar_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="ベビーカー入店不可">&nbsp;<span class="blue b"><%= @babycar_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -264,8 +251,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">店内広い？</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @hirosa_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @hirosa_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="店内広い">&nbsp;<span class="red b"><%= @hirosa_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="店内狭い">&nbsp;<span class="blue b"><%= @hirosa_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -273,8 +260,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">席と席の広さ</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @seki_hiroi_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @seki_hiroi_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="席と席の間が広い">&nbsp;<span class="red b"><%= @seki_hiroi_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="席と席の間が狭い">&nbsp;<span class="blue b"><%= @seki_hiroi_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -286,8 +273,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">空いてる？</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @suiteru_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @suiteru_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="空いてる">&nbsp;<span class="red b"><%= @suiteru_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="混雑してる">&nbsp;<span class="blue b"><%= @suiteru_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -295,8 +282,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">駐車場</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @chusyajo_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @chusyajo_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="駐車場あり">&nbsp;<span class="red b"><%= @chusyajo_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="駐車場なし">&nbsp;<span class="blue b"><%= @chusyajo_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -308,8 +295,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">駅チカ</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @ekitika_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @ekitika_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="駅から近い">&nbsp;<span class="red b"><%= @ekitika_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="駅から遠い">&nbsp;<span class="blue b"><%= @ekitika_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -317,8 +304,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">アクセスしやすさ</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @access_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @access_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="アクセスしやすい">&nbsp;<span class="red b"><%= @access_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="アクセスしにくい">&nbsp;<span class="blue b"><%= @access_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -330,8 +317,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">店の子供歓迎</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @kangei_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-02.png">&nbsp;<span class="blue b"><%= @kangei_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="子ども歓迎のお店">&nbsp;<span class="red b"><%= @kangei_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-02.png" alt="ふつうのお店">&nbsp;<span class="blue b"><%= @kangei_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -339,8 +326,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">個室座敷の予約</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @kositu_zasiki_yoyaku_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @kositu_zasiki_yoyaku_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="個室座敷の予約可">&nbsp;<span class="red b"><%= @kositu_zasiki_yoyaku_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="個室座敷の予約不可">&nbsp;<span class="blue b"><%= @kositu_zasiki_yoyaku_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -351,8 +338,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">絵本・おもちゃ</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @ehon_omocha_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @ehon_omocha_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="絵本・おもちゃ有り">&nbsp;<span class="red b"><%= @ehon_omocha_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="絵本・おもちゃ無し">&nbsp;<span class="blue b"><%= @ehon_omocha_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -360,8 +347,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">エプロン</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @epuron_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @epuron_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="子どもエプロン有り">&nbsp;<span class="red b"><%= @epuron_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="子どもエプロン無し">&nbsp;<span class="blue b"><%= @epuron_2 %></span>
   			</div>
   		</div>
   	</div>
@@ -372,8 +359,8 @@
   		<div class="row">
   			<div class="col-xs-5 lh32">衛生的？</div>
   			<div class="col-xs-7">
-          <img src="<%= root_path %>images/icon/icon-baby-03.png">&nbsp;<span class="red b"><%= @eisei_1 %></span>　　
-          <img src="<%= root_path %>images/icon/icon-baby-04.png">&nbsp;<span class="blue b"><%= @eisei_2 %></span>
+          <img src="<%= root_path %>images/icon/icon-baby-03.png" alt="衛生的きれいなお店">&nbsp;<span class="red b"><%= @eisei_1 %></span>　　
+          <img src="<%= root_path %>images/icon/icon-baby-04.png" alt="お店が綺麗じゃない">&nbsp;<span class="blue b"><%= @eisei_2 %></span>
   			</div>
   		</div>
   	</div>

@@ -21,31 +21,6 @@
 
     <!-- Bootstrap JavaScript-->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-		<!-- slick -->
-		<link rel="stylesheet" type="text/css" href="/slick/slick.css" media="screen" />
-		<link rel="stylesheet" type="text/css" href="/slick/slick-theme.css" media="screen" />
-		
-		<script src="/slick/slick.min.js"></script>
-		
-		<script type="text/javascript">
-		$(function() {
-		    $('.center-item').slick({
-		          infinite: true,
-		          dots:true,
-		          slidesToShow: 1,
-		          centerMode: true, 
-		          centerPadding:'50px',
-		          autoplay:false,
-		          responsive: [{
-		               breakpoint: 640,
-		                    settings: {
-		                         centerMode: false,
-		               }
-		          }]
-		     });
-		});
-		</script>
 	
 	<!--ファイルアップボタン-->
 	<script type="text/javascript">
@@ -65,9 +40,9 @@
   <body>
     <%= render 'layouts/navbar' %>
 
-  <div class="cover">
-    <div class="cover-inner">
-      <div class="cover-contents">
+  <div class="cover2">
+    <div class="cover2-inner">
+      <div class="cover2-contents">
         <h1><%= @shop.name %>について<br>子連れで入りやすかシェアしてください</h1>
       </div>
     </div>
@@ -80,7 +55,7 @@
 	  <div class="col-md-9 left-contents">
 	  	
 	  	
-	<p class="m20-t f12em b gray"><%= @shop.name %></p>
+	<p class="m20-t f12em b orange"><%= @shop.name %></p>
 	<p><%= @shop.y_address %><br><%= @shop.y_moyorieki %></p>
 	<!--<p>緯度：<%= @shop.y_ido %>　経度：<%= @shop.y_keido %></p>-->
 	
@@ -104,20 +79,25 @@
 	<div class="al-c"><%= p.submit '選択した写真をアップロード', class: 'btn btn-default' %></div>
 	<% end %>
 	
-		
+
+
 	<% if @shop_photo_view.present? %>
-	  <div class="photo-slide">
-	    <ul class="center-item">
-	      <% @shop_photo_view.each do |photo| %>
-	        <li><%= image_tag photo.image %></li>
+	<div class="photo-cont">
+	    <% @shop_photo_view.each_with_index do |photo, i| %>
+	      <% if request.smart_phone? || request.tablet? %>
+	        <% if (i % 3) == 0 %><div class="row"><% end %>
+	        <div class="col-xs-4 p3"><%= image_tag photo.image.thumb.url, class: "img-responsive" %></div>
+	        <% if (i % 3) == 2 %></div><% end %>
+	      <% else %>
+	        <% if (i % 4) == 0 %><div class="row"><% end %>
+	        <div class="col-xs-3 p3"><%= image_tag photo.image.thumb.url, class: "img-responsive" %></div>
+	        <% if (i % 4) == 3 %></div><% end %>
 	      <% end %>
-	    </ul>
-	  </div>
-	<% else %>
-<!--	<p class="al-c red">※まだ写真が投稿されていません。</p>-->
+	    <% end %>
+	</div>
 	<% end %>
-	
-	
+	<%= paginate @shop_photo_view %>
+
 	<h2 class="m20-t m40-b fukidasi-midasi  bd-top">子供や赤ちゃん連れて行けるかな？</h2>
 	
 	<p class="m50-b">全てに答えなくて構わないので、わかった点、気づいた点だけでも投稿してシェアしてください。</p>

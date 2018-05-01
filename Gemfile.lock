@@ -90,6 +90,9 @@ GEM
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
+    jpmobile (5.2.1)
+      mail (~> 2.7.0)
+    jpmobile-terminfo (0.0.3)
     jquery-rails (4.3.1)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -219,6 +222,8 @@ DEPENDENCIES
   dotenv-rails
   fog-aws
   jbuilder (~> 2.5)
+  jpmobile
+  jpmobile-terminfo
   jquery-rails
   kaminari
   listen (~> 3.0.5)

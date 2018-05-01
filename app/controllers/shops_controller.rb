@@ -141,7 +141,7 @@ class ShopsController < ApplicationController
                     puts '業種コード：' + g['Code']
                     gyosyu = get_gyosyumei(g['Code'])
                     puts '該当する業種がありませんでした:' + g['Code'] unless gyosyu
-                    gyosyus += "・" + gyosyu
+                    gyosyus += "・" + gyosyu if gyosyu
                   end
                 else
                   gyosyus = nil
@@ -227,16 +227,18 @@ class ShopsController < ApplicationController
 
       #パンくずリスト
       pref = get_pref2(@area)
-      add_breadcrumb 'KoLuKu', '/'
+      add_breadcrumb 'こるく TOP', '/'
       add_breadcrumb pref, shops_path + '?area=' + pref + '&tenpo_genre=&option=0' if pref #◯◯市区町村のときは県もパンくずに入れる
       pankuzu_title = ''
       if @area.present?
-        pankuzu_title = @area + '周辺の'
+        pankuzu_title = @area + '周辺'
+        if @tenpo_genre.present?
+          pankuzu_title.concat('の' + @tenpo_genre)
+        end
+      elsif @tenpo_genre.present?
+        pankuzu_title.concat(@tenpo_genre)
       end
-      if @tenpo_genre.present?
-        pankuzu_title.concat(@tenpo_genre + 'に関する')
-      end
-      add_breadcrumb pankuzu_title +  '検索結果一覧' if pankuzu_title.present?
+      add_breadcrumb pankuzu_title if pankuzu_title.present?
 
 
     end
@@ -316,8 +318,19 @@ class ShopsController < ApplicationController
   def show 
     @shop = Shop.find(params[:id])
 
-    @shop_photos = @shop.shop_photos
-    puts @shop_photos.inspect
+
+    #画像の生成とページネーション
+    if request.smart_phone? || request.tablet?
+      puts 'スマホかタブレット'
+      @shop_photos = @shop.shop_photos.page(params[:page]).per(6)
+    else
+      puts 'PCアクセス'
+      @shop_photos = @shop.shop_photos.page(params[:page]).per(8)
+    end
+
+
+    puts @shop_photos.inspect 
+
     
     #ここでカウント
     @kozure_ok_1 = Kuchikomi.where(shop_id: @shop.id).where(kozure_ok: 1).count
@@ -408,7 +421,7 @@ class ShopsController < ApplicationController
     pref = get_pref(@shop.y_address)
     city = get_city(pref, @shop.y_address)
 
-    add_breadcrumb 'KoLuKu', '/'
+    add_breadcrumb 'こるく TOP', '/'
     add_breadcrumb pref, shops_path + '?area=' + pref + '&tenpo_genre=&option=0' if pref #shops?area=柏駅&tenpo_genre=&commit=検索&option=0 こういうURLを作りたい
     add_breadcrumb city, shops_path + '?area=' + city + '&tenpo_genre=&option=0' if city
     add_breadcrumb @shop.name
@@ -425,8 +438,17 @@ class ShopsController < ApplicationController
     @kuchikomi.shop_id = @shop.id               #ここでショップIDを入れておこう
     puts '◆kuchikomi  shop_id'
     puts @kuchikomi.shop_id
-    @shop_photo_view = @shop.shop_photos
-    @shop_photo = ShopPhoto.new
+
+    #画像の生成とページネーション
+    if request.smart_phone? || request.tablet?
+      puts 'スマホかタブレット'
+      @shop_photo_view = @shop.shop_photos.page(params[:page]).per(6)
+    else
+      puts 'PCアクセス'
+      @shop_photo_view = @shop.shop_photos.page(params[:page]).per(8)
+    end
+    
+    @shop_photo = ShopPhoto.new                 #アップロード用
     
     render layout: false #application.html.erbを適用したくない
   end

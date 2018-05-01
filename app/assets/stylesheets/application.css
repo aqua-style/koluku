@@ -73,11 +73,8 @@ footer h3 {
 /*******下層ページ用ヘッダ部分********/
 
 .cover2 {
-  margin-top: -20px;
-  margin-bottom: 20px;
   width: 100%;
-  height: 100px;
-  background-size: cover;
+  min-height: 80px;
 }
 
 .cover2 .cover2-inner {
@@ -96,7 +93,7 @@ footer h3 {
   color: #666;
   font-weight: bold;
   letter-spacing: 0.15em;
-  font-size:2em!important;
+  font-size:1.5em!important;
   
 }
 
@@ -114,6 +111,10 @@ footer h3 {
   max-height : 400px;
 }
 
+
+.photo-cont {
+  overflow: hidden;
+}
 
 
 
@@ -304,6 +305,10 @@ only screen and (max-width : 480px){
 .p0-r{ padding-right: 0!important; }
 .p0-b{ padding-bottom: 0!important; }
 .p0-l{ padding-left: 0!important; }
+
+.p2{padding: 2px!important;}
+.p3{padding: 3px!important;}
+.p4{padding: 4px!important;}
 
 .p5{ padding: 5px!important; }
 .p5-t{ padding-top: 5px!important; }

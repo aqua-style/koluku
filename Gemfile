@@ -77,3 +77,8 @@ gem 'fog-aws'
 
 #パンくずリスト
 gem 'breadcrumbs_on_rails'
+
+#スマホの端末情報を取る
+gem 'jpmobile'
+#スマホの画面サイズを取る
+gem 'jpmobile-terminfo'
