@@ -21,5 +21,8 @@ module Koluku
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
+
+    #lib以下の自作クラスを読ませるため
+    config.autoload_paths += %W(#{config.root}/lib)
   end
 end

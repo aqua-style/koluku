@@ -64,6 +64,11 @@
 <div class="container">
   <%= render 'layouts/flash_messages' %>
 
+
+<!--パンくずリスト-->
+<%= render_breadcrumbs builder: ::CustomBreadcrumbsBuilder %>
+    
+    
 <div class="row">
   <div class="col-md-9 left-contents">
 

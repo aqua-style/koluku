@@ -1,0 +1,19 @@
+<% if elements.present? %>
+  <ul class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+    <% elements.each_with_index do |element, i| %>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <% if element.path.present? %>
+        <% if element.equal?(elements.last) %>
+          <span itemprop="name"><%= element.name %></span>
+        <% else %>
+          <a itemprop="item" href="<%= element.path %>"><span itemprop="name"><%= element.name %></span></a>
+        <% end %>
+        <meta itemprop="position" content="<%= i+1 %>">
+      <% else %>
+        <span itemprop="name"><%= element.name %></span>
+        <meta itemprop="position" content="<%= i+1 %>">
+      <% end %>
+    </li>
+    <% end %>
+  </ul>
+<% end %>

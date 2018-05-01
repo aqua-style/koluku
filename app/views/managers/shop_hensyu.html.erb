@@ -1,3 +1,7 @@
+<% content_for :header do %>
+<meta name="robots" content="noindex,follow">
+<% end %>
+
 <% @mng = current_mng %>
 <h1><%= @mng.name %>の管理画面</h1>
 <p>権限レベル：<%= @mng.level %></p>

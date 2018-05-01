@@ -74,3 +74,6 @@ end
 
 #AWS S3画像アップ用
 gem 'fog-aws'
+
+#パンくずリスト
+gem 'breadcrumbs_on_rails'

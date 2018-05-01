@@ -83,4 +83,9 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+
+  #herokuでlib以下を読ませる
+  config.eager_load_paths += %W( #{config.root}/lib )
+  
 end

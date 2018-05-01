@@ -4,6 +4,12 @@ require 'json'
 class ShopsController < ApplicationController
 
 
+ 
+  #パンくずリストのTOP
+  #add_breadcrumb 'KoLuKu', '/'
+  
+  
+
   ###########################################################################################
   def index #ショップの一覧表示
     #@shops = Shop.all
@@ -218,6 +224,21 @@ class ShopsController < ApplicationController
 =end
       puts @shops.inspect if @shops.present?
 
+
+      #パンくずリスト
+      pref = get_pref2(@area)
+      add_breadcrumb 'KoLuKu', '/'
+      add_breadcrumb pref, shops_path + '?area=' + pref + '&tenpo_genre=&option=0' if pref #◯◯市区町村のときは県もパンくずに入れる
+      pankuzu_title = ''
+      if @area.present?
+        pankuzu_title = @area + '周辺の'
+      end
+      if @tenpo_genre.present?
+        pankuzu_title.concat(@tenpo_genre + 'に関する')
+      end
+      add_breadcrumb pankuzu_title +  '検索結果一覧' if pankuzu_title.present?
+
+
     end
 
   end
@@ -383,6 +404,14 @@ class ShopsController < ApplicationController
        }
     end
     
+    #パンくずリスト
+    pref = get_pref(@shop.y_address)
+    city = get_city(pref, @shop.y_address)
+
+    add_breadcrumb 'KoLuKu', '/'
+    add_breadcrumb pref, shops_path + '?area=' + pref + '&tenpo_genre=&option=0' if pref #shops?area=柏駅&tenpo_genre=&commit=検索&option=0 こういうURLを作りたい
+    add_breadcrumb city, shops_path + '?area=' + city + '&tenpo_genre=&option=0' if city
+    add_breadcrumb @shop.name
     
     render layout: false #application.html.erbを適用したくない
   end
@@ -772,5 +801,43 @@ class ShopsController < ApplicationController
     @@gyosyu_masta[code]
   end
 
+  #住所がどこの都道府県なのかを返すメソッド（パンくず用）
+  def get_pref(adr)
+    prefs = ['北海道', '青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県', '茨城県', '栃木県', '群馬県', '埼玉県', '千葉県', '東京都', '神奈川県', '新潟県', '富山県', '石川県', '福井県', '山梨県', '長野県', '岐阜県', '静岡県', '愛知県', '三重県', '滋賀県', '京都府', '大阪府', '兵庫県', '奈良県', '和歌山県', '鳥取県', '島根県', '岡山県', '広島県', '山口県', '徳島県', '香川県', '愛媛県', '高知県', '福岡県', '佐賀県', '長崎県', '熊本県', '大分県', '宮崎県', '鹿児島県', '沖縄県']
+    prefs.each do |p|
+      if adr.include?(p)
+        return p
+      end
+    end
+    return nil #万が一見つからなければnilを返す
+  end
+  
+  #逆に市から県をとる
+  def get_pref2(area)
+    cities = City.where(city: area)
+
+    if cities.length == 1
+      return cities[0].pref
+    elsif cities.length > 1
+      #同一名市区町村のとき。どこの県かわからん。
+      return nil
+    else
+      #ヒットしなかったら
+      return nil
+    end
+  end
+  
+    
+
+  #住所がどこの市区町村なのかを返すメソッド（パンくず用）
+  def get_city(pref, adr)
+    cities = City.where(pref: pref)
+    cities.each do |c|
+      if adr.include?(c.city)
+        return c.city
+      end
+    end
+    return nil #万が一見つからなければnilを返す
+  end
   
 end
