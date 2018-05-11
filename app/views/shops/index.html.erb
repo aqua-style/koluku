@@ -1,25 +1,8 @@
-<% @page_title ='' %>
-<% if @area.present? %>
-  <% @page_title = @area + '周辺の' %>
-<% end %>
-<% if @tenpo_genre.present? %>
-  <% @page_title.concat(@tenpo_genre + 'に関する') %>
-<% end %>
-<% @page_title.concat('子連れOKな飲食店口コミ情報') %> 
-
-<% if @area.present? && @tenpo_genre.present? %>
-  <% h1title = @area + "x" + @tenpo_genre %>
-<% elsif @area.present? %>
-  <% h1title = @area %>
-<% elsif@tenpo_genre.present? %>
-  <% h1title = @tenpo_genre %>
-<% else %>
-<% end %>
 <% content_for :cover do %>
   <div class="cover2">
     <div class="cover2-inner">
       <div class="cover2-contents">
-        <h1><%= h1title %><br>検索結果一覧</h1>
+        <h1><%= @h1title %><br>こちらの店舗が見つかりました！</h1>
       </div>
     </div>
   </div>
@@ -110,19 +93,19 @@ window.onload = function(){
 
 <!-- ここに口コミの概要を表示する　-->
         <div class="m5-t m10-b">
-          <% if shop.kozure_ok > 0 %>  <img src="/images/icon/icon-baby-06-gray-32.png"> <% end %>
-          <% if shop.smoking > 0 %>  <img src="/images/icon/icon-nosmoking-gray-32.png"> <% end %>
-          <% if shop.nigiyaka > 0 %>  <img src="/images/icon/icon-gaya-gray-32.png"> <% end %>
-          <% if shop.kids_chair > 0 %>  <img src="/images/icon/icon-isu-01-gray-32.png"> <% end %>
-          <% if shop.kids_menu > 0 %>  <img src="/images/icon/icon-food-01-gray-32.png"> <% end %>
-          <% if shop.kids_syokki > 0 %>  <img src="/images/icon/icon-syokki-gray-32.png"> <% end %>
-          <% if shop.junyusitu > 0 %>  <img src="/images/icon/icon-milk-gray-32.png"> <% end %>
-          <% if shop.omutu_space > 0 %>  <img src="/images/icon/icon-omutu-gray-32.png"> <% end %>
-          <% if shop.babycar > 0 %>  <img src="/images/icon/icon-babycar-gray-32.png"> <% end %>
-          <% if shop.hirosa > 0 %>  <img src="/images/icon/icon-hirosa-gray-32.png"> <% end %>
-          <% if shop.chusyajo > 0 %>  <img src="/images/icon/icon-car-01-gray-32.png"> <% end %>
-          <% if shop.ekitika > 0 %>  <img src="/images/icon/icon-ekitika-gray-32.png"> <% end %>
-          <% if shop.ehon_omocha > 0 %>  <img src="/images/icon/icon-omocha-gray-32.png"> <% end %>
+          <% if shop.kozure_ok > 0 %>  <img src="/images/icon/icon-baby-06-gray-32.png" alt="子連れOK"> <% end %>
+          <% if shop.smoking > 0 %>  <img src="/images/icon/icon-nosmoking-gray-32.png" alt="禁煙"> <% end %>
+          <% if shop.nigiyaka > 0 %>  <img src="/images/icon/icon-gaya-gray-32.png" alt="にぎやか"> <% end %>
+          <% if shop.kids_chair > 0 %>  <img src="/images/icon/icon-isu-01-gray-32.png" alt="キッズ椅子あり"> <% end %>
+          <% if shop.kids_menu > 0 %>  <img src="/images/icon/icon-food-01-gray-32.png" alt="キッズメニュー有り"> <% end %>
+          <% if shop.kids_syokki > 0 %>  <img src="/images/icon/icon-syokki-gray-32.png" alt="子供食器あり"> <% end %>
+          <% if shop.junyusitu > 0 %>  <img src="/images/icon/icon-milk-gray-32.png" alt="授乳室完備"> <% end %>
+          <% if shop.omutu_space > 0 %>  <img src="/images/icon/icon-omutu-gray-32.png" alt="おむつ交換スペース有り"> <% end %>
+          <% if shop.babycar > 0 %>  <img src="/images/icon/icon-babycar-gray-32.png" alt="ベビーカー入店OK"> <% end %>
+          <% if shop.hirosa > 0 %>  <img src="/images/icon/icon-hirosa-gray-32.png" alt="店内広い"> <% end %>
+          <% if shop.chusyajo > 0 %>  <img src="/images/icon/icon-car-01-gray-32.png" alt="駐車場あり"> <% end %>
+          <% if shop.ekitika > 0 %>  <img src="/images/icon/icon-ekitika-gray-32.png" alt="駅から近い"> <% end %>
+          <% if shop.ehon_omocha > 0 %>  <img src="/images/icon/icon-omocha-gray-32.png" alt="絵本おもちゃ有り"> <% end %>
         </div>
 
         <% unless shop.id.present? %>

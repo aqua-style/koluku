@@ -1,3 +1,14 @@
+#herokuappでアクセスしてきたら独自ドメインへ
+RewriteEngine Off
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^(koluku\.herokuapp\.com)(:80)? [NC]
+RewriteRule ^(.*)$ https://www.koluku.net/$1 [R=301,L]
+
+#httpでアクセスしてきたらhttpsへ
+RewriteEngine On
+RewriteCond %{HTTPS} !on
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
 #キャッシュの設定
 ExpiresActive On
 ExpiresByType text/css "access plus 1 weeks"

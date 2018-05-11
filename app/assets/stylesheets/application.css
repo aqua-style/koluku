@@ -9,6 +9,7 @@ body {
 footer {
   margin-top: 70px;
   border-top: #d3d3d3 solid 1px;
+  background-color: #fff9d1;
 }
 
 footer h3 {
@@ -18,6 +19,7 @@ footer h3 {
   border-left: 4px solid #aaa;
   padding: 5px 10px;
 }
+
 
 /* navbar */
 .navbar {
@@ -567,7 +569,7 @@ only screen and (max-width : 480px){
 .shoplist-item{
 	padding:15px 15px;
 	background: #fff;
-	margin-bottom:1em;
+	margin-bottom:3em;
 }
 
 .shoplist .shoplist-thumb{
@@ -748,6 +750,9 @@ thead th{
 }
 .shop-comment{
   /*  border: 1px solid #666; */
+  border: 4px solid #fff9d1 ;
+  padding : 0 20px 0 10px;
+  border-radius:16px;
 }
 
 
@@ -919,7 +924,7 @@ html:not(:target) .talker img{
 /************地図***************/
 
 .mapcont {
-  margin:0 15px;
+  /*margin:0 15px;*/
 }
 
 /****画像アップロード*****/
@@ -971,4 +976,74 @@ html:not(:target) .talker img{
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+}
+
+
+/*************ボタン************/
+.btn-kensaku {
+    color: #fff;
+    background-color: #edae45;
+    border-radius: 16px;
+    font-size: 18px;
+    transition: all 1s;
+}
+
+input.btn-kensaku[type=submit]:hover {
+    color: #fff;
+    background-color: #ffcc99;
+}
+
+
+.btn-navkensaku {
+    color: #fff;
+    background-color: #edae45;
+    border-radius: 16px;
+    font-size: 14px;
+    transition: all 1s;
+    padding: 5px 10px!important;
+}
+
+.btn-navinput {
+  display: inline!important;
+  width: auto!important;
+  height: 30px!important;
+}
+
+input.btn-navkensaku[type=submit]:hover {
+    color: #fff;
+    background-color: #ffcc99;
+}
+
+
+
+
+.btn-toukou {
+    color: #fff;
+    background-color: #edae45;
+    border-radius: 16px;
+    font-size: 18px;
+    transition: all 1s;
+}
+
+input.btn-toukou[type=submit]:hover {
+    color: #fff;
+    background-color: #ffcc99;
+}
+
+a.btn-toukou:hover {
+    color: #fff;
+    background-color: #ffcc99;
+}
+
+
+/*****ボタン画像を半透明に*****/
+
+a:hover img {
+    opacity: 0.7;
+}
+
+
+/*****パンくずリストの上書き****/
+.breadcrumb {
+ background-color:#fff9d1!important; 
 }

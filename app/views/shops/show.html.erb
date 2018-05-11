@@ -5,8 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<% @page_title = @shop.name + 'って子連れで入りやすい？ | 子連れでランチしよう！パパママ口コミサイト - KoLuKu' %> 
-<title><%= @page_title %></title>
+    <title><%= page_title %></title>
 
     <%= csrf_meta_tags %>
 
@@ -35,7 +34,7 @@
 <div class="cover2">
     <div class="cover2-inner">
       <div class="cover2-contents">
-        <h1><%= @shop.name %>の子連れ入店情報</h1>
+        <h1><%= @shop.name %><br>子供連れ・赤ちゃんと入りやすい？口コミ情報</h1>
       </div>
     </div>
 </div>
@@ -50,7 +49,7 @@
     
     
 <div class="row">
-  <div class="col-md-9 left-contents">
+  <div class="col-md-9 left-contents" style="border:none;">
 
 <div class="shop-info">
   <h2 class="m20-t f12em b orange"><%= @shop.name %></h2>
@@ -380,10 +379,10 @@
 
 
 <div class="al-c m30-t">
-  <%= link_to '写真や口コミを投稿する', kuchikomi_shop_path(@shop), class: "btn btn-primary" %>
+  <%= link_to '写真や口コミを投稿する', kuchikomi_shop_path(@shop), class: "btn btn-toukou" %>
 </div>
 
-<div class="shop-comment">
+<div class="shop-comment m20-t">
   <h2 class="m20-t m40-b fukidasi-midasi">コメント一覧</h2>
   
   <% @user_comment_infos.each do |info| %>
@@ -425,8 +424,6 @@
 </div>
 
   <%= render 'layouts/footer' %>
-  
-
 
 
 </body>

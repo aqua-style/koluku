@@ -86,7 +86,7 @@
               <div class="form-group form-inline">
                 <%= text_field_tag :area, @area, class: 'form-control input-lg', placeholder: "地名", size: 5 %> × 
                 <%= text_field_tag :tenpo_genre, @tenpo_genre, class: 'form-control input-lg', placeholder: "店名またはジャンル", size: 30 %>
-                <%= submit_tag '検索', class: 'btn btn-success btn-lg m5-t' %>
+                <%= submit_tag '検索', class: 'btn btn-kensaku m5-t' %>
               </div>
               <div class="form-group">
         				<label><%= radio_button_tag :option, '0' %>口コミがあるお店のみ表示</label>　
@@ -128,9 +128,12 @@
 
       </div>
 
-    <div class="col-md-3"><!-- 右サイドメニュー -->
-      <%= render 'layouts/side_menu' %>
+      <div class="col-md-3"><!-- 右サイドメニュー -->
+        <%= render 'layouts/side_menu' %>
+      </div>
+  
     </div>
+  
   </div>
   
     <%= render 'layouts/footer' %>

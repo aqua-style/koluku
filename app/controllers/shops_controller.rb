@@ -225,6 +225,23 @@ class ShopsController < ApplicationController
       puts @shops.inspect if @shops.present?
 
 
+      #記事タイトルとH1生成
+      @page_title = ''
+      @h1title = ''
+      if @area.present? && !@tenpo_genre.present?
+        @page_title = @area + 'で子連れランチ・ディナーOKな飲食店口コミ情報'
+        @h1title = @area + 'で子連れランチ・ディナーOKな飲食店'
+      elsif @area.present? && @tenpo_genre.present?
+        @page_title = @area + '×' + @tenpo_genre + '　子連れOK飲食店の口コミ情報'
+        @h1title = @area + '×' + @tenpo_genre + '　子連れOK飲食店'
+      elsif !@area.present? && @tenpo_genre.present?
+        @page_title = @tenpo_genre + 'の子連れOK飲食店の口コミ情報'
+        @h1title = @tenpo_genre + 'の子連れOK飲食店'
+      end
+      puts @page_title
+
+
+
       #パンくずリスト
       pref = get_pref2(@area)
       add_breadcrumb 'こるく TOP', '/'
@@ -416,6 +433,12 @@ class ShopsController < ApplicationController
   	    	:updated_at => kuchikomi.updated_at,
        }
     end
+    
+    
+    #記事タイトル生成
+    @page_title = @shop.name + 'って子ども赤ちゃんと入りやすい？'
+    
+    
     
     #パンくずリスト
     pref = get_pref(@shop.y_address)
