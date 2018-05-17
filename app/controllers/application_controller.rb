@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
+
+  #herokuapp.comから独自ドメインへリダイレクト
   before_filter :ensure_domain
   FQDN = 'www.koluku.net'
   # redirect correct server from herokuapp domain for SEO
@@ -11,7 +13,6 @@ class ApplicationController < ActionController::Base
    port = ":#{request.port}" unless [80, 443].include?(request.port)
    redirect_to "#{request.protocol}#{FQDN}#{port}#{request.path}", status: :moved_permanently
   end
-
 
 
   include SessionsHelper

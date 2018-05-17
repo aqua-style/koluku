@@ -9,7 +9,7 @@ body {
 footer {
   margin-top: 70px;
   border-top: #d3d3d3 solid 1px;
-  background-color: #fff9d1;
+  background-color: #fffbfd;
 }
 
 footer h3 {
@@ -69,6 +69,72 @@ footer h3 {
   letter-spacing: 0.15em;
 
 }
+
+
+.bura {
+	position: relative;
+	overflow: hidden;
+}
+
+.bura .onimage{
+	position: absolute;
+	bottom: 0;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+/*
+.myswing {
+	position: relative; top:0%; left:0%;
+	transform-origin: 56% 81%;
+	animation: swing linear 2s infinite;
+	display: block;
+	float:left;
+}*/
+
+.swing {
+-moz-animation: swing linear 0.5s infinite;
+-moz-transform-origin:  56% 81%;
+-webkit-animation: swing linear 0.5s infinite;
+-webkit-transform-origin: 56% 81%;
+-ms-animation: swing linear 0.5s infinite;
+-ms-transform-origin: 56% 81%;
+-o-animation: swing linear 0.5s infinite;
+-o-transform-origin: 56% 81%;
+animation: swing linear 0.5s infinite;
+transform-origin:  56% 81%;
+display: block;
+float:left;
+}
+@-moz-keyframes swing {
+0% { -moz-transform: rotate(0deg) }
+25% { -moz-transform: rotate(5deg); }
+50% { -moz-transform: rotate(0deg); }
+75% { -moz-transform: rotate(-5deg); }
+100% { -moz-transform: rotate(0deg); }
+}
+@-webkit-keyframes swing {
+0% { -webkit-transform: rotate(0deg); }
+25% { -webkit-transform: rotate(5deg); }
+50% { -webkit-transform: rotate(0deg); }
+75% { -webkit-transform: rotate(-5deg); }
+100% { -webkit-transform: rotate(0deg); }
+}    
+@-o-keyframes swing {
+0% { -o-transform: rotate(0deg); }
+25% { -o-transform: rotate(5deg); }
+50% { -o-transform: rotate(0deg); }
+75% { -o-transform: rotate(-5deg); }
+100% { -o-transform: rotate(0deg); }
+}
+@keyframes swing {
+0% { transform: rotate(0deg); }
+25% { transform: rotate(5deg); }
+50% { transform: rotate(0deg); }
+75% { transform: rotate(-5deg); }
+100% { transform: rotate(0deg); }
+}
+
 
 
 
@@ -433,7 +499,7 @@ only screen and (max-width : 480px){
 .yellow{ color: #ffff00!important; }/*黄*/
 .navy{ color: #3f51b5!important; }/*紺*/
 .orange{ color: #ff9800!important; }/*橙*/
-.pink{ color: #ec407a!important; }/*ピンク*/
+.pink{ color: #FF5B9D!important; }/*ピンク*/
 .purple{ color: #9c27b0!important; }/*紫*/
 .olive{ color: #808000!important; }/*オリーブ*/
 .lime{ color: #00ff00!important; }/*黄緑*/
@@ -762,6 +828,25 @@ thead th{
   margin-bottom: 20px;
 }
 
+#syosaikensaku {
+  display:none;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  box-shadow: 0 2px #eee;
+  margin-bottom: 15px;
+  padding: 15px;
+  margin-left: -2em;
+  margin-right: -2em;
+}
+
+.btn-syosaikensaku {
+  border:1px solid #ccc;
+  border-radius:2px;
+  padding:5px;
+}
+
+
+
 
 /********サイドメニュー************/
 
@@ -925,6 +1010,7 @@ html:not(:target) .talker img{
 
 .mapcont {
   /*margin:0 15px;*/
+  margin-top:15px;
 }
 
 /****画像アップロード*****/
@@ -982,7 +1068,7 @@ html:not(:target) .talker img{
 /*************ボタン************/
 .btn-kensaku {
     color: #fff;
-    background-color: #edae45;
+    background-color: #ff5b9d; /*#edae45;*/
     border-radius: 16px;
     font-size: 18px;
     transition: all 1s;
@@ -990,7 +1076,7 @@ html:not(:target) .talker img{
 
 input.btn-kensaku[type=submit]:hover {
     color: #fff;
-    background-color: #ffcc99;
+    background-color: #FFBFD9; /*#ffcc99;*/
 }
 
 

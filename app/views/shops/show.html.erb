@@ -379,7 +379,11 @@
 
 
 <div class="al-c m30-t">
-  <%= link_to '写真や口コミを投稿する', kuchikomi_shop_path(@shop), class: "btn btn-toukou" %>
+  <% if request.smart_phone? || request.tablet? %>
+    <%= link_to '写真や口コミを投稿する！', kuchikomi_shop_path(@shop), class: "p30 btn btn-toukou" %>
+  <% else %>
+    <%= link_to '写真や口コミを投稿する！', kuchikomi_shop_path(@shop), class: "btn btn-toukou" %>
+  <% end %>
 </div>
 
 <div class="shop-comment m20-t">
@@ -395,7 +399,7 @@
       	    <img src="/images/icon/icon-mama-0<%= rand(1..9) %>-160px.png">
       	  <% end %>
         	<% if info[:nickname].present? %>
-        	  <%= info[:nickname] %><br>
+        	  <%= link_to info[:nickname], user_path(info[:user_id]) %><br>
         	<% else %>
         	  匿名さん<br>
         	<% end %>

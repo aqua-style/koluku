@@ -39,7 +39,7 @@
           <span class="icon-bar"></span>
         </button>
         <div class="navbar-left">
-          <div class="col-xs-4">        <a href="/"><img src="/images/logo2.png" alt="KoLuKu"></a></div>
+          <div class="col-xs-4">        <a href="/"><img src="/images/logo3.png" alt="KoLuKu"></a></div>
           <div class="col-xs-12"        <%= header_message.html_safe %></div>
         </div>
       </div>
@@ -70,10 +70,18 @@
   <div class="cover">
     <div class="cover-inner">
       <div class="cover-contents">
-        <img style="max-width:100%;" src ="/images/cover-bg4-1200x300-02.png">
+        <% if request.smart_phone? || request.tablet? %>
+          <img style="max-width:100%;" src ="/images/cover-bg4-1200x300-03sm.png">
+        <% else %>
+          <div class="bura">
+            <img style="max-width:100%;" src ="/images/cover-bg5-mov1.png">
+            <div class="onimage swing"><img style="max-width:100%;" src="./images/cover-bg5-mov1-asi3.png"></div>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
+
 
 
   <div class="container">
@@ -88,7 +96,8 @@
                 <%= text_field_tag :tenpo_genre, @tenpo_genre, class: 'form-control input-lg', placeholder: "店名またはジャンル", size: 30 %>
                 <%= submit_tag '検索', class: 'btn btn-kensaku m5-t' %>
               </div>
-              <div class="form-group">
+              
+              <div <% if request.smart_phone? || request.tablet? %>style="display:none;"<% end %> class="form-group">
         				<label><%= radio_button_tag :option, '0' %>口コミがあるお店のみ表示</label>　
         				<label><%= radio_button_tag :option, '1',:checked %>すべてのお店を表示</label>
               </div>
