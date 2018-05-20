@@ -18,6 +18,36 @@ class ShopsController < ApplicationController
     @area = params[:area]
     @tenpo_genre = params[:tenpo_genre]
     @option = params[:option] #option:0ならDBのみ検索 option:1ならDB&Yahoo検索
+    
+    op1 = params[:op1] #子連れOK
+    op2 = params[:op2] #客層はファミリー向け
+    op3 = params[:op3] #乳児OK
+    op4 = params[:op4] #にぎやか
+    op5 = params[:op5] #禁煙
+    op6 = params[:op6] #キッズチェア
+    op7 = params[:op7] #キッズメニュー
+    op8 = params[:op8] #子供食器
+    op9 = params[:op9] #低アレルギー
+    op10 = params[:op10] #離乳食持ち込み
+    op11 = params[:op11] #座敷
+    op12 = params[:op12] #個室・半個室
+    op13 = params[:op13] #授乳室
+    op14 = params[:op14] #おむつ台
+    op15 = params[:op15] #キッズスペース
+    op16 = params[:op16] #ベビーカー入店
+    op17 = params[:op17] #店内広い
+    op18 = params[:op18] #席と席の間が広い
+    op19 = params[:op19] #空いてる
+    op20 = params[:op20] #駐車場
+    op21 = params[:op21] #駅チカ
+    op22 = params[:op22] #アクセスしやすい
+    op23 = params[:op23] #店の子供歓迎
+    op24 = params[:op24] #個室座敷の予約
+    op25 = params[:op25] #絵本・おもちゃ
+    op26 = params[:op26] #エプロン
+    op27 = params[:op27] #衛生的
+    
+    
 
     @keyword = @area + ' ' + @tenpo_genre
     puts @keyword

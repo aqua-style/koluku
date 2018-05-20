@@ -9,6 +9,9 @@
 <% end %>
 
 
+
+
+
 <script type="text/javascript">
 $(function(){
     $("#syosaikensaku").css("display", "none");
@@ -16,11 +19,14 @@ $(function(){
     $("#jQueryPush").click(function(){
         // 「id="jQueryBox"」の表示、非表示を切り替える
         $("#syosaikensaku").toggle();
+        $("[src='/images/icon/btn-kaihei.png']").toggle();
+        $("[src='/images/icon/btn-kaihei2.png']").toggle();
     });
 });
 </script>
 
-<span id="jQueryPush" class="btn-syosaikensaku">こだわり検索を開く<img src="/images/icon/btn-kaihei.png"></span>
+
+<span id="jQueryPush" class="btn-syosaikensaku">こだわり検索を開く<img src="/images/icon/btn-kaihei.png"><img style="display:none;" src="/images/icon/btn-kaihei2.png"></span>
 <div id="syosaikensaku" >
   <div class="search">
     <div class="row m5-r m5-l">
@@ -31,8 +37,8 @@ $(function(){
             <%= text_field_tag :tenpo_genre, @tenpo_genre, class: 'form-control input-lg', placeholder: "店名またはジャンル", size: 30 %>
             <%= submit_tag '検索', class: 'btn btn-kensaku m5-t' %>
           </div>
-子連れしやすい
-客層はファミリー向け
+<%= check_box_tag 'op1' %> 子連れしやすい
+<%= check_box_tag 'op2' %> 客層はファミリー向け
 乳児OK
 にぎやか
 禁煙

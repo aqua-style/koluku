@@ -16,9 +16,86 @@
 
       <div class="right">
 
+
+
         <div class="left m10-t">
           <%= form_tag(shops_path, method: :get) do %>
             <div class="form-inline">
+<div class="popupModal1">
+ <input type="radio" name="modalPop" id="pop11" />
+ <label class="popupbtn" for="pop11">こだわり検索はこちら≫</label>
+ <input type="radio" name="modalPop" id="pop12" />
+ <label for="pop12">CLOSE</label>
+ <input type="radio" name="modalPop" id="pop13" />
+ <label for="pop13">×</label>
+ <div class="modalPopup2">
+  <div class="modalPopup3">
+   <h2 class="modalTitle">こだわり検索</h2>
+   <div class="modalMain">
+      <div class="row">
+      <div class="col-xs-6"><%= check_box_tag 'op1' %> 子連れOK</div><div class="col-xs-6"><%= check_box_tag 'op2' %> 客層はファミリー向け</div>
+      </div>
+      <div class="row">
+      <div class="col-xs-6"><%= check_box_tag 'op3' %> 乳児OK</div><div class="col-xs-6"><%= check_box_tag 'op4' %> にぎやか</div>
+      </div>
+<hr>
+<div class="row">
+  <div class="col-xs-6"><%= check_box_tag 'op6' %> キッズチェア</div>
+  <div class="col-xs-6"><%= check_box_tag 'op7' %> キッズメニュー</div>
+</div>
+<div class="row">
+  <div class="col-xs-6"><%= check_box_tag 'op8' %> 子供食器</div>
+  <div class="col-xs-6"><%= check_box_tag 'op9' %> 低アレルギー</div>
+</div>
+<div class="row">
+  <div class="col-xs-6"><%= check_box_tag 'op10' %> 離乳食持ち込み</div>
+  <div class="col-xs-6"><%= check_box_tag 'op26' %> エプロン</div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-6"><%= check_box_tag 'op13' %> 授乳室</div>
+  <div class="col-xs-6"><%= check_box_tag 'op14' %> おむつ台</div>
+</div>
+<div class="row">
+  <div class="col-xs-6"><%= check_box_tag 'op15' %> キッズスペース</div>
+  <div class="col-xs-6"><%= check_box_tag 'op16' %> ベビーカー入店</div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-6"><%= check_box_tag 'op11' %> 座敷</div>
+  <div class="col-xs-6"><%= check_box_tag 'op12' %> 個室・半個室</div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-6"><%= check_box_tag 'op5' %> 禁煙</div>
+  <div class="col-xs-6"><%= check_box_tag 'op17' %> 店内広い</div>
+</div>
+<div class="row">
+  <div class="col-xs-6"><%= check_box_tag 'op18' %> 席と席の間が広い</div>
+  <div class="col-xs-6"><%= check_box_tag 'op19' %> 空いてる</div>
+</div>
+
+<div class="row">
+  <div class="col-xs-6"><%= check_box_tag 'op20' %> 駐車場</div>
+  <div class="col-xs-6"><%= check_box_tag 'op21' %> 駅チカ</div>
+</div>
+<div class="row">
+  <div class="col-xs-12"><%= check_box_tag 'op22' %> アクセスしやすい</div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-6"><%= check_box_tag 'op23' %> 店の子供歓迎</div>
+  <div class="col-xs-6"><%= check_box_tag 'op24' %> 個室座敷の予約</div>
+</div>
+<div class="row">
+  <div class="col-xs-6"><%= check_box_tag 'op25' %> 絵本・おもちゃ</div>
+  <div class="col-xs-6"><%= check_box_tag 'op27' %> 衛生的</div>
+</div>
+
+   </div>
+  </div>
+ </div>
+</div>
               <%= text_field_tag :area, @area, class: 'form-control form-control-sm btn-navinput', placeholder: "地名", size: 5 %> × 
               <%= text_field_tag :tenpo_genre, @tenpo_genre, class: 'form-control form-control-sm btn-navinput', placeholder: "店名またはジャンル", size: 13 %>
               <%= hidden_field_tag :option, '1' %>
