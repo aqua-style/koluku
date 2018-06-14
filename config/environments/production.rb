@@ -88,4 +88,7 @@ Rails.application.configure do
   #herokuでlib以下を読ませる
   config.eager_load_paths += %W( #{config.root}/lib )
   
+  #http→httpsへリダイレクト
+  config.force_ssl = true
+  
 end
