@@ -17,37 +17,11 @@ class ShopsController < ApplicationController
 #    @keyword = params[:keyword] #検索KWを取る
     @area = params[:area]
     @tenpo_genre = params[:tenpo_genre]
-    @option = params[:option] #option:0ならDBのみ検索 option:1ならDB&Yahoo検索
-    
-    op1 = params[:op1] #子連れOK
-    op2 = params[:op2] #客層はファミリー向け
-    op3 = params[:op3] #乳児OK
-    op4 = params[:op4] #にぎやか
-    op5 = params[:op5] #禁煙
-    op6 = params[:op6] #キッズチェア
-    op7 = params[:op7] #キッズメニュー
-    op8 = params[:op8] #子供食器
-    op9 = params[:op9] #低アレルギー
-    op10 = params[:op10] #離乳食持ち込み
-    op11 = params[:op11] #座敷
-    op12 = params[:op12] #個室・半個室
-    op13 = params[:op13] #授乳室
-    op14 = params[:op14] #おむつ台
-    op15 = params[:op15] #キッズスペース
-    op16 = params[:op16] #ベビーカー入店
-    op17 = params[:op17] #店内広い
-    op18 = params[:op18] #席と席の間が広い
-    op19 = params[:op19] #空いてる
-    op20 = params[:op20] #駐車場
-    op21 = params[:op21] #駅チカ
-    op22 = params[:op22] #アクセスしやすい
-    op23 = params[:op23] #店の子供歓迎
-    op24 = params[:op24] #個室座敷の予約
-    op25 = params[:op25] #絵本・おもちゃ
-    op26 = params[:op26] #エプロン
-    op27 = params[:op27] #衛生的
-    
-    
+
+    @option = '1' #初期値1
+    @option = params[:option] if params[:option].present? #option:0ならDBのみ検索 option:1ならDB&Yahoo検索 ｜TOPもナビバー検索もデフォルトは1　内部リンクは0のメニューもある
+    @option = '0' if params[:kodawari].present? #こだわり検索のときはDB内検索にする
+
 
     @keyword = @area + ' ' + @tenpo_genre
     puts @keyword
@@ -84,6 +58,15 @@ class ShopsController < ApplicationController
         @shops_db = Shop.where("(name like ?) OR (y_gyosyu like ?)", "\%#{@tenpo_genre}\%", "\%#{@tenpo_genre}\%")
       end
 
+      #こだわり検索の条件を＆でつなげる
+      if params[:kodawari].present?
+        params[:kodawari].each do |key, value|
+          next unless Shop.column_names.include?(key)
+          @shops_db = @shops_db.where("#{key} >= 1") if value.present?
+        end
+      end
+
+      
       
       #kuchikomisの多い順から並び替えして配列に変換おく
       #@shops_db_ranking = @shops_db.sort{|a, b| b.kuchikomis.size <=> a.kuchikomis.size} if @shops_db.present?
@@ -238,7 +221,7 @@ class ShopsController < ApplicationController
       
       
       @kensu = hoge.length
-      @shops = Kaminari.paginate_array(hoge).page(params[:page]).per(20)
+      @shops = Kaminari.paginate_array(hoge).page(params[:page]).per(30)
       
 
 
@@ -255,6 +238,115 @@ class ShopsController < ApplicationController
       puts @shops.inspect if @shops.present?
 
 
+      #条件検索時のタイトル設定
+      #タイトルに出す項目はKWがある12項目に絞り、上から優先順位を付けて3つまでとする
+      #h1タイトルは個数は何個でもよい
+      jcheck = Array.new(12)
+      jtitle = ""
+      jh1 = ""
+      jnum = 0
+      if params[:kodawari].present?
+        params[:kodawari].each do |key, value|
+          if value.present?
+            puts 'value:' + value.to_s + ' key:' + key
+            case key
+              when 'nyuji_ok' then      jcheck[0] = 1
+              when 'kids_menu' then     jcheck[1] = 1
+              when 'omutu_space' then   jcheck[2] = 1
+              when 'zasiki' then        jcheck[3] = 1
+              when 'motikomi' then      jcheck[4] = 1
+              when 'babycar' then       jcheck[5] = 1
+              when 'kositu' then        jcheck[6] = 1
+              when 'low_allergy_food' then                jcheck[7] = 1
+              when 'junyusitu' then     jcheck[8] = 1
+              when 'kids_space' then    jcheck[9] = 1
+              when 'chusyajo' then      jcheck[10] = 1
+              when 'kangei' then        jcheck[11] = 1
+            end
+          end
+        end
+      end
+      
+      if jcheck[0] == 1
+              jtitle << "赤ちゃんOK / "
+              jh1  << "赤ちゃんOK / "
+              jnum += 1
+      end
+      if jcheck[1] == 1
+              jtitle << "キッズメニュー / "
+              jh1 << "キッズメニュー / "
+              jnum += 1
+      end
+      if jcheck[2] == 1
+              jtitle << "おむつ台 / "
+              jh1 << "おむつ台 / "
+              jnum += 1
+      end
+      if jcheck[3] == 1
+                jh1 << "座敷 / "
+                if jnum < 3
+                  jtitle << "座敷 / "
+                  jnum += 1
+                end
+      end
+      if jcheck[4] == 1
+                jh1 << "離乳食持ち込み / "
+                if jnum < 3
+                  jtitle << "離乳食持ち込み / "
+                  jnum += 1
+                end
+      end
+      if jcheck[5] == 1
+                jh1 << "ベビーカー入店ok / "
+                if jnum < 3
+                  jtitle << "ベビーカー入店ok / "
+                  jnum += 1
+                end
+      end
+      if jcheck[6] == 1
+                jh1 << "個室 / "
+                if jnum < 3
+                  jtitle << "個室 / "
+                  jnum += 1
+                end
+      end
+      if jcheck[7] == 1
+                jh1 << "低アレルギー / "
+                if jnum < 3
+                  jtitle << "低アレルギー / "
+                  jnum += 1
+                end
+      end
+      if jcheck[8] == 1
+                jh1 << "授乳室 / "
+                if jnum < 3
+                  jtitle << "授乳室 / "
+                  jnum += 1
+                end
+      end
+      if jcheck[9] == 1
+                jh1 << "キッズスペース / "
+                if jnum < 3
+                  jtitle << "キッズスペース / "
+                  jnum += 1
+                end
+      end
+      if jcheck[10] == 1
+                jh1 << "駐車場 / "
+                if jnum < 3
+                  jtitle << "駐車場 / "
+                  jnum += 1
+                end
+      end
+      if jcheck[11] == 1
+                jh1 << "子連れ歓迎 / "
+                if jnum < 3
+                  jtitle << "子連れ歓迎 / "
+                  jnum += 1
+                end
+      end
+
+
       #記事タイトルとH1生成
       @page_title = ''
       @h1title = ''
@@ -268,6 +360,13 @@ class ShopsController < ApplicationController
         @page_title = @tenpo_genre + 'の子連れOK飲食店の口コミ情報'
         @h1title = @tenpo_genre + 'の子連れOK飲食店'
       end
+      
+      #条件タイトルを前につなげる
+      if jtitle.present?
+        @page_title = jtitle + @page_title
+        @h1title = jh1 + @h1title
+      end
+      
       puts @page_title
 
 
@@ -365,7 +464,6 @@ class ShopsController < ApplicationController
   def show 
     @shop = Shop.find(params[:id])
 
-
     #画像の生成とページネーション
     if request.smart_phone? || request.tablet?
       puts 'スマホかタブレット'
@@ -380,13 +478,13 @@ class ShopsController < ApplicationController
 
     
     #ここでカウント
-    @kozure_ok_1 = Kuchikomi.where(shop_id: @shop.id).where(kozure_ok: 1).count
-    @kozure_ok_2 = Kuchikomi.where(shop_id: @shop.id).where(kozure_ok: 2).count
+    @kozure_ok_1 = Kuchikomi.where(shop_id: @shop.id).where(kozure_ok: 1).count #子連れしやすいの数
+    @kozure_ok_2 = Kuchikomi.where(shop_id: @shop.id).where(kozure_ok: 2).count #子連れしにくいの数
     @nyuji_ok_1 = Kuchikomi.where(shop_id: @shop.id).where(nyuji_ok: 1).count
     @nyuji_ok_2 = Kuchikomi.where(shop_id: @shop.id).where(nyuji_ok: 2).count
-    @smoking_1 = Kuchikomi.where(shop_id: @shop.id).where(smoking: 1).count
-    @smoking_2 = Kuchikomi.where(shop_id: @shop.id).where(smoking: 2).count
-    @smoking_3 = Kuchikomi.where(shop_id: @shop.id).where(smoking: 3).count
+    @smoking_1 = Kuchikomi.where(shop_id: @shop.id).where(smoking: 1).count     #禁煙の数
+    @smoking_2 = Kuchikomi.where(shop_id: @shop.id).where(smoking: 2).count     #分煙の数
+    @smoking_3 = Kuchikomi.where(shop_id: @shop.id).where(smoking: 3).count     #喫煙の数
     @familymuke_1 = Kuchikomi.where(shop_id: @shop.id).where(familymuke: 1).count
     @familymuke_2 = Kuchikomi.where(shop_id: @shop.id).where(familymuke: 2).count
     @nigiyaka_1 = Kuchikomi.where(shop_id: @shop.id).where(nigiyaka: 1).count
@@ -512,6 +610,7 @@ class ShopsController < ApplicationController
   def kuchikomi_post
     @kuchikomi = Kuchikomi.new(kuchikomi_params) #POSTデータをストロングパラメータに渡してインスタンス生成
    
+    @kuchikomi_success = false
     @shop = Shop.find(@kuchikomi.shop_id)        #ジャンプ先指定のためにショップのインスタンスも生成。　ルーティングによりparams[:id]でもshop idがとれる。どっちでもいい。
   
 =begin
@@ -526,7 +625,8 @@ class ShopsController < ApplicationController
       #ここでshopテーブルに入れるデータの集計とUpdate
       @shop = set_shop_data(@shop.id)
       @shop.save
-
+      
+      @kuchikomi_success = true
       redirect_to @shop
     else
       flash.now[:danger] = '口コミ が投稿されませんでした'

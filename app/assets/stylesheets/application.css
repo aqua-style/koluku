@@ -16,9 +16,29 @@ footer h3 {
   font-size:15px;
   font-weight: bold;
   border: 1px solid #aaa;
-  border-left: 4px solid #aaa;
+  border-left: 4px solid #ff5b9d;
   padding: 5px 10px;
 }
+
+
+/* hタグ風装飾 */
+
+.lobi-red {
+  border-left: 5px solid #ff0066;
+  padding-left: 10px;
+}
+
+.waku-h2 {
+  border:1px solid #888;
+  margin:2em 0;
+  padding:1em;
+}
+
+.lobi-h3 {
+  border-left: 5px solid #888;
+  padding-left: 10px;
+}
+
 
 
 /* navbar */
@@ -192,14 +212,16 @@ float:left;
   font-size: 24px;
 	margin-top:70px!important;
 	padding:1em!important;
-	border:solid 1px #333;
+	border:solid 1px #aaa;
 	font-weight:bold;
+	color:#777;
 }
 .midasi3 {
 	margin-top:50px!important;
-    border-left:6px solid #666;
+    border-left:6px solid #aaa;
 	padding:0 0 0 15px;
 	font-weight:bold;
+		color:#777;
 }
 .midasi4 {
 	border-left:none!important;
@@ -256,6 +278,12 @@ only screen and (max-width : 480px){
 .vl-t{ vertical-align: top!important; }/*上寄せ*/
 .vl-m{ vertical-align: middle!important; }/*中央寄せ*/
 .vl-b{ vertical-align: bottom!important; }/*下寄せ*/
+
+/*文字縦中央*/
+.divtatecenter{
+	display: flex;
+	align-items: center;
+}
 
 /*周りのブロックからの距離（margin）*/
 .m0{ margin: 0!important; }/*周りからのmarginを0に*/
@@ -457,11 +485,6 @@ only screen and (max-width : 480px){
 .p100-l{ padding-left: 100px!important; }
 
 
-/*高さ*/
-
-.hg32 {height: 32px;}
-.lh32 {line-height: 32px;}
-
 
 /*フォントの装飾*/
 .b{ font-weight: bold!important; }/*太字*/
@@ -525,6 +548,7 @@ only screen and (max-width : 480px){
 .box-lightgray{ background-color:#F7F7F7;}
 .box-lightyellow { background-color: #FFFFCC; }
 .box-term{ background-color:#EAF0F7!important;}
+.bg-pink {background-color: #fff3f3; }
 
 /*横幅を指定*/
 .w05{ width: 5%; }
@@ -549,6 +573,37 @@ only screen and (max-width : 480px){
 .w100{ width: 100%; }
 .mw100{ max-width:100%;}
 .mw50{ max-width:50%;}
+
+/*高さ*/
+
+.hg05 {height: 5px;}
+.hg10 {height: 10px;}
+.hg15 {height: 15px;}
+.hg20 {height: 20px;}
+.hg25 {height: 25px;}
+.hg30 {height: 30px;}
+.hg32 {height: 32px;}
+.hg35 {height: 35px;}
+.hg40 {height: 40px;}
+.hg45 {height: 45px;}
+.hg50 {height: 50px;}
+.hg55 {height: 55px;}
+.hg60 {height: 60px;}
+.hg65 {height: 65px;}
+.hg70 {height: 70px;}
+.hg75 {height: 75px;}
+.hg80 {height: 80px;}
+.hg85 {height: 85px;}
+.hg90 {height: 90px;}
+.hg95 {height: 95px;}
+.hg100 {height: 100px;}
+.lh32 {line-height: 32px;}
+
+
+
+
+
+
 
 /*下線や取消線の設定*/
 .underline{ text-decoration: underline!important; }
@@ -587,21 +642,34 @@ only screen and (max-width : 480px){
 }
 
 /*ラウンド*/
+/* 角丸 */
+.rad5 {  
+    border-radius: 5px;        /* CSS3草案 */  
+    -webkit-border-radius: 5px;    /* Safari,Google Chrome用 */  
+    -moz-border-radius: 5px;   /* Firefox用 */  
+}
+
 .rad8 {
 	border-radius:8px;
+    -webkit-border-radius: 8px;    /* Safari,Google Chrome用 */  
+    -moz-border-radius: 8px;   /* Firefox用 */  
 }
 
 .rad10 {
 	border-radius:10px;
+    -webkit-border-radius: 10px;    /* Safari,Google Chrome用 */  
+    -moz-border-radius: 10px;   /* Firefox用 */  
 }
 
 .rad20 {
 	border-radius:20px;
+    -webkit-border-radius: 20px;    /* Safari,Google Chrome用 */  
+    -moz-border-radius: 20px;   /* Firefox用 */  
 }
 
 /*文の先頭にアイコン*/
 .icon-point {
-    background: rgba(0, 0, 0, 0) url("./images/myicon/icon-point.png") no-repeat scroll left center;
+    background: rgba(0, 0, 0, 0) url("") no-repeat scroll left center;
     margin-bottom: 1em !important;
     margin-left: 0;
     margin-right: 0;
@@ -609,8 +677,17 @@ only screen and (max-width : 480px){
     padding: 15px 0 15px 50px !important;
 }
 
-.icon-wakaba {
-    background: rgba(0, 0, 0, 0) url("./images/myicon/icon-wakaba.png") no-repeat scroll left center;
+.icon-wakaba16 {
+    background: rgba(0, 0, 0, 0) url("/images/icon/icon-wakaba-16.png") no-repeat scroll left center;
+    margin-bottom: 1em !important;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 2em;
+    padding: 15px 0 15px 50px !important;
+}
+
+.icon-wakaba10 {
+    background: rgba(0, 0, 0, 0) url("/images/icon/icon-wakaba-10.png") no-repeat scroll left center;
     margin-bottom: 1em !important;
     margin-left: 0;
     margin-right: 0;
@@ -816,7 +893,7 @@ thead th{
 }
 .shop-comment{
   /*  border: 1px solid #666; */
-  border: 4px solid #fff9d1 ;
+  border: 4px solid #ffb4b4;        /*rireki #fff9d1 ;*/
   padding : 0 20px 0 10px;
   border-radius:16px;
 }
@@ -825,11 +902,11 @@ thead th{
 
 /* search */
 .search {
-  margin-bottom: 20px;
+  margin: 20px 0;
 }
 
 #syosaikensaku {
-  display:none;
+  /*display:none;*/
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
   box-shadow: 0 2px #eee;
@@ -972,6 +1049,7 @@ max-width: 100%;
      border-bottom:
      1px solid #ccc;
      font-weight: bold;
+    font-size: 18px;
 }
 .popupModal1 .modalMain {
      color:#222;
@@ -998,6 +1076,11 @@ max-width: 100%;
   border-bottom:1px solid #c8c8c8;
 }
 
+.top-contents {
+  padding:1em 2em;
+	border: 1px solid #a6a6a6;
+	border-radius: 4px;
+}
 .left-contents {
   padding:1em 2em;
 	border: 1px solid #a6a6a6;
@@ -1024,7 +1107,7 @@ content: '';
 top: 100%;
 left: 30px;
 border: 15px solid transparent;
-border-top: 15px solid #ffebbe;
+border-top: 15px solid #ffb4b4;          /*rireki #ffebbe;*/
 width: 0;
 height: 0;
 }
@@ -1198,7 +1281,7 @@ html:not(:target) .talker img{
 }
 
 
-/*************ボタン************/
+/*************検索まわりのボタン************/
 .btn-kensaku {
     color: #fff;
     background-color: #ff5b9d; /*#edae45;*/
@@ -1208,14 +1291,14 @@ html:not(:target) .talker img{
 }
 
 input.btn-kensaku[type=submit]:hover {
-    color: #fff;
-    background-color: #FFBFD9; /*#ffcc99;*/
+    color: #c0c0c0;                 /*rireki #fff; */
+    background-color: #fff4f4;      /*rireki #FFBFD9*/ /*#ffcc99;*/
 }
 
 
 .btn-navkensaku {
-    color: #fff;
-    background-color: #edae45;
+    color: #fff;                 
+    background-color: #ffb4b4;      /*履歴  #edae45*/
     border-radius: 16px;
     font-size: 14px;
     transition: all 1s;
@@ -1228,31 +1311,91 @@ input.btn-kensaku[type=submit]:hover {
   height: 30px!important;
 }
 
-input.btn-navkensaku[type=submit]:hover {
-    color: #fff;
-    background-color: #ffcc99;
+/*最初に入力してある文字*/
+input.btn-navinput::-webkit-input-placeholder {
+    font-size: 12px;
+}
+input.btn-navinput:-moz-placeholder {
+    font-size: 12px;
+}
+input.btn-navinput::-moz-placeholder {
+    font-size: 12px;
+}
+input.btn-navinput:-ms-input-placeholder {
+    font-size: 12px;
 }
 
 
+input.btn-navkensaku[type=submit]:hover {
+    /* rireki
+    color: #fff;
+    background-color: #ffcc99;
+    */
+    color: #c0c0c0;
+    background-color: #fff4f4;
+}
 
+
+/*口コミ投稿ボタン*/
+.mybtn {
+    display: inline-block;
+    padding: 12px 12px;
+    font-weight: 400;
+    text-align: center;
+    border: 1px solid transparent;
+}
 
 .btn-toukou {
     color: #fff;
-    background-color: #edae45;
+    background-color: #ffb4b4;      /*rireki #edae45; */
     border-radius: 16px;
     font-size: 18px;
     transition: all 1s;
 }
 
 input.btn-toukou[type=submit]:hover {
-    color: #fff;
+/*    color: #fff;
     background-color: #ffcc99;
+*/
+    color: #888;
+    background-color: #fff3f3;
 }
 
 a.btn-toukou:hover {
-    color: #fff;
-    background-color: #ffcc99;
+    color: #888;                    /*rireki #fff; */
+    background-color: #fff3f3;      /*rireki #ffcc99; */
 }
+
+
+/*再生アイコン部*/
+
+.play-btn a:before {        /*白い丸 */ 
+	display: block;
+	content: "";
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+	border-radius: 50%;        /* CSS3草案 */  
+    -webkit-border-radius: 50%;    /* Safari,Google Chrome用 */  
+    -moz-border-radius: 50%;   /* Firefox用 */  
+  background: #fff;
+  margin-left: -15px;
+}
+.play-btn a:after {        /*「after要素」で三角 */ 
+	display: block;
+	content: "";
+  position: absolute;
+	top: 45px;
+	left: 50%;
+	width: 0;
+	height: 0;
+  border: 10px solid transparent;
+  border-left: 15px solid #ffb4b4;
+  margin-left: -5px;
+}
+
 
 
 /*****ボタン画像を半透明に*****/
@@ -1264,5 +1407,8 @@ a:hover img {
 
 /*****パンくずリストの上書き****/
 .breadcrumb {
- background-color:#fff9d1!important; 
+ background-color:#fff4f4!important; /*rireki #fff9d1*/
 }
+
+
+

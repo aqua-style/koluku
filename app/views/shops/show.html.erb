@@ -26,6 +26,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js" type="text/javascript"></script>
 
+
 </head>
 
 <body>
@@ -49,10 +50,15 @@
     
     
 <div class="row">
-  <div class="col-md-9 left-contents" style="border:none;">
+  <div class="col-md-9 left-contents"">
+
+<% if @kuchikomi_success %>
+投稿ありがとうございました！是非SNSでも当サイトをシェアしてください。
+<%= render 'layouts/snsbutton' %>
+<% end %>
 
 <div class="shop-info">
-  <h2 class="m20-t f12em b orange"><%= @shop.name %></h2>
+  <h2 class="lobi-red m20-t f12em b red"><%= @shop.name %></h2>
   <p class="f09em m10-l"><%= @shop.y_address %><br><%= @shop.y_moyorieki %></p>
   <!--<p>緯度：<%= @shop.y_ido %>　経度：<%= @shop.y_keido %></p>-->
 </div>
@@ -374,16 +380,18 @@
   	&nbsp;
   	</div>
   </div>
-
+  <span class="f08em">当情報はユーザーによる口コミ投稿です。必ずしも正確・最新を保証するものではないことをご了承ください。</span>
 </div>
 
 
-<div class="al-c m30-t">
-  <% if request.smart_phone? || request.tablet? %>
-    <%= link_to '写真や口コミを投稿する！', kuchikomi_shop_path(@shop), class: "p30 btn btn-toukou" %>
+<div class="al-c m30-t" style="position: relative;">
+  <div class="play-btn">
+    <% if request.smart_phone? || request.tablet? %>
+    <%= link_to '写真や口コミをシェアする！', kuchikomi_shop_path(@shop), class: "p30 mybtn btn-toukou hg80" %>
   <% else %>
-    <%= link_to '写真や口コミを投稿する！', kuchikomi_shop_path(@shop), class: "btn btn-toukou" %>
+    <%= link_to '写真や口コミをシェアする！', kuchikomi_shop_path(@shop), class: "mybtn btn-toukou hg80" %>
   <% end %>
+  </div>
 </div>
 
 <div class="shop-comment m20-t">
@@ -412,6 +420,8 @@
       		</div>
       	</div>
       </div>
+    <% else %>
+    <p>まだコメントはありません。m(__)m</p>  
     <% end %>
   <% end %>
 

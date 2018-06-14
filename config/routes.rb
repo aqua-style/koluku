@@ -30,5 +30,8 @@ Rails.application.routes.draw do
   get 'info/about', to: 'info#about'
   get 'info/privacy-policy', to: 'info#privacy_policy'
   get 'info/tokusho', to: 'info#tokusho'
+  get 'info/usage', to: 'info#usage'
+  get 'info/icon', to: 'info#icon'
+  get 'info/sitemap', to: 'info#sitemap'
   
 end

@@ -1,3 +1,9 @@
+<% content_for :meta do %>
+  <% if @kensu == 0 %>
+  <meta name="robots" content="noindex,follow">
+  <% end %>
+<% end %>
+
 <% content_for :cover do %>
   <div class="cover2">
     <div class="cover2-inner">
@@ -26,49 +32,6 @@ $(function(){
 </script>
 
 
-<span id="jQueryPush" class="btn-syosaikensaku">こだわり検索を開く<img src="/images/icon/btn-kaihei.png"><img style="display:none;" src="/images/icon/btn-kaihei2.png"></span>
-<div id="syosaikensaku" >
-  <div class="search">
-    <div class="row m5-r m5-l">
-      <div class="text-center">
-        <%= form_tag(shops_path, method: :get) do %>
-          <div class="form-group form-inline">
-            <%= text_field_tag :area, @area, class: 'form-control input-lg', placeholder: "地名", size: 5 %> × 
-            <%= text_field_tag :tenpo_genre, @tenpo_genre, class: 'form-control input-lg', placeholder: "店名またはジャンル", size: 30 %>
-            <%= submit_tag '検索', class: 'btn btn-kensaku m5-t' %>
-          </div>
-<%= check_box_tag 'op1' %> 子連れしやすい
-<%= check_box_tag 'op2' %> 客層はファミリー向け
-乳児OK
-にぎやか
-禁煙
-キッズチェア
-キッズメニュー
-子供食器
-低アレルギー
-離乳食持ち込み
-座敷
-個室・半個室
-授乳室
-おむつ台
-キッズスペース
-ベビーカー入店
-店内広い
-席と席の間が広い
-空いてる
-駐車場
-駅チカ
-アクセスしやすい
-店の子供歓迎
-個室座敷の予約
-絵本・おもちゃ
-エプロン
-衛生的
-        <% end %>
-      </div>
-    </div>
-  </div>
-</div>
 
 <% if @shops.present? %>
 <div class="mapcont">
@@ -115,7 +78,7 @@ window.onload = function(){
 </script>	
 </div>
 
-<p class="m20-t"><%= @kensu %>件ヒットしました。</p>
+<p class="m20-t"><%= @kensu %>件ヒットしました。<span class="f08em">※口コミのない店舗は子連れOKじゃない場合があります</span></p>
 
 <hr>
 
@@ -153,6 +116,7 @@ window.onload = function(){
 <!-- ここに口コミの概要を表示する　-->
         <div class="m5-t m10-b">
           <% if shop.kozure_ok > 0 %>  <img src="/images/icon/icon-baby-06-gray-32.png" alt="子連れOK"> <% end %>
+          <% if shop.nyuji_ok > 0 %>  <img src="/images/icon/icon-baby-05-gray-32.png" alt="乳児OK"> <% end %>
           <% if shop.smoking > 0 %>  <img src="/images/icon/icon-nosmoking-gray-32.png" alt="禁煙"> <% end %>
           <% if shop.nigiyaka > 0 %>  <img src="/images/icon/icon-gaya-gray-32.png" alt="にぎやか"> <% end %>
           <% if shop.kids_chair > 0 %>  <img src="/images/icon/icon-isu-01-gray-32.png" alt="キッズ椅子あり"> <% end %>
@@ -164,7 +128,9 @@ window.onload = function(){
           <% if shop.hirosa > 0 %>  <img src="/images/icon/icon-hirosa-gray-32.png" alt="店内広い"> <% end %>
           <% if shop.chusyajo > 0 %>  <img src="/images/icon/icon-car-01-gray-32.png" alt="駐車場あり"> <% end %>
           <% if shop.ekitika > 0 %>  <img src="/images/icon/icon-ekitika-gray-32.png" alt="駅から近い"> <% end %>
+          <% if shop.epuron > 0 %>  <img src="/images/icon/icon-epuron-gray-32.png" alt="紙エプロンあり"> <% end %>
           <% if shop.ehon_omocha > 0 %>  <img src="/images/icon/icon-omocha-gray-32.png" alt="絵本おもちゃ有り"> <% end %>
+          <% if shop.eisei > 0 %>  <img src="/images/icon/icon-eisei-gray-32.png" alt="衛生的"> <% end %>
         </div>
 
         <% unless shop.id.present? %>

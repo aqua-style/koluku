@@ -16,4 +16,11 @@ module ApplicationHelper
     hmessage
   end
   
+  def get_data1
+    @shopnum = Shop.all.count
+    @kuchinum = Kuchikomi.all.count
+    data1 = '登録店舗数：' + @shopnum.to_s
+#    data1 = '登録店舗数：' + @shopnum.to_s + ' / 口コミ数：' + @kuchinum.to_s
+  end
+  
 end
