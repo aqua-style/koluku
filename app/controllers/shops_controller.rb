@@ -135,9 +135,21 @@ class ShopsController < ApplicationController
                 unless feature['Property']['Station'].present? #nil.['Railway']とやるとエラーでるからチェックしないといけない #stationがカラなら
                 	eki = nil
                 else  #stationがあるなら
-                	eki = feature['Property']['Station'][0]['Railway'] + "　" + feature['Property']['Station'][0]['Name']+"駅 徒歩" + feature['Property']['Station'][0]['Time'] + "分"
+#                	eki = feature['Property']['Station'][0]['Railway'] + "　" + feature['Property']['Station'][0]['Name']+"駅 徒歩" + feature['Property']['Station'][0]['Time'] + "分"
+#                end
+                  begin
+                    unless feature['Property']['Station'][0]['Railway'].present? #railwayが空なら
+                      eki = feature['Property']['Station'][0]['Name']+"駅 徒歩" + feature['Property']['Station'][0]['Time'] + "分"
+                    else
+                    	eki = feature['Property']['Station'][0]['Railway'] + "　" + feature['Property']['Station'][0]['Name']+"駅 徒歩" + feature['Property']['Station'][0]['Time'] + "分"
+                  	end
+                  rescue => e
+                      puts 'stationでエラーでた'
+                      eki = nil
+                  end
                 end
-                
+
+
 =begin 20180427
                 #なかの業種があるかチェック
                 if feature['Property']['Genre'] && feature['Property']['Genre'][0]
