@@ -7,7 +7,7 @@ class ShopPhotosController < ApplicationController
     puts @shop_photo.inspect #中身表示
         
     if @shop_photo.save
-      flash[:success] = '写真を投稿しました'
+      flash[:tokosuccess] = '写真を投稿しました！'
     else
       flash[:danger] = '写真の投稿に失敗しました'
       #元の画面に戻すためモデルを再設定 redirectで飛ばすから不要

@@ -457,7 +457,7 @@ class ShopsController < ApplicationController
         @shop = set_shop_data(@shop.id)
         @shop.save
               
-        flash[:success] = '口コミを投稿しました。ご協力に感謝します。'
+        flash[:tokosuccess] = '口コミを投稿しました。ご協力に感謝します。'
         redirect_to @shop
       else
         flash.now[:danger] = '何らかの理由によりこの店舗への口コミができません　shop-create-error1'
@@ -622,7 +622,6 @@ class ShopsController < ApplicationController
   def kuchikomi_post
     @kuchikomi = Kuchikomi.new(kuchikomi_params) #POSTデータをストロングパラメータに渡してインスタンス生成
    
-    @kuchikomi_success = false
     @shop = Shop.find(@kuchikomi.shop_id)        #ジャンプ先指定のためにショップのインスタンスも生成。　ルーティングによりparams[:id]でもshop idがとれる。どっちでもいい。
   
 =begin
@@ -632,13 +631,13 @@ class ShopsController < ApplicationController
 
     #@kuchikomi.shop_id = '' #エラーテスト
     if @kuchikomi.save
-      flash[:success] = '口コミ が正常に投稿されました'
+      #flash[:success] = '投稿ありがとうございました！'
+      flash[:tokosuccess] = '投稿ありがとうございました！'
 
       #ここでshopテーブルに入れるデータの集計とUpdate
       @shop = set_shop_data(@shop.id)
       @shop.save
       
-      @kuchikomi_success = true
       redirect_to @shop
     else
       flash.now[:danger] = '口コミ が投稿されませんでした'
