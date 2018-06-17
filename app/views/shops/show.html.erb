@@ -395,33 +395,39 @@
 <div class="shop-comment m20-t">
   <h2 class="m20-t m40-b fukidasi-midasi">コメント一覧</h2>
   
-  <% @user_comment_infos.each do |info| %>
-    <% if info[:comment].present? %>
-      <div class="chat-l">
-      	<div class="talker">
-      	  <% if info[:image].present? %>
-      	    <img src="<%= info[:image] %>">
-      	  <% else %>
-      	    <img src="/images/icon/icon-mama-0<%= rand(1..9) %>-160px.png">
-      	  <% end %>
-        	<% if info[:nickname].present? %>
-        	  <%= link_to info[:nickname], user_path(info[:user_id]) %><br>
-        	<% else %>
-        	  匿名さん<br>
-        	<% end %>
-      	<span class="f07em lgray"><%= info[:updated_at].strftime("%Y年%m月%d日") %></span></div>
-      	<div class="bubble-wrap">
-      		<div class="bubble  rad8">
-      		<div class="bubble-in">
-      		<p><%= info[:comment] %></p>
-      		</div>
-      		</div>
-      	</div>
-      </div>
-    <% else %>
-    <p>まだコメントはありません。m(__)m</p>  
+    <% nocomment = true %>
+    <% @user_comment_infos.each do |info| %>
+      <% if info[:comment].present? %>
+        <% nocomment = false %>
+        <div class="chat-l">
+        	<div class="talker">
+        	  <% if info[:image].present? %>
+        	    <img src="<%= info[:image] %>">
+        	  <% else %>
+        	    <img src="/images/icon/icon-mama-0<%= rand(1..9) %>-160px.png">
+        	  <% end %>
+          	<% if info[:nickname].present? %>
+          	  <%= link_to info[:nickname], user_path(info[:user_id]) %><br>
+          	<% else %>
+          	  匿名さん<br>
+          	<% end %>
+        	  <span class="f07em lgray"><%= info[:updated_at].strftime("%Y年%m月%d日") %></span>
+        	</div>
+        	<div class="bubble-wrap">
+        		<div class="bubble  rad8">
+        		<div class="bubble-in">
+        		<p><%= info[:comment] %></p>
+        		</div>
+        		</div>
+        	</div>
+        </div>
+      <% end %>
     <% end %>
-  <% end %>
+    <% if nocomment %>
+      <p>まだコメントはありません。m(__)m</p>  
+    <% end %>
+  
+  
 
 </div>
 

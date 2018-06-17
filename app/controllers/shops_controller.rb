@@ -100,7 +100,7 @@ class ShopsController < ApplicationController
           if @shops_db.present?
             @shops_db.each do |shop_db|
               chofuku_gid.push(shop_db.y_gid)
-              puts '-DB店舗とGID→' + shop_db.name + ':' + shop_db.y_gid
+              puts '◆DB内の店舗名とGID→' + shop_db.name + ':' + shop_db.y_gid
             end
           end
           
@@ -109,7 +109,7 @@ class ShopsController < ApplicationController
           @features.each_with_index do |feature,i| #@features配列から1個1個とりだしてshopのインスタンスを生成していく
   
             if chofuku_gid.include?(feature['Gid']) #すでにGidがあるなら重複なのでインスタンスを生成しない
-              puts '重複あり: ' + feature['Name'] + ':' + feature['Gid']
+              puts 'DBと重複あり: ' + feature['Name'] + ':' + feature['Gid']
             else
               chofuku_gid.push(feature['Gid'])
               
@@ -206,7 +206,7 @@ class ShopsController < ApplicationController
             end #if chofuku_gid.include?(feature['Gid'])
           end #ループ
           
-          puts '◆あらためてDBから生成した店舗リスト'
+          puts '◆DBから生成した店舗リスト'
           puts  @shops_db.inspect
 
           puts '◆検索から生成した店舗リスト'
@@ -219,7 +219,7 @@ class ShopsController < ApplicationController
 
       #kuchikomisの多い順からもう１度並び替えしておく(ヽ´ω`)
       @shops_db_ranking = @shops_db.sort{|a, b| b.kuchikomis.size <=> a.kuchikomis.size} if @shops_db.present?
-      puts '◆DBから取った口コミ順の店舗リスト'
+      puts '◆DBから生成した口コミ順の店舗リスト'
       puts @shops_db_ranking.inspect
       
       
@@ -247,6 +247,7 @@ class ShopsController < ApplicationController
         @shops = nil
       end
 =end
+      puts '◆DBと検索から生成したshopリスト'
       puts @shops.inspect if @shops.present?
 
 
@@ -572,6 +573,7 @@ class ShopsController < ApplicationController
   	    	:comment => kuchikomi.comment,
   	    	:updated_at => kuchikomi.updated_at,
        }
+       
     end
     
     
