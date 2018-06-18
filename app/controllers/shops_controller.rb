@@ -615,6 +615,8 @@ class ShopsController < ApplicationController
     
     @shop_photo = ShopPhoto.new                 #アップロード用
     
+    @page_title = @shop.name + 'の口コミを投稿'
+    
     render layout: false #application.html.erbを適用したくない
   end
 
