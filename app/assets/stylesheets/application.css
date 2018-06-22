@@ -1414,3 +1414,105 @@ a:hover img {
 .snsbutton{ text-align: center; }
 
 
+
+/*******************************
+特集記事ページのCSS
+*/
+
+.special-cont {
+  color:#333;
+  padding-top:2em;
+}
+
+.thumbnail150 {
+  width:150px;
+  height:150px;
+  object-fit:cover;
+  margin:10px 2px;
+}
+
+.special-cont blockquote {
+  border-left: none;
+  font-size:13px;
+  color:#666;
+  border: 1px dotted #FEB049; /*食べログカラー*/
+  /*background-color: lightgoldenrodyellow;*/
+  max-width:500px;
+}
+
+.special-cont .midasi2,
+.special-cont .midasi3 {
+  color:#666;
+  margin: 3em 0 2em;
+}
+
+/*******画像の横並び********/
+
+/*横並び画像の幅100%高さ150pxで切り取り*/
+.col-thumb {
+  width:100%;
+  height:150px;
+  object-fit:cover;
+}
+
+/*col-a は横4枚でスマホだと横2枚*/
+/*col-b は横4枚でスマホだと横1枚*/
+
+.col-a,
+.col-b {
+	margin: 0 0 1em;
+}
+
+.col-a .col,
+.col-b .col {
+/*	-webkit-box-sizing: border-box;
+	box-sizing: border-box;*/
+	float: left;
+	margin-left: 1px;
+}
+
+.col-a .col,
+.col-b .col {
+	width: 24%;
+}
+
+.col-a:after,
+.col-b:after {
+	content: '';
+	display: block;
+	clear: both;
+	height: 0;
+}
+
+
+/*解像度480px以下*/
+@media
+only screen and (max-width : 480px){
+  .col-a .col:first-child{
+  	margin-left: 1px;
+  }
+	.col-a .col{
+	  margin-bottom:1px;
+		width: 48%;
+	}
+	.col-b .col{
+		float: none;
+		margin-left: 0;
+		margin-bottom:1px;
+		width: auto;
+	}
+}
+
+.mokuji {
+    border: 1px solid #aaa;
+    padding: 1em;
+    margin: 1em;
+    width: 50%;
+    box-shadow: 4px 4px #eee;
+}
+
+@media only screen and (max-width : 640px){
+  .mokuji {
+    width: auto;
+  }
+}

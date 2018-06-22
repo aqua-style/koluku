@@ -34,4 +34,8 @@ Rails.application.routes.draw do
   get 'info/icon', to: 'info#icon'
   get 'info/sitemap', to: 'info#sitemap'
   
+  get 'special/ikebukuro', to: 'special#ikebukuro'
+  
+  
+  
 end
