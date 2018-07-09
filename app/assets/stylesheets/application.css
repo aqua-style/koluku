@@ -20,6 +20,11 @@ footer h3 {
   padding: 5px 10px;
 }
 
+.footer2 {
+  border-top: #d3d3d3 solid 1px;
+  background-color: #ffd6d6;
+}
+
 
 /* hタグ風装飾 */
 
