@@ -5,5 +5,12 @@ class SpecialController < ApplicationController
     add_breadcrumb 'こるく TOP', '/'
     add_breadcrumb '【池袋】子連れで食事、赤ちゃんが喜ぶカフェ/居酒屋/レストラン24店舗'
   end
-  
+
+  def tokyoeki
+    #パンくずリスト
+    add_breadcrumb 'こるく TOP', '/'
+    add_breadcrumb '【東京駅】子連れで食事、赤ちゃんが喜ぶカフェ/居酒屋/レストラン9店舗'
+  end
+
+
 end

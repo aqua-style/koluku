@@ -35,6 +35,8 @@ Rails.application.routes.draw do
   get 'info/sitemap', to: 'info#sitemap'
   
   get 'special/ikebukuro', to: 'special#ikebukuro'
+  get 'special/tokyoeki', to: 'special#tokyoeki'
+  
   
   
   
