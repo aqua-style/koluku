@@ -11,6 +11,11 @@ class SpecialController < ApplicationController
     add_breadcrumb 'こるく TOP', '/'
     add_breadcrumb '【東京駅】子連れで食事、赤ちゃんが喜ぶカフェ/居酒屋/レストラン9店舗'
   end
+  
+  def shibuya
+    add_breadcrumb 'こるく TOP', '/'
+    add_breadcrumb '【渋谷駅】子連れで食事、赤ちゃんが喜ぶカフェ/居酒屋/レストラン21店舗'
+  end
 
 
 end

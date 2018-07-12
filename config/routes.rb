@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   
   get 'special/ikebukuro', to: 'special#ikebukuro'
   get 'special/tokyoeki', to: 'special#tokyoeki'
+  get 'special/shibuya', to: 'special#shibuya'
   
   
   
