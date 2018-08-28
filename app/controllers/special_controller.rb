@@ -17,5 +17,10 @@ class SpecialController < ApplicationController
     add_breadcrumb '【渋谷駅】子連れで食事、赤ちゃんが喜ぶカフェ/居酒屋/レストラン21店舗'
   end
 
+  def nikohapi_ikebukuro
+    add_breadcrumb 'こるく TOP', '/'
+    add_breadcrumb 'わんわん・うーたんと遊べる！にこはぴきっず池袋をレポします'
+  end
+
 
 end
