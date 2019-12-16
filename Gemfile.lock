@@ -63,7 +63,7 @@ GEM
       dotenv (= 2.2.1)
       railties (>= 3.2, < 5.2)
     erubis (2.7.0)
-    excon (0.62.0)
+    excon (0.71.0)
     execjs (2.7.0)
     ffi (1.9.23)
     fog-aws (2.0.1)
